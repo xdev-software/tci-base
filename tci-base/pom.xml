@@ -118,6 +118,14 @@
 			<scope>compile</scope>
 			<version>1.10.2</version>
 		</dependency>
+
+		<!-- Tests -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>5.10.2</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -208,9 +216,28 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.2.5</version>
+			</plugin>
 		</plugins>
 	</build>
 	<profiles>
+		<profile>
+			<id>ignore-service-loading</id>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/resources</directory>
+						<excludes>
+							<exclude>META-INF/services/**</exclude>
+						</excludes>
+					</resource>
+				</resources>
+			</build>
+		</profile>
 		<profile>
 			<id>ossrh</id>
 			<build>

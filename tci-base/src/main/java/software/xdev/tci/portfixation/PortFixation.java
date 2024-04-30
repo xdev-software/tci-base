@@ -66,7 +66,7 @@ public final class PortFixation
 	}
 	
 	@SuppressWarnings("java:S3011")
-	private static synchronized void initAddFixedExposedPortFunc()
+	static synchronized void initAddFixedExposedPortFunc()
 	{
 		if(addFixedExposedPortFunc != null)
 		{

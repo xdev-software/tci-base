@@ -2,7 +2,7 @@
 [![Build](https://img.shields.io/github/actions/workflow/status/xdev-software/tci-base/checkBuild.yml?branch=develop)](https://github.com/xdev-software/tci-base/actions/workflows/checkBuild.yml?query=branch%3Adevelop)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=xdev-software_tci-base&metric=alert_status)](https://sonarcloud.io/dashboard?id=xdev-software_tci-base)
 
-# <img src="./assets/logo.png" height=24 > Testcontainers Infrastructure (TCI) Framework Base
+# <img src="./assets/logo.png" height=28 > Testcontainers Infrastructure (TCI) Framework Base
 
 Basis Module for XDEV's Testcontainer Infrastructure Framework
 

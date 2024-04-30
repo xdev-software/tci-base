@@ -85,7 +85,7 @@ public class SafeNamedContainerStarter<C extends GenericContainer<?>> implements
 				generatedName += "-" + UUID.randomUUID();
 			}
 			// Add first so that we can skip the stream later (there is no skipLast Method)
-			this.containerNames.addFirst(generatedName);
+			this.containerNames.add(0, generatedName);
 			
 			cmd.withName(generatedName);
 		});

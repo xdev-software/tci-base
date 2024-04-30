@@ -15,6 +15,8 @@
  */
 package software.xdev.tci.factory.prestart.loadbalancing;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -166,7 +168,16 @@ public class DefaultDockerLoadMonitor implements AutoCloseable, LoadMonitor
 			this.scrapeExecutor.shutdown();
 		}
 		
-		this.httpClient.close();
+		// Shutdown is only supported in Java 21+
+		try
+		{
+			final Method mClose = HttpClient.class.getDeclaredMethod("close");
+			mClose.invoke(this.httpClient);
+		}
+		catch(final NoSuchMethodException | IllegalAccessException | InvocationTargetException ex)
+		{
+			LOG.debug("Unable to close HttpClient. Likely running on Java < 21 where method does not exist", ex);
+		}
 		
 		this.nodeExporterContainer.stop();
 	}

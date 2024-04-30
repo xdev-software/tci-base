@@ -7,9 +7,8 @@
 Basis Module for XDEV's Testcontainer Infrastructure Framework
 
 ## Features
-* TCI = TestContainer Infrastructure template
-  * Factory pattern for starting
-     * [PreStarting mechanism](./tci-base/src/main/java/software/xdev/tci/factory/prestart/)
+* Easily create infrastructure using - TCI (TestContainer Infrastructure) templating + Factories for that
+  * [PreStarting mechanism](./tci-base/src/main/java/software/xdev/tci/factory/prestart/) for additional performance
 * [Safe starting of named containers](./tci-base/src/main/java/software/xdev/tci/safestart/)
 * [Container Leak detection](./tci-base/src/main/java/software/xdev/tci/leakdetection/)
 * [Tracing](./tci-base/src/main/java/software/xdev/tci/tracing/)

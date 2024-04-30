@@ -16,7 +16,6 @@
 
 	<modules>
 		<module>tci-base</module>
-		<module>tci-base-demo</module>
 	</modules>
 
 	<licenses>

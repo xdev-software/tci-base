@@ -63,13 +63,6 @@ jobs:
           exit 1
         fi
 
-    - name: Upload demo files
-      uses: actions/upload-artifact@v4
-      with:
-        name: demo-files-java-${{ matrix.java }}
-        path: ${{ env.DEMO_MAVEN_MODULE }}/target/${{ env.DEMO_MAVEN_MODULE }}.jar
-        if-no-files-found: error
-
   code-style:
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'pull_request' || !startsWith(github.head_ref, 'renovate/') }}

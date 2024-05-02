@@ -6,7 +6,7 @@
 
 	<groupId>software.xdev.tci.demo</groupId>
 	<artifactId>tci-advanced-demo</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>${revision}</version>
 	<packaging>pom</packaging>
 
 	<organization>
@@ -23,18 +23,18 @@
 
 		<org.springframework.boot.version>3.2.5</org.springframework.boot.version>
 
-		<revsion>${project.version}</revsion>
+		<revision>1.0.0-SNAPSHOT</revision>
 	</properties>
 
 	<modules>
 		<module>entities</module>
 		<module>entities-metamodel</module>
 		<module>persistence</module>
-		<!--		<module>persistence-it</module>-->
-		<!--		<module>tci-db</module>-->
+		<module>persistence-it</module>
+		<module>tci-db</module>
 		<!--		<module>tci-oidc</module>-->
 		<!--		<module>tci-selenium</module>-->
-		<!--		<module>tci-testcontainers</module>-->
+		<module>tci-testcontainers</module>
 		<!--		<module>tci-webapp</module>-->
 		<module>webapp</module>
 		<!--		<module>webapp-it</module>-->
@@ -46,25 +46,55 @@
 			<dependency>
 				<groupId>software.xdev.tci.demo</groupId>
 				<artifactId>entities</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>${revision}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>software.xdev.tci.demo</groupId>
 				<artifactId>entities-metamodel</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>${revision}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>software.xdev.tci.demo</groupId>
 				<artifactId>persistence</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
+				<version>${revision}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>software.xdev.tci.demo</groupId>
+				<artifactId>tci-db</artifactId>
+				<version>${revision}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>software.xdev.tci.demo</groupId>
+				<artifactId>tci-oidc</artifactId>
+				<version>${revision}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>software.xdev.tci.demo</groupId>
+				<artifactId>tci-selenium</artifactId>
+				<version>${revision}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>software.xdev.tci.demo</groupId>
+				<artifactId>tci-webapp</artifactId>
+				<version>${revision}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>software.xdev.tci.demo</groupId>
+				<artifactId>tci-testcontainers</artifactId>
+				<version>${revision}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>software.xdev</groupId>
 				<artifactId>tci-base</artifactId>
-				<version>${project.version}</version>
+				<version>${revision}</version>
 			</dependency>
 
 			<!-- Selenium -->
@@ -156,13 +186,22 @@
 		</dependencies>
 	</dependencyManagement>
 
-	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-		</resources>
+	<dependencies>
+		<!-- Unit tests are in nearly all projects -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
 
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
 		<pluginManagement>
 			<plugins>
 				<plugin>

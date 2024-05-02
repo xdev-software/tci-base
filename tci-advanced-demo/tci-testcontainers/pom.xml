@@ -9,21 +9,18 @@
 		<artifactId>tci-advanced-demo</artifactId>
 		<version>${revision}</version>
 	</parent>
-	<artifactId>entities</artifactId>
+	<artifactId>tci-testcontainers</artifactId>
 
 	<dependencies>
-		<!-- Specs -->
 		<dependency>
-			<groupId>jakarta.annotation</groupId>
-			<artifactId>jakarta.annotation-api</artifactId>
+			<groupId>software.xdev</groupId>
+			<artifactId>tci-base</artifactId>
 		</dependency>
+
+		<!-- Redirect container logs -->
 		<dependency>
-			<groupId>jakarta.persistence</groupId>
-			<artifactId>jakarta.persistence-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>jakarta.validation</groupId>
-			<artifactId>jakarta.validation-api</artifactId>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jul-to-slf4j</artifactId>
 		</dependency>
 	</dependencies>
 </project>

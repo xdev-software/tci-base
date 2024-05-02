@@ -39,11 +39,11 @@ services:
       CLIENTS_CONFIGURATION_INLINE: |
         [
           {
-              "ClientId": "timeline-client-id",
+              "ClientId": "client-id",
               "ClientSecrets": [
-                  "timeline-client-secret"
+                  "client-secret"
               ],
-              "Description": "TimelineDesc",
+              "Description": "AppDesc",
               "AllowedGrantTypes": [
                   "authorization_code",
                   "refresh_token"

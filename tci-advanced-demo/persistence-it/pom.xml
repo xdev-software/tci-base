@@ -11,6 +11,11 @@
 	</parent>
 	<artifactId>persistence-it</artifactId>
 
+	<properties>
+		<!-- by default run no tests -->
+		<skipTests>true</skipTests>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>software.xdev.tci.demo</groupId>
@@ -41,4 +46,27 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>run-it</id>
+			<properties>
+				<skipTests>false</skipTests>
+			</properties>
+		</profile>
+	</profiles>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<configuration>
+						<skipTests>${skipTests}</skipTests>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 </project>

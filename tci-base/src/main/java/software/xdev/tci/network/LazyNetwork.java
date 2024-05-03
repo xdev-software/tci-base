@@ -244,9 +244,9 @@ public class LazyNetwork implements Network
 		return this;
 	}
 	
-	public LazyNetwork withCreateNetworkCmdModifiers(final Consumer<CreateNetworkCmd> createNetworkCmdModifiers)
+	public LazyNetwork withCreateNetworkCmdModifier(final Consumer<CreateNetworkCmd> createNetworkCmdModifier)
 	{
-		this.createNetworkCmdModifiers.add(createNetworkCmdModifiers);
+		this.createNetworkCmdModifiers.add(createNetworkCmdModifier);
 		return this;
 	}
 	

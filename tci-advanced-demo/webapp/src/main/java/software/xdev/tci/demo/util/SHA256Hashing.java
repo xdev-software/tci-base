@@ -38,7 +38,7 @@ public final class SHA256Hashing
 		// Kann normalerweise nicht auftreten
 		catch(final NoSuchAlgorithmException e)
 		{
-			throw new RuntimeException(e);
+			throw new IllegalStateException("Unable to find SHA256 algorithm", e);
 		}
 	}
 }

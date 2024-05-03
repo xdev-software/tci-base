@@ -9,6 +9,7 @@ import org.testcontainers.containers.wait.strategy.WaitAllStrategy;
 import com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.HttpStatus;
 
 
+@SuppressWarnings("java:S2160")
 public class WebAppContainer extends GenericContainer<WebAppContainer>
 {
 	public static final int DEFAULT_HTTP_PORT = 8080;

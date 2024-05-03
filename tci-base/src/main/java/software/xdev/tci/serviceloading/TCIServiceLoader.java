@@ -26,6 +26,7 @@ import java.util.ServiceLoader;
 /**
  * Central point for service loading
  */
+@SuppressWarnings("java:S6548")
 public final class TCIServiceLoader
 {
 	private static final TCIServiceLoader INSTANCE = new TCIServiceLoader();

@@ -1,9 +1,11 @@
 package software.xdev.tci.demo.webapp.base;
 
 import java.time.Duration;
+import java.util.Objects;
 import java.util.function.Function;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -20,7 +22,6 @@ public interface IntegrationTestDefaults<SELF extends BaseTest>
 	default void navigateToOIDCLoginPage()
 	{
 		this.navigateTo("login");
-		
 		this.waitUntil(d -> d.findElement(By.xpath("//a[@href='/oauth2/authorization/local']")))
 			.click();
 		this.waitUntil(ExpectedConditions.urlContains(this.self().oidcInfra().getInternalHttpBaseEndPoint()));
@@ -60,6 +61,12 @@ public interface IntegrationTestDefaults<SELF extends BaseTest>
 	{
 		this.self().getWebDriver().get(this.self().getWebAppBaseUrl()
 			+ (additionalPathSegments.length > 0 ? ("/" + String.join("/", additionalPathSegments)) : ""));
+		
+		// Wait for the document to load fully
+		this.waitUntil(
+			d -> Objects.equals(
+				((JavascriptExecutor)d).executeScript("return document.readyState"),
+				"complete"));
 	}
 	
 	default void navigateToMainPage()

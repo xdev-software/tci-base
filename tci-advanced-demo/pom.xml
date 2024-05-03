@@ -37,7 +37,7 @@
 		<module>tci-testcontainers</module>
 		<module>tci-webapp</module>
 		<module>webapp</module>
-		<!--		<module>webapp-it</module>-->
+		<module>webapp-it</module>
 	</modules>
 
 	<dependencyManagement>

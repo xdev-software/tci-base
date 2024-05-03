@@ -26,6 +26,7 @@ import software.xdev.spring.security.web.authentication.ui.advanced.config.Addit
 @EnableConfigurationProperties(AdditionalOAuth2ClientProperties.class)
 public class MainWebSecurity
 {
+	@SuppressWarnings("java:S4502") // See below
 	@Bean(name = "mainSecurityFilterChainBean")
 	public SecurityFilterChain configure(
 		final HttpSecurity http,

@@ -33,6 +33,7 @@ public class DBTCI extends TCI<DBContainer>
 	
 	public static final String DB_DATABASE = "test";
 	public static final String DB_USERNAME = "test";
+	@SuppressWarnings("java:S2068") // This is a test calm down
 	public static final String DB_PASSWORD = "test";
 	
 	private final boolean migrateAndInitializeEMC;

@@ -15,7 +15,9 @@ Basis Module for XDEV's Testcontainer Infrastructure Framework
 * [Tracing](./tci-base/src/main/java/software/xdev/tci/tracing/)
 
 ## Usage
-TODO
+This module has many different components that can be used in different situations in different ways.
+
+Checkout the [advanced demo](./tci-advanced-demo/) as a reference to get a feeling how this can be done.
 
 ## Installation
 [Installation guide for the latest release](https://github.com/xdev-software/tci-base/releases/latest#Installation)

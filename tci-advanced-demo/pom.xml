@@ -32,8 +32,8 @@
 		<module>persistence</module>
 		<module>persistence-it</module>
 		<module>tci-db</module>
-		<!--		<module>tci-oidc</module>-->
 		<!--		<module>tci-selenium</module>-->
+		<module>tci-oidc</module>
 		<module>tci-testcontainers</module>
 		<!--		<module>tci-webapp</module>-->
 		<module>webapp</module>

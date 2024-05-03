@@ -19,7 +19,6 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -124,14 +123,6 @@ public class PreStartableTCIFactory<C extends GenericContainer<C>, I extends TCI
 	 * Name (used for Thread-names and Logging)
 	 */
 	protected final String name;
-	protected final int amountToKeepReady;
-	/**
-	 * Set to true when <code>amountToKeepReady == 0</code>
-	 * <p>
-	 * Can be used to emulate synced starts.
-	 * </p>
-	 */
-	protected final boolean preStartingDisabled;
 	/**
 	 * Has the following effects:
 	 * <ul>
@@ -144,7 +135,7 @@ public class PreStartableTCIFactory<C extends GenericContainer<C>, I extends TCI
 	protected final boolean useDirectNetworkAttachIfPossible;
 	
 	// endregion
-	protected final BlockingQueue<StartingInfra<I>> preStartQueue = new LinkedBlockingQueue<>();
+	protected final LinkedBlockingQueue<StartingInfra<I>> preStartQueue;
 	
 	protected final AtomicInteger nextThreadId = new AtomicInteger(1);
 	
@@ -185,8 +176,9 @@ public class PreStartableTCIFactory<C extends GenericContainer<C>, I extends TCI
 		
 		this.name = Objects.requireNonNull(name);
 		
-		this.amountToKeepReady = config.keepReady(name);
-		this.preStartingDisabled = this.amountToKeepReady == 0;
+		final int amountToKeepReady = config.keepReady(name);
+		this.preStartQueue = amountToKeepReady > 0 ? new LinkedBlockingQueue<>(amountToKeepReady) : null;
+		
 		this.useDirectNetworkAttachIfPossible = config.directNetworkAttachIfPossible(name);
 		
 		final int maxAmountStartingSimultaneously = config.maxStartSimultan(name);
@@ -209,7 +201,7 @@ public class PreStartableTCIFactory<C extends GenericContainer<C>, I extends TCI
 	@Override
 	protected void warmUpInternal()
 	{
-		if(this.preStartingDisabled)
+		if(this.isPreStartingDisabled())
 		{
 			return;
 		}
@@ -219,8 +211,13 @@ public class PreStartableTCIFactory<C extends GenericContainer<C>, I extends TCI
 	
 	public void schedulePreStart()
 	{
+		if(this.preStartQueue == null)
+		{
+			return;
+		}
+		
 		this.preStartQueue.removeIf(preStarted -> preStarted.startFuture().isCompletedExceptionally());
-		if(this.preStartQueue.size() < this.amountToKeepReady)
+		if(this.preStartQueue.remainingCapacity() > 0)
 		{
 			this.preStartQueue.add(this.bootNew(null, true));
 		}
@@ -285,7 +282,7 @@ public class PreStartableTCIFactory<C extends GenericContainer<C>, I extends TCI
 		final long startTime = System.currentTimeMillis();
 		
 		final StartingInfra<I> startingInfra =
-			this.preStartingDisabled
+			this.isPreStartingDisabled()
 				? this.bootNew(directAttachNetwork)
 				// Try to use preStarting from queue or else boot a new one
 				: Optional.ofNullable(this.preStartQueue.poll())
@@ -414,12 +411,17 @@ public class PreStartableTCIFactory<C extends GenericContainer<C>, I extends TCI
 		// NO OP
 	}
 	
+	protected boolean isPreStartingDisabled()
+	{
+		return this.preStartQueue == null;
+	}
+	
 	@SuppressWarnings("resource")
 	@Override
 	public void close()
 	{
 		this.log().warn("[{}] Shutting down", this.name);
-		if(!this.preStartingDisabled)
+		if(!this.isPreStartingDisabled())
 		{
 			GlobalPreStartCoordinator.instance().unregister(this);
 		}

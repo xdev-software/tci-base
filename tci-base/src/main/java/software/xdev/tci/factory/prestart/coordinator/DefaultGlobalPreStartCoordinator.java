@@ -65,13 +65,20 @@ public class DefaultGlobalPreStartCoordinator implements GlobalPreStartCoordinat
 	
 	private void schedulePreStart()
 	{
-		if(LoadMonitor.instance().getCurrentIdlePercent().orElse(100)
-			> PreStartConfig.instance().coordinatorIdleCPUPercent())
+		try
 		{
-			final PreStartableTCIFactory<?, ?> factory =
-				this.factories.get(this.counter.getAndIncrement() % this.factories.size());
-			LOG.debug("Scheduling pre-starts for {}", factory.getFactoryName());
-			factory.schedulePreStart();
+			if(LoadMonitor.instance().getCurrentIdlePercent().orElse(100)
+				> PreStartConfig.instance().coordinatorIdleCPUPercent())
+			{
+				final PreStartableTCIFactory<?, ?> factory =
+					this.factories.get(this.counter.getAndIncrement() % this.factories.size());
+				LOG.debug("Scheduling pre-starts for {}", factory.getFactoryName());
+				factory.schedulePreStart();
+			}
+		}
+		catch(final Exception ex)
+		{
+			LOG.warn("Failed to schedule PreStart", ex);
 		}
 	}
 	

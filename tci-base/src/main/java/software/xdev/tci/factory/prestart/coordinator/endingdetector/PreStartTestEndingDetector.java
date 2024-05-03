@@ -90,7 +90,8 @@ public class PreStartTestEndingDetector implements TestExecutionListener
 		}
 		
 		// Shutdown can only be invoked after at least one test was finished
-		if(!this.canShutdown)
+		// Also check if it is a test and not something else. There have been false positives like "JUnit Vintage"
+		if(!this.canShutdown && testIdentifier.isTest())
 		{
 			this.canShutdown = true;
 			this.checkForShutdown();

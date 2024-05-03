@@ -31,7 +31,7 @@ import software.xdev.tci.tracing.TCITracer;
 
 
 @ExtendWith(BaseTest.LogExtension.class)
-public abstract class BaseTest
+abstract class BaseTest
 {
 	private static final Logger LOG = LoggerFactory.getLogger(BaseTest.class);
 	

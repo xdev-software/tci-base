@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +24,8 @@ import software.xdev.tci.demo.entities.Product;
 
 @RestController
 @RequestMapping("/api/products")
-public class ProductController
+public record ProductController(ProductService productService)
 {
-	@Autowired
-	ProductService productService;
-	
 	@GetMapping("/all")
 	public List<Product> getAll()
 	{

@@ -13,13 +13,9 @@ import software.xdev.tci.demo.entities.IdentifiableEntity;
 
 public abstract class BaseEntityDAO<T extends IdentifiableEntity> extends BaseDAO
 {
-	protected BaseEntityDAO()
-	{
-	}
-	
 	protected BaseEntityDAO(final EntityManager em)
 	{
-		this.setEntityManager(em);
+		super(em);
 	}
 	
 	@Transactional

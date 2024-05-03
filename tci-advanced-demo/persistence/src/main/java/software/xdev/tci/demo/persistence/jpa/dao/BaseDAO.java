@@ -3,13 +3,15 @@ package software.xdev.tci.demo.persistence.jpa.dao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 
 public abstract class BaseDAO
 {
-	@Autowired
-	EntityManager em;
+	final EntityManager em;
+	
+	protected BaseDAO(final EntityManager em)
+	{
+		this.em = em;
+	}
 	
 	public EntityManager getEntityManager()
 	{
@@ -19,10 +21,5 @@ public abstract class BaseDAO
 	public CriteriaBuilder getCriteriaBuilder()
 	{
 		return this.getEntityManager().getCriteriaBuilder();
-	}
-	
-	void setEntityManager(final EntityManager em)
-	{
-		this.em = em;
 	}
 }

@@ -14,6 +14,7 @@ import jakarta.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
+import software.xdev.tci.demo.entities.IdentifiableEntity_;
 import software.xdev.tci.demo.entities.Product;
 import software.xdev.tci.demo.entities.Product_;
 
@@ -21,10 +22,6 @@ import software.xdev.tci.demo.entities.Product_;
 @Repository
 public class ProductDAO extends BaseEntityDAO<Product>
 {
-	public ProductDAO()
-	{
-	}
-	
 	public ProductDAO(final EntityManager em)
 	{
 		super(em);
@@ -75,7 +72,7 @@ public class ProductDAO extends BaseEntityDAO<Product>
 		
 		final Root<Product> root = cd.from(Product.class);
 		
-		cd.where(cb.equal(root.get(Product_.id), id));
+		cd.where(cb.equal(root.get(IdentifiableEntity_.id), id));
 		
 		return this.getEntityManager().createQuery(cd).executeUpdate();
 	}

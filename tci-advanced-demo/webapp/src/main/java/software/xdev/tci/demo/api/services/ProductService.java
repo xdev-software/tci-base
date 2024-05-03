@@ -6,7 +6,6 @@ import java.util.Objects;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import software.xdev.tci.demo.entities.Product;
@@ -14,11 +13,8 @@ import software.xdev.tci.demo.persistence.jpa.dao.ProductDAO;
 
 
 @Service
-public class ProductService
+public record ProductService(ProductDAO productDAO)
 {
-	@Autowired
-	ProductDAO productDAO;
-	
 	public List<Product> getAll()
 	{
 		return this.productDAO.findAll();

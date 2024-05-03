@@ -17,9 +17,10 @@ Basis Module for XDEV's Testcontainer Infrastructure Framework
 ## Usage
 This module has many different components that can be used in different situations in different ways.
 
-Detailed documentation is also available in the JavaDocs.
-
 Checkout the [advanced demo](./tci-advanced-demo/) as a reference to get a feeling how this can be done.
+
+> [!TIP]
+> More detailed documentation is usually available in the corresponding JavaDocs.
 
 ## Installation
 [Installation guide for the latest release](https://github.com/xdev-software/tci-base/releases/latest#Installation)

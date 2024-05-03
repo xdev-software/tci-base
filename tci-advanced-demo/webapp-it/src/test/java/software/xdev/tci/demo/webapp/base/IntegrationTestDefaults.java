@@ -69,12 +69,6 @@ public interface IntegrationTestDefaults<SELF extends BaseTest>
 				"complete"));
 	}
 	
-	default void navigateToMainPage()
-	{
-		this.navigateTo();
-		this.checkForMainPage();
-	}
-	
 	default void checkForMainPage()
 	{
 		this.waitUntil(d -> d.findElements(By.className("container")));

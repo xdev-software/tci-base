@@ -44,7 +44,7 @@ import com.github.dockerjava.api.command.CreateNetworkCmd;
 /**
  * A better implementation of {@link Network} in relation to {@link org.testcontainers.containers.Network.NetworkImpl}.
  * <p>
- * Improves:
+ * Improvements:
  *     <ul>
  *         <li>Allows creation of the network in the background</li>
  *         <li>Doesn't create the network inside {@link NetworkImpl#getId()}</li>

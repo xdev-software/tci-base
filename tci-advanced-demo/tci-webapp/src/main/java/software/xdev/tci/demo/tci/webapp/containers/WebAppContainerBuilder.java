@@ -44,6 +44,7 @@ public final class WebAppContainerBuilder
 					".config/**",
 					".idea/**",
 					"_dev_infra/**",
+					"_resource_metrics/**",
 					// Ignore not required test-modules that may have changed
 					// sources only - otherwise the parent pom doesn't find the resources
 					"tci-*/src/**",

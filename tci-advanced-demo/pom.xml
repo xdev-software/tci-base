@@ -35,7 +35,7 @@
 		<module>tci-oidc</module>
 		<module>tci-selenium</module>
 		<module>tci-testcontainers</module>
-		<!--		<module>tci-webapp</module>-->
+		<module>tci-webapp</module>
 		<module>webapp</module>
 		<!--		<module>webapp-it</module>-->
 	</modules>

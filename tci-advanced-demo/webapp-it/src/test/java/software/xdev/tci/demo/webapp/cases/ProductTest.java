@@ -7,6 +7,7 @@ import org.junit.jupiter.params.provider.EnumSource;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.rnorth.ducttape.unreliables.Unreliables;
 
 import software.xdev.tci.demo.persistence.jpa.dao.ProductDAO;
 import software.xdev.tci.demo.tci.selenium.TestBrowser;
@@ -29,8 +30,13 @@ class ProductTest extends InfraPerCaseTest
 		
 		this.navigateTo("swagger-ui/index.html#/product-controller/create");
 		
-		this.waitUntil(d -> d.findElement(By.className("try-out__btn"))).click();
-		final WebElement taInput = this.waitUntil(d -> d.findElement(By.className("body-param__text")));
+		final WebElement taInput = Unreliables.retryUntilSuccess(
+			2,
+			() -> {
+				// Sometimes the button is clicked but JS doesn't react (likely because it's not loaded yet)
+				this.waitUntil(d -> d.findElement(By.className("try-out__btn"))).click();
+				return this.waitUntil(d -> d.findElement(By.className("body-param__text")));
+			});
 		taInput.sendKeys(Keys.CONTROL + "a");
 		taInput.sendKeys(Keys.DELETE);
 		taInput.sendKeys("""

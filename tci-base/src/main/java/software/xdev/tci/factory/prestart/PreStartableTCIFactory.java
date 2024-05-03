@@ -110,8 +110,8 @@ import software.xdev.tci.portfixation.PortFixation;
  *         <code>docker network connect</code> is used. This command is not quite optimal:
  *         <ul>
  *             <li>Due to a bug the host-ports of the container must be fixated. See {@link PortFixation}</li>
- *             <li>When a lot of containers and networks are active the command gets quite slow and
- *             needs a few seconds to connect the container to the network</li>
+ *             <li>When lots of containers and networks are active the command can get quite slow and may
+ *             needs a few seconds to execute</li>
  *         </ul>
  *     </li>
  * </ul>

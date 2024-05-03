@@ -19,7 +19,6 @@ import org.springframework.security.web.savedrequest.NullRequestCache;
 
 import software.xdev.spring.security.web.authentication.ui.advanced.AdvancedLoginPageAdapter;
 import software.xdev.spring.security.web.authentication.ui.advanced.config.AdditionalOAuth2ClientProperties;
-import software.xdev.tci.demo.config.SystemConfig;
 
 
 @EnableWebSecurity
@@ -30,7 +29,6 @@ public class MainWebSecurity
 	@Bean(name = "mainSecurityFilterChainBean")
 	public SecurityFilterChain configure(
 		final HttpSecurity http,
-		final SystemConfig config,
 		final AdditionalOAuth2ClientProperties additionalOAuth2ClientProperties) throws Exception
 	{
 		http.with(

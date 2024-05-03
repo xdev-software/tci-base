@@ -66,6 +66,11 @@
 			<artifactId>spring-security-advanced-authentication-ui</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+		</dependency>
+
 		<!-- DB Impl -->
 		<dependency>
 			<groupId>org.mariadb.jdbc</groupId>
@@ -135,12 +140,6 @@
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
-			<dependencies>
-				<dependency>
-					<groupId>org.springdoc</groupId>
-					<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-				</dependency>
-			</dependencies>
 			<build>
 				<resources>
 					<resource>

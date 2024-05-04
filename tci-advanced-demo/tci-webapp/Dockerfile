@@ -35,7 +35,7 @@ ARG mavenbuildcmd='mvn -B clean package -pl "webapp" -am -Pprod,dev-log -T2C -Dm
 RUN echo "Executing '$mavenbuildcmd'"
 RUN ${mavenbuildcmd}
 
-FROM eclipse-temurin:21-jre-alpine
+FROM eclipse-temurin:22-jre-alpine
 
 ARG user=app
 ARG group=app

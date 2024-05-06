@@ -28,10 +28,7 @@ jobs:
       fail-fast: false
       matrix:
         java: [17, 21]
-        distribution: [temurin]
-        project:
-        - tci-advanced-demo/persistence-it
-        - tci-advanced-demo/webapp-it
+        project: [persistence-it, webapp-it]
         parallel: [0, 2]
         pre-start: [false, true]
     runs-on: ubuntu-latest
@@ -41,14 +38,14 @@ jobs:
     - name: Set up JDK
       uses: actions/setup-java@v4
       with:
-        distribution: ${{ matrix.distribution }}
+        distribution: temurin
         java-version: ${{ matrix.java }}
         cache: 'maven'
 
     - name: Test
       run: |
         ./mvnw -B test \
-        -pl "${{ matrix.project }}" -am \
+        -pl "tci-advanced-demo/${{ matrix.project }}" -am \
         -P run-it \
         ${{ matrix.pre-start && '-Dinfra-pre-start.enabled=1 ' || '' }} \
         ${{ matrix.parallel > 0 && format('-Djunit.jupiter.execution.parallel.enabled=true -Djunit.jupiter.execution.parallel.mode.default=concurrent -Djunit.jupiter.execution.parallel.mode.classes.default=concurrent -Djunit.jupiter.execution.parallel.config.strategy=fixed -Djunit.jupiter.execution.parallel.config.fixed.parallelism=2 -Djunit.jupiter.execution.parallel.config.fixed.max-pool-size={0} ', matrix.parallel) || '' }}

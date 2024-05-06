@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
@@ -40,6 +41,13 @@ public abstract class BaseTCIFactory<
 	private final Logger logger;
 	protected Set<I> returnedAndInUse = Collections.synchronizedSet(new HashSet<>());
 	protected boolean warmedUp;
+	/**
+	 * Describes how often new infra should be created/started - if it fails.
+	 * <p>
+	 * This helps with "Random" errors that occur during infra startup. For example when a port allocation fails.
+	 * </p>
+	 */
+	protected int getNewTryCount = 2;
 	
 	protected BiFunction<C, String, I> infraBuilder;
 	protected final Supplier<C> containerBuilder;
@@ -99,6 +107,22 @@ public abstract class BaseTCIFactory<
 			.withLogConsumer(getLogConsumer(this.containerLoggerName));
 	}
 	
+	protected void handleInfraStartFail(final I infra)
+	{
+		CompletableFuture.runAsync(() -> {
+			final long startTime = System.currentTimeMillis();
+			try
+			{
+				infra.stop();
+			}
+			catch(final Exception stopEx)
+			{
+				this.log().warn("Failed to cleanup infra that failed during startup", stopEx);
+			}
+			this.tracer.timedAdd("infraStartFailCleanup", System.currentTimeMillis() - startTime);
+		});
+	}
+	
 	protected I registerReturned(final I infra)
 	{
 		this.returnedAndInUse.add(infra);
@@ -127,6 +151,15 @@ public abstract class BaseTCIFactory<
 	protected Logger log()
 	{
 		return this.logger;
+	}
+	
+	public void setGetNewTryCount(final int getNewTryCount)
+	{
+		if(getNewTryCount <= 0)
+		{
+			throw new IllegalArgumentException("must be greater than 0");
+		}
+		this.getNewTryCount = getNewTryCount;
 	}
 	
 	protected static Slf4jLogConsumer getLogConsumer(final String name)

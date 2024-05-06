@@ -30,6 +30,7 @@ import java.util.function.BiFunction;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+import org.rnorth.ducttape.unreliables.Unreliables;
 import org.testcontainers.DockerClientFactory;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.Network;
@@ -298,14 +299,16 @@ public class PreStartableTCIFactory<C extends GenericContainer<C>, I extends TCI
 		}
 		catch(final Exception e)
 		{
-			throw new IllegalStateException("Unable to start container", e);
+			// Try to clean up
+			this.handleInfraStartFail(startingInfra.infra());
+			throw new IllegalStateException("Unable to start infra", e);
 		}
 		finally
 		{
 			if(this.log().isInfoEnabled())
 			{
 				this.log().info(
-					"[{}] Finished waiting for container, took {}ms",
+					"[{}] Finished waiting for infra, took {}ms",
 					this.name,
 					System.currentTimeMillis() - startTime);
 			}
@@ -330,18 +333,26 @@ public class PreStartableTCIFactory<C extends GenericContainer<C>, I extends TCI
 			: null);
 		final I infra = startingInfra.infra();
 		
-		if(network != null && startingInfra.requiresNetworkConnect())
+		try
 		{
-			final long connectToNetworkStartTime = System.currentTimeMillis();
+			if(network != null && startingInfra.requiresNetworkConnect())
+			{
+				final long connectToNetworkStartTime = System.currentTimeMillis();
+				
+				this.connectContainerToNetwork(infra.getContainer(), network, filteredAliases);
+				
+				this.tracer.timedAdd("connectToNetwork", System.currentTimeMillis() - connectToNetworkStartTime);
+			}
 			
-			this.connectContainerToNetwork(infra.getContainer(), network, filteredAliases);
-			
-			this.tracer.timedAdd("connectToNetwork", System.currentTimeMillis() - connectToNetworkStartTime);
+			filteredAliases.stream()
+				.findFirst()
+				.ifPresent(infra::setNetworkAlias);
 		}
-		
-		filteredAliases.stream()
-			.findFirst()
-			.ifPresent(infra::setNetworkAlias);
+		catch(final RuntimeException rex)
+		{
+			this.handleInfraStartFail(infra);
+			throw rex;
+		}
 		
 		return infra;
 	}
@@ -385,7 +396,9 @@ public class PreStartableTCIFactory<C extends GenericContainer<C>, I extends TCI
 		this.log().info("Getting new infra");
 		final long startTime = System.currentTimeMillis();
 		
-		final I infra = this.registerReturned(this.newInternal(network, aliases));
+		final I infra = this.registerReturned(Unreliables.retryUntilSuccess(
+			this.getNewTryCount,
+			() -> this.newInternal(network, aliases)));
 		
 		final long startTimePostProcess = System.currentTimeMillis();
 		this.postProcessNew(infra);

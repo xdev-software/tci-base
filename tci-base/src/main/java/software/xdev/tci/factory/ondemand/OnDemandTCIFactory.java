@@ -21,6 +21,7 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import org.rnorth.ducttape.unreliables.Unreliables;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.Network;
 
@@ -63,7 +64,15 @@ public class OnDemandTCIFactory<C extends GenericContainer<C>, I extends TCI<C>>
 			.orElseGet(() -> c.getNetworkAliases().stream()
 				.findFirst()
 				.orElse(null)));
-		infra.start(this.containerBaseName + "-" + this.startCounter.getAndIncrement());
+		try
+		{
+			infra.start(this.containerBaseName + "-" + this.startCounter.getAndIncrement());
+		}
+		catch(final RuntimeException rex)
+		{
+			this.handleInfraStartFail(infra);
+			throw rex;
+		}
 		return infra;
 	}
 	
@@ -72,7 +81,9 @@ public class OnDemandTCIFactory<C extends GenericContainer<C>, I extends TCI<C>>
 		this.log().info("Getting new infra");
 		final long startTime = System.currentTimeMillis();
 		
-		final I infra = this.registerReturned(this.newInternal(network, buildContainerCustomizer));
+		final I infra = this.registerReturned(Unreliables.retryUntilSuccess(
+			this.getNewTryCount,
+			() -> this.newInternal(network, buildContainerCustomizer)));
 		
 		final long ms = System.currentTimeMillis() - startTime;
 		this.log().info("Got new infra, took {}ms", ms);

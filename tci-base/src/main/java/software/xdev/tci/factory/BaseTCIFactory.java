@@ -148,11 +148,6 @@ public abstract class BaseTCIFactory<
 		return this.tracer;
 	}
 	
-	protected Logger log()
-	{
-		return this.logger;
-	}
-	
 	public void setGetNewTryCount(final int getNewTryCount)
 	{
 		if(getNewTryCount <= 0)
@@ -160,6 +155,11 @@ public abstract class BaseTCIFactory<
 			throw new IllegalArgumentException("must be greater than 0");
 		}
 		this.getNewTryCount = getNewTryCount;
+	}
+	
+	protected Logger log()
+	{
+		return this.logger;
 	}
 	
 	protected static Slf4jLogConsumer getLogConsumer(final String name)

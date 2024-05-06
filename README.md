@@ -1,6 +1,7 @@
 [![Latest version](https://img.shields.io/maven-central/v/software.xdev/tci-base?logo=apache%20maven)](https://mvnrepository.com/artifact/software.xdev/tci-base)
 [![Build](https://img.shields.io/github/actions/workflow/status/xdev-software/tci-base/checkBuild.yml?branch=develop)](https://github.com/xdev-software/tci-base/actions/workflows/checkBuild.yml?query=branch%3Adevelop)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=xdev-software_tci-base&metric=alert_status)](https://sonarcloud.io/dashboard?id=xdev-software_tci-base)
+[![javadoc](https://javadoc.io/badge2/software.xdev/tci-base/javadoc.svg)](https://javadoc.io/doc/software.xdev/tci-base) 
 
 # <img src="./assets/logo.png" height=28 > Testcontainers Infrastructure (TCI) Framework Base
 
@@ -20,7 +21,7 @@ This module has many different components that can be used in different situatio
 Checkout the [advanced demo](./tci-advanced-demo/) as a reference to get a feeling how this can be done.
 
 > [!TIP]
-> More detailed documentation is usually available in the corresponding JavaDocs.
+> More detailed documentation is usually available in the corresponding [JavaDocs](https://javadoc.io/doc/software.xdev/tci-base).
 
 ## Installation
 [Installation guide for the latest release](https://github.com/xdev-software/tci-base/releases/latest#Installation)

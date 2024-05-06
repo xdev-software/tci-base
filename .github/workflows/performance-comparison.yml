@@ -14,16 +14,9 @@ jobs:
         project:
         - tci-advanced-demo/persistence-it
         - tci-advanced-demo/webapp-it
-        parallel: [0, 2, 4]
+        parallel: [0, 2]
+        pre-start: [false, true]
         include:
-          - parallel: 0
-            pre-start: false
-          - parallel: 0
-            pre-start: true
-          - parallel: 2
-            pre-start: true
-          - parallel: 2
-            pre-start: false
           - parallel: 4
             pre-start: false
 

@@ -33,6 +33,12 @@ import software.xdev.tci.factory.TCIFactory;
 import software.xdev.tci.factory.registry.TCIFactoryRegistry;
 
 
+/**
+ * Detects infrastructure that was not disposed properly after all test have ended.
+ * <p>
+ * If infrastructure is disposed asynchronously, {@link LeakDetectionAsyncReaper} may need to be used.
+ * </p>
+ */
 public class TCILeakAgent implements TestExecutionListener
 {
 	private static final Logger LOG = LoggerFactory.getLogger(TCILeakAgent.class);

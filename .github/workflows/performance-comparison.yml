@@ -1,0 +1,45 @@
+name: Performance comparison
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-it:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        java: [17, 21]
+        distribution: [temurin]
+        project:
+        - tci-advanced-demo/persistence-it
+        - tci-advanced-demo/webapp-it
+        include:
+          - parallel: 0
+            pre-start: false
+          - parallel: 0
+            pre-start: true
+          - parallel: 2
+            pre-start: true
+          - parallel: 2
+            pre-start: false
+          - parallel: 4
+            pre-start: false
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: ${{ matrix.distribution }}
+        java-version: ${{ matrix.java }}
+        cache: 'maven'
+
+    - name: Build with Maven
+      run: |
+        ./mvnw -B clean \
+        -pl "${{ matrix.project }}" -am \
+        -P run-it
+        ${{ matrix.pre-start && '-Dinfra-pre-start.enabled=1 ' || '' }}
+        ${{ matrix.parallel > 0 && '-Djunit.jupiter.execution.parallel.enabled=true -Djunit.jupiter.execution.parallel.mode.default=concurrent -Djunit.jupiter.execution.parallel.mode.classes.default=concurrent -Djunit.jupiter.execution.parallel.config.strategy=fixed -Djunit.jupiter.execution.parallel.config.fixed.parallelism=2 -Djunit.jupiter.execution.parallel.config.fixed.max-pool-size=${{ matrix.parallel }} ' || '' }}

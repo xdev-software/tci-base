@@ -28,3 +28,7 @@ _As of: 2024-05-03_
 | Avg. time to get basic infra (db, oidc, app) | 10s | 9s |
 | Avg. time to get Selenium/WebDriver | 7s | 1s |
 | Resource utilization | ![graphic](./assets/PERF-WEBAPP-DEMO_P2.png) | ![graphic](./assets/PERF-WEBAPP-DEMO_P2_PRESTART.png) |
+
+## Live 
+
+A live comparison using [GitHub actions is also available](https://github.com/xdev-software/tci-base/actions/workflows/run-integration-tests.yml).

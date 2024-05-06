@@ -17,9 +17,6 @@ jobs:
         - tci-advanced-demo/webapp-it
         parallel: [0, 2]
         pre-start: [false, true]
-        include:
-          - parallel: 4
-            pre-start: false
 
     steps:
     - uses: actions/checkout@v4

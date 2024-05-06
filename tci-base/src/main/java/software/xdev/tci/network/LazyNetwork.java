@@ -79,7 +79,7 @@ public class LazyNetwork implements Network
 	protected Boolean checkDuplicate;
 	
 	protected boolean deleteNetworkOnClose = true;
-	protected int deleteNetworkOnCloseTries = 10;
+	protected int deleteNetworkOnCloseTries = 20;
 	
 	protected CompletableFuture<Void> startCF;
 	protected String id; // null -> not created

@@ -62,4 +62,15 @@ public final class TCIServiceLoader
 	{
 		return this.loadedServices.get(clazz) != null;
 	}
+	
+	/**
+	 * Force overwrite the loaded configuration manually.
+	 * <p>
+	 * WARNING: Usage not recommended. Should only be used as last resort!
+	 * </p>
+	 */
+	public Object forceOverwrite(final Class<?> clazz, final Object value)
+	{
+		return this.loadedServices.put(clazz, value);
+	}
 }

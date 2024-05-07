@@ -20,7 +20,16 @@ import software.xdev.tci.serviceloading.TCIServiceLoader;
 
 public interface PreStartConfig
 {
-	boolean enabled();
+	boolean DEFAULT_ENABLED = false;
+	boolean DEFAULT_DIRECT_NETWORK_ATTACH_IF_POSSIBLE = true;
+	int DEFAULT_COORDINATOR_IDLE_CPU_PERCENT = 40;
+	int DEFAULT_COORDINATOR_SCHEDULE_PERIOD_MS = 1_000;
+	boolean DEFAULT_DETECT_ENDING_TESTS = true;
+	
+	default boolean enabled()
+	{
+		return DEFAULT_ENABLED;
+	}
 	
 	/**
 	 * How many infrastructures s
@@ -39,17 +48,26 @@ public interface PreStartConfig
 	 * DEBUG-Option - default value should be fine.
 	 * </p>
 	 */
-	boolean directNetworkAttachIfPossible(final String preStartName);
+	default boolean directNetworkAttachIfPossible(final String preStartName)
+	{
+		return DEFAULT_DIRECT_NETWORK_ATTACH_IF_POSSIBLE;
+	}
 	
 	/**
 	 * Amount of CPU that needs to be idle to allow PreStarting of containers.
 	 */
-	int coordinatorIdleCPUPercent();
+	default int coordinatorIdleCPUPercent()
+	{
+		return DEFAULT_COORDINATOR_IDLE_CPU_PERCENT;
+	}
 	
 	/**
 	 * How often PreStarting should be tried (one factory per schedule!)
 	 */
-	int coordinatorSchedulePeriodMs();
+	default int coordinatorSchedulePeriodMs()
+	{
+		return DEFAULT_COORDINATOR_SCHEDULE_PERIOD_MS;
+	}
 	
 	/**
 	 * Should PreStarting be stopped when tests are ending?
@@ -57,7 +75,10 @@ public interface PreStartConfig
 	 * DEBUG-Option - default value should be fine.
 	 * </p>
 	 */
-	boolean detectEndingTests();
+	default boolean detectEndingTests()
+	{
+		return DEFAULT_DETECT_ENDING_TESTS;
+	}
 	
 	static PreStartConfig instance()
 	{

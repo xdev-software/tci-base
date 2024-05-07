@@ -84,18 +84,19 @@ public class LazyNetwork implements Network
 	protected CompletableFuture<Void> startCF;
 	protected String id; // null -> not created
 	
-	public void create()
+	public LazyNetwork create()
 	{
-		this.create(CompletableFuture::runAsync);
+		return this.create(CompletableFuture::runAsync);
 	}
 	
-	public void create(final Function<Runnable, CompletableFuture<Void>> executor)
+	public LazyNetwork create(final Function<Runnable, CompletableFuture<Void>> executor)
 	{
 		if(this.startCF != null)
 		{
 			throw new IllegalStateException("Creation was already started");
 		}
 		this.startCF = executor.apply(this::startInternal);
+		return this;
 	}
 	
 	@SuppressWarnings({"deprecation", "java:S1874", "java:S2095"})

@@ -52,7 +52,7 @@ public class DefaultPreStartConfig implements PreStartConfig
 	@SuppressWarnings("checkstyle:MagicNumber")
 	public DefaultPreStartConfig()
 	{
-		this.enabled = this.getBool(PROPERTY_PREFIX + "enabled", false);
+		this.enabled = this.getBool(PROPERTY_PREFIX + "enabled", DEFAULT_ENABLED);
 		
 		this.keepReady = this.enabled
 			? this.getInt(
@@ -65,17 +65,19 @@ public class DefaultPreStartConfig implements PreStartConfig
 			() -> this.getInt(JUNIT_JUPITER_EXECUTION_PARALLEL_CONFIG_FIXED_MAX_POOL_SIZE, 1))
 			: -1;
 		this.directNetworkAttachIfPossible =
-			this.getBool(PROPERTY_PREFIX + DIRECT_NETWORK_ATTACH_IF_POSSIBLE, true);
+			this.getBool(
+				PROPERTY_PREFIX + DIRECT_NETWORK_ATTACH_IF_POSSIBLE,
+				DEFAULT_DIRECT_NETWORK_ATTACH_IF_POSSIBLE);
 		
 		this.coordinatorIdleCPUPercent = this.enabled
-			? this.getInt(PROPERTY_PREFIX + COORDINATOR_IDLE_CPU_PERCENT, 40)
+			? this.getInt(PROPERTY_PREFIX + COORDINATOR_IDLE_CPU_PERCENT, DEFAULT_COORDINATOR_IDLE_CPU_PERCENT)
 			: -1;
 		this.coordinatorSchedulePeriodMs = this.enabled
-			? this.getInt(PROPERTY_PREFIX + COORDINATOR_SCHEDULE_PERIOD_MS, 1_000)
+			? this.getInt(PROPERTY_PREFIX + COORDINATOR_SCHEDULE_PERIOD_MS, DEFAULT_COORDINATOR_SCHEDULE_PERIOD_MS)
 			: -1;
 		
 		this.detectEndingTests = this.enabled
-			&& this.getBool(PROPERTY_PREFIX + DETECT_ENDING_TESTS, true);
+			&& this.getBool(PROPERTY_PREFIX + DETECT_ENDING_TESTS, DEFAULT_DETECT_ENDING_TESTS);
 	}
 	
 	@Override

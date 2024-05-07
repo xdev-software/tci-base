@@ -1,5 +1,5 @@
 # 1.0.1 
-* Improved demo
+* Improved D&D (docs and demo)
 
 # 1.0.0
 _Initial release_

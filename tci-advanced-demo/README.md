@@ -9,3 +9,10 @@ The most interesting project is probably [webapp-it](./webapp-it/) which contain
 
 > [!TIP]
 > Pre defined launchers exist for running the app and the integration tests.
+
+## Features showcase
+* PreStarting:<br/> Can be seen when enabling it using ``-Dinfra-pre-start.enabled=1`` or by running the corresponding launchers
+* LazyNetwork:<br/> Search for it inside ``BaseTest``. Can also be observed using ``docker network ls`` while running tests.
+* Safe starting of named containers:<br/> Is integrated inside ``TCI``. Parts of it only kick in on unexpected container start errors. Can also be observed during tests (with e.g. ``docker stats``) as it names the containers.
+* Container leak detection:<br/> Only kicks in when you forget to stop infrastructure after a test. Can be manually reproduced by commenting out the corresponding ``TCI#stop`` methods.
+* Tracing:<br/> Seen at the end of each test inside the logs.

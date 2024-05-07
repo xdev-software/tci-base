@@ -5,10 +5,17 @@ This demo is a reference implementation for TCI.
 It represents a Spring Boot Application with a Database and OIDC authentication that is tested using Selenium.
 There are also test that validate the database migrations and queries.
 
+![Overview](./Overview.drawio.svg)
+
 The most interesting project is probably [webapp-it](./webapp-it/) which contains the integration tests for the WebApp.
 
 > [!TIP]
 > Pre defined launchers exist for running the app and the integration tests.
+
+## Module naming
+* ``tci-*`` are TestContainer Infrastructure projects (used inside the integration tests)
+* ``*-it`` are IntegrationTest projects
+* All other projects are used for the webapp at compile time
 
 ## Features showcase
 * PreStarting:<br/> Can be seen when enabling it using ``-Dinfra-pre-start.enabled=1`` or by running the corresponding launchers

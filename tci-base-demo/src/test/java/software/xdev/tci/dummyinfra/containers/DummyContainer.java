@@ -5,7 +5,7 @@ import org.testcontainers.containers.GenericContainer;
 
 public class DummyContainer extends GenericContainer<DummyContainer>
 {
-	public static int PORT = 80;
+	public static final int PORT = 80;
 	
 	public DummyContainer()
 	{

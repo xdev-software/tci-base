@@ -67,6 +67,7 @@ class LazyNetworkTest
 		printAllNetworks();
 	}
 	
+	@SuppressWarnings("resource")
 	static void printAllNetworks()
 	{
 		LOG.info("== ALL NETWORKS ===");

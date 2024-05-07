@@ -6,6 +6,8 @@ import java.util.Objects;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testcontainers.DockerClientFactory;
 import org.testcontainers.containers.Network;
 
@@ -17,7 +19,9 @@ import software.xdev.tci.network.LazyNetwork;
 
 class PortFixationLiveTest
 {
-	@SuppressWarnings({"java:S2699", "java:S2925"})
+	private static final Logger LOG = LoggerFactory.getLogger(PortFixationLiveTest.class);
+	
+	@SuppressWarnings({"resource", "java:S2699", "java:S2925"})
 	@ParameterizedTest
 	@ValueSource(booleans = {false, true})
 	void showCase(final boolean withFixation)
@@ -64,6 +68,8 @@ class PortFixationLiveTest
 				.filter(Objects::nonNull)
 				.mapToInt(i -> i)
 				.anyMatch(port -> Objects.equals(port, expectedPort));
+			
+			LOG.info("Can container be reached from host? - {}", containsExpectedPort);
 			
 			// Only when fixation is active the port is exposed after connect!
 			Assertions.assertEquals(withFixation, containsExpectedPort);

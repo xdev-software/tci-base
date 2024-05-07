@@ -2,8 +2,8 @@
 
 This demo is a reference implementation for TCI.
 
-It represents a Spring Boot Application with a Database and OIDC authentication that is tested using Selenium.
-There are also test that validate the database migrations and queries.
+It represents a Spring Boot Application with a Database and OIDC authentication that [is tested](./webapp-it/) using Selenium.
+There are also test that [validate the database migrations and queries](./persistence-it/).
 
 ![Overview](./Overview.drawio.svg)
 

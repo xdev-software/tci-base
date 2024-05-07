@@ -10,10 +10,10 @@ Basis Module for XDEV's Testcontainer Infrastructure Framework
 ## Features
 | Feature | Why? |
 | --- | --- |
-| Easily create infrastructure using TCI (TestContainer Infrastructure) templating + Factories for that | Makes writing and designing tests easier |
-| [PreStarting mechanism](./tci-base/src/main/java/software/xdev/tci/factory/prestart/) for [additional performance](./PERFORMANCE.md) | Tries to run tests as fast as possible - with a few trade-offs |
+| Easily create infrastructure using TCI<sup>[JD](https://javadoc.io/doc/software.xdev/tci-base/latest/software/xdev/tci/TCI.html)</sup> (TestContainer Infrastructure) templating + Factories for that | Makes writing and designing tests easier |
+| [PreStarting mechanism](./tci-base/src/main/java/software/xdev/tci/factory/prestart/)<sup>[JD](https://javadoc.io/doc/software.xdev/tci-base/latest/software/xdev/tci/factory/prestart/PreStartableTCIFactory.html)</sup> for [additional performance](./PERFORMANCE.md) | Tries to run tests as fast as possible - with a few trade-offs |
 | All started containers have a unique human-readable name | Easier identification when tracing or debugging |
-| An optimized [implementation of Network](./tci-base/src/main/java/software/xdev/tci/network/) | Addresses various problems of the original implementation to speed up tests |
+| An optimized [implementation of Network](./tci-base/src/main/java/software/xdev/tci/network/)<sup>[JD](https://javadoc.io/doc/software.xdev/tci-base/latest/software/xdev/tci/network/LazyNetwork.html)</sup> | Addresses various problems of the original implementation to speed up tests |
 | [Safe starting of named containers](./tci-base/src/main/java/software/xdev/tci/safestart/) | Ensures that a container doesn't enter a crash loop during retried startups |
 | [Container Leak detection](./tci-base/src/main/java/software/xdev/tci/leakdetection/) | Prevents you from running out of resources |
 | [Tracing](./tci-base/src/main/java/software/xdev/tci/tracing/) | Makes finding bottlenecks and similar problems easier |

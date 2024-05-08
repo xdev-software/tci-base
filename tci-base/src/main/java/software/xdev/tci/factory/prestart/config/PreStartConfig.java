@@ -77,7 +77,7 @@ public interface PreStartConfig
 	 */
 	default boolean detectEndingTests()
 	{
-		return DEFAULT_DETECT_ENDING_TESTS;
+		return this.enabled() && DEFAULT_DETECT_ENDING_TESTS;
 	}
 	
 	static PreStartConfig instance()

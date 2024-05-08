@@ -31,6 +31,8 @@ import org.testcontainers.containers.Container;
 import software.xdev.tci.TCI;
 import software.xdev.tci.factory.TCIFactory;
 import software.xdev.tci.factory.registry.TCIFactoryRegistry;
+import software.xdev.tci.leakdetection.config.LeakDetectionConfig;
+import software.xdev.tci.serviceloading.TCIServiceLoader;
 
 
 /**
@@ -46,9 +48,17 @@ public class TCILeakAgent implements TestExecutionListener
 {
 	private static final Logger LOG = LoggerFactory.getLogger(TCILeakAgent.class);
 	
+	protected LeakDetectionConfig config;
+	
 	@Override
 	public void testPlanExecutionStarted(final TestPlan testPlan)
 	{
+		this.config = TCIServiceLoader.instance().service(LeakDetectionConfig.class);
+		if(!this.config.enabled())
+		{
+			return;
+		}
+		
 		LOG.debug("Registered");
 	}
 	
@@ -56,6 +66,11 @@ public class TCILeakAgent implements TestExecutionListener
 	@Override
 	public void testPlanExecutionFinished(final TestPlan testPlan)
 	{
+		if(!this.config.enabled())
+		{
+			return;
+		}
+		
 		final List<LeakDetectionAsyncReaper> pendingReapers = ServiceLoader.load(LeakDetectionAsyncReaper.class)
 			.stream()
 			.map(ServiceLoader.Provider::get)

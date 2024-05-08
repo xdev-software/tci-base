@@ -36,6 +36,9 @@ import software.xdev.tci.factory.prestart.coordinator.GlobalPreStartCoordinator;
  * If all tests have been started the tests are "ending" and the {@link GlobalPreStartCoordinator} is shut down to not
  * PreStart infrastructure that will never be needed.
  * </p>
+ * <p>
+ * Active by default due to service loading.
+ * </p>
  */
 public class PreStartTestEndingDetector implements TestExecutionListener
 {

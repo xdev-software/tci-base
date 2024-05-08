@@ -12,12 +12,10 @@ RUN mkdir -p ${APP_DIR} \
   && addgroup -g ${gid} ${group} \
   && adduser -h "$APP_DIR" -u ${uid} -G ${group} -s /bin/sh -D ${user}
 
-# MinRAMPercentage: Default value is 50% -> may reserve memory that it doesn't need -> decreased
-# MaxRAMPercentage: Default value is 25% -> we want to use available memory optimal -> increased, but
-# enough is left for other RAM usages like e.g. Metaspace
+# MaxRAMPercentage: Default value is 25% -> we want to use available memory optimal -> increased, but enough is left for other RAM usages like e.g. Metaspace
 # Min/MaxHeapFreeRatio: Default values cause container reserved memory not to shrink properly/waste memory -> decreased
 # https://stackoverflow.com/questions/16058250/what-is-the-purpose-of-xxminheapfreeratio-and-xxmaxheapfreeratio
-ENV JAVA_OPTS "-XX:MinRAMPercentage=20 -XX:MaxRAMPercentage=75 -XX:MinHeapFreeRatio=20 -XX:MaxHeapFreeRatio=30 -Djava.awt.headless=true"
+ENV JAVA_OPTS "-XX:MaxRAMPercentage=75 -XX:MinHeapFreeRatio=20 -XX:MaxHeapFreeRatio=30 -Djava.awt.headless=true"
 
 EXPOSE 8080
 

@@ -53,7 +53,7 @@ abstract class BaseTest implements IntegrationTestDefaults<BaseTest>
 	
 	protected static final String DNS_NAME_DB = "db";
 	protected static final String DNS_NAME_OIDC = "oidc";
-	protected static final String DNS_NAME_TIMELINE = "webapp";
+	protected static final String DNS_NAME_WEBAPP = "webapp";
 	
 	protected static final DBTCIFactory DB_INFRA_FACTORY = new DBTCIFactory();
 	protected static final OIDCTCIFactory OIDC_INFRA_FACTORY = new OIDCTCIFactory();
@@ -111,7 +111,7 @@ abstract class BaseTest implements IntegrationTestDefaults<BaseTest>
 				CompletableFuture.supplyAsync(() -> OIDC_INFRA_FACTORY.getNew(this.network, DNS_NAME_OIDC));
 			
 			final CompletableFuture<WebAppTCI> cfApp =
-				CompletableFuture.supplyAsync(() -> APP_INFRA_FACTORY.getNew(this.network, DNS_NAME_TIMELINE));
+				CompletableFuture.supplyAsync(() -> APP_INFRA_FACTORY.getNew(this.network, DNS_NAME_WEBAPP));
 			
 			this.dbInfra = DB_INFRA_FACTORY.getNew(this.network, DNS_NAME_DB);
 			Optional.ofNullable(onDataBaseMigrated).ifPresent(c -> c.accept(this.dbInfra));

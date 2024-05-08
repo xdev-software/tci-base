@@ -32,6 +32,8 @@ import org.slf4j.LoggerFactory;
 
 import software.xdev.tci.factory.TCIFactory;
 import software.xdev.tci.factory.registry.TCIFactoryRegistry;
+import software.xdev.tci.serviceloading.TCIServiceLoader;
+import software.xdev.tci.tracing.config.TracingConfig;
 
 
 /**
@@ -42,24 +44,40 @@ import software.xdev.tci.factory.registry.TCIFactoryRegistry;
  *     <li>pre-starting</li>
  *     <li>...</li>
  * </ul>
+ * <p>
+ * Active by default due to service loading.
+ * </p>
  */
 public class TCITracingAgent implements TestExecutionListener
 {
 	private static final Logger LOG = LoggerFactory.getLogger(TCITracingAgent.class);
-	private long startTime;
 	
-	private final TCITracer.Timed testsTimed = new TCITracer.Timed();
-	private final Map<TestIdentifier, Long> testStartTime = Collections.synchronizedMap(new HashMap<>());
+	protected TracingConfig config;
+	protected long startTime;
+	
+	protected final TCITracer.Timed testsTimed = new TCITracer.Timed();
+	protected final Map<TestIdentifier, Long> testStartTime = Collections.synchronizedMap(new HashMap<>());
 	
 	@Override
 	public void testPlanExecutionStarted(final TestPlan testPlan)
 	{
+		this.config = TCIServiceLoader.instance().service(TracingConfig.class);
+		if(!this.config.enabled())
+		{
+			return;
+		}
+		
 		this.startTime = System.currentTimeMillis();
 	}
 	
 	@Override
 	public void executionStarted(final TestIdentifier testIdentifier)
 	{
+		if(!this.config.enabled())
+		{
+			return;
+		}
+		
 		if(testIdentifier.getType() != TestDescriptor.Type.CONTAINER)
 		{
 			this.testStartTime.put(testIdentifier, System.currentTimeMillis());
@@ -69,6 +87,11 @@ public class TCITracingAgent implements TestExecutionListener
 	@Override
 	public void executionFinished(final TestIdentifier testIdentifier, final TestExecutionResult testExecutionResult)
 	{
+		if(!this.config.enabled())
+		{
+			return;
+		}
+		
 		if(testIdentifier.getType() != TestDescriptor.Type.CONTAINER)
 		{
 			Optional.ofNullable(this.testStartTime.remove(testIdentifier))
@@ -79,6 +102,11 @@ public class TCITracingAgent implements TestExecutionListener
 	@Override
 	public void testPlanExecutionFinished(final TestPlan testPlan)
 	{
+		if(!this.config.enabled())
+		{
+			return;
+		}
+		
 		final long allTestsExecutionMs = System.currentTimeMillis() - this.startTime;
 		final String message = "=== Test Tracing Info ===\n"
 			+ "Duration: " + TCITracer.Timed.prettyPrintMS(allTestsExecutionMs) + "\n"

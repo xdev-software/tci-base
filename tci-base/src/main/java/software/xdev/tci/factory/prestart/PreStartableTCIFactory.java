@@ -51,18 +51,18 @@ import software.xdev.tci.portfixation.PortFixation;
  * When running tests usually there are certain times when the available resources are barely utilized.
  * <p>
  * PreStarting uses a "cached" pool of infrastructure and tries to utilizes these idle times to fill/replenish this
- * pool. So that when new infrastructure is requested there is no need to wait for the creation of it and use the
+ * pool.<br/> So that when new infrastructure is requested there is no need to wait for the creation of it and use the
  * already started infrastructure from this pool - if it's available.
  * </p>
  * <h3>Requirements</h3>
  * Infrastructure needs to be <u>dependency- and stateless</u>:
- * <p>This means that e.g. a container can be started without relying on another container. If another
+ * <p>This means that e.g. a container can be started without relying on another container.<br/> If another
  * infrastructure/container is needed when doing e.g. a certain request during testing it's
- * advised to use DNS names inside the initial configuration. The infrastructure may also be configured in a way that
- * test specific data can be created before the test (e.g. using a client).
+ * advised to use DNS names inside the initial configuration.<br/>The infrastructure may also be configured in a way
+ * that test specific data can be created before the test e.g. using a client and not during PreStarting.
  * </p>
  * <p>
- * <b>Important: PreStarting is disabled by default!</b> So that when executing test manually one can sole focus on
+ * <b>Important: PreStarting is disabled by default!</b> So when executing test manually, one can solely focus on
  * the test.<br/> For more information have a look at {@link PreStartConfig} and it's implementation(s).
  * </p>
  * <h3>In which situation has this the greatest advantage?</h3>
@@ -73,7 +73,7 @@ import software.xdev.tci.portfixation.PortFixation;
  *     <li>Sometimes parallel test execution is not possible</li>
  *     <li>When starts of containers/infrastructure and/or test execution takes a long time and uses not that many
  *     resources.
- *     <br/>Note however that this is highly situational and depends on used hardware and the use infrastructure</li>
+ *     <br/>Note however that this is highly situational and depends on used hardware and infrastructure</li>
  *     <li>
  *         The general design principle of <u>dependency- and statelessness</u> allows multiple containers to be
  *         started in parallel during test initialization even WITHOUT enabled PreStarting.<br/>Example:
@@ -100,7 +100,7 @@ import software.xdev.tci.portfixation.PortFixation;
  *         </pre>
  *     </li>
  * </ul>
- * Therefore, it's highly recommended to try multiple options. E.g. enabling/disabling PreStarting and using a
+ * Therefore, it's highly recommended to try multiple options.<br/> E.g. enabling/disabling PreStarting and using a
  * different amount of JUnit parallelization.
  * <h3>Caveats of PreStarting</h3>
  * Currently, PreStarting has the following trade-offs:

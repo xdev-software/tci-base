@@ -42,6 +42,9 @@ import software.xdev.tci.factory.registry.TCIFactoryRegistry;
  *     <li>pre-starting</li>
  *     <li>...</li>
  * </ul>
+ * <p>
+ * Active by default due to service loading.
+ * </p>
  */
 public class TCITracingAgent implements TestExecutionListener
 {

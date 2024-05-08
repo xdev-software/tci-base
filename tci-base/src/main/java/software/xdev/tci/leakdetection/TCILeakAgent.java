@@ -38,6 +38,9 @@ import software.xdev.tci.factory.registry.TCIFactoryRegistry;
  * <p>
  * If infrastructure is disposed asynchronously, {@link LeakDetectionAsyncReaper} may need to be used.
  * </p>
+ * <p>
+ * Active by default due to service loading.
+ * </p>
  */
 public class TCILeakAgent implements TestExecutionListener
 {

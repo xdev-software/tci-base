@@ -3,6 +3,14 @@
   "rebaseWhen": "behind-base-branch",
   "packageRules": [
     {
+      "description": "Ignore project internal dependencies",
+      "packagePattern": "^software.xdev.tci.demo",
+      "datasources": [
+        "maven"
+      ],
+      "enabled": false
+    },
+    {
       "description": "Ignore dependencies for JDK8",
       "packagePattern": "^org.bsc.maven:maven-processor-plugin",
       "datasources": [

@@ -32,6 +32,7 @@ jobs:
         parallel: [0, 2]
         pre-start: [false, true]
     runs-on: ubuntu-latest
+    if: ${{ !(github.event_name == 'pull_request' && startsWith(github.head_ref, 'renovate/')) }}
     steps:
     - uses: actions/checkout@v4
 

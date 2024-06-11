@@ -27,7 +27,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [17, 21]
+        java: [21]
         project: [persistence-it, webapp-it]
         parallel: [0, 2]
         pre-start: [false, true]

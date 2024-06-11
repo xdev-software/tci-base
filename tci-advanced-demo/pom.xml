@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>software.xdev.tci.demo</groupId>
+	<artifactId>tci-advanced-demo</artifactId>
+	<version>1.0.2-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<organization>
+		<name>XDEV Software</name>
+		<url>https://xdev.software</url>
+	</organization>
+
+	<properties>
+		<javaVersion>17</javaVersion>
+		<maven.compiler.release>${javaVersion}</maven.compiler.release>
+
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<org.springframework.boot.version>3.3.0</org.springframework.boot.version>
+	</properties>
+
+	<modules>
+		<module>entities</module>
+		<module>entities-metamodel</module>
+		<module>persistence</module>
+		<module>persistence-it</module>
+		<module>tci-db</module>
+		<module>tci-oidc</module>
+		<module>tci-selenium</module>
+		<module>tci-testcontainers</module>
+		<module>tci-webapp</module>
+		<module>webapp</module>
+		<module>webapp-it</module>
+	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- Internal -->
+			<dependency>
+				<groupId>software.xdev.tci.demo</groupId>
+				<artifactId>entities</artifactId>
+				<version>1.0.2-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>software.xdev.tci.demo</groupId>
+				<artifactId>entities-metamodel</artifactId>
+				<version>1.0.2-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>software.xdev.tci.demo</groupId>
+				<artifactId>persistence</artifactId>
+				<version>1.0.2-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>software.xdev.tci.demo</groupId>
+				<artifactId>tci-db</artifactId>
+				<version>1.0.2-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>software.xdev.tci.demo</groupId>
+				<artifactId>tci-oidc</artifactId>
+				<version>1.0.2-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>software.xdev.tci.demo</groupId>
+				<artifactId>tci-selenium</artifactId>
+				<version>1.0.2-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>software.xdev.tci.demo</groupId>
+				<artifactId>tci-webapp</artifactId>
+				<version>1.0.2-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>software.xdev.tci.demo</groupId>
+				<artifactId>tci-testcontainers</artifactId>
+				<version>1.0.2-SNAPSHOT</version>
+			</dependency>
+
+			<dependency>
+				<groupId>software.xdev</groupId>
+				<artifactId>tci-base</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<!-- Selenium -->
+			<dependency>
+				<groupId>org.seleniumhq.selenium</groupId>
+				<artifactId>selenium-dependencies-bom</artifactId>
+				<version>4.21.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>software.xdev</groupId>
+				<artifactId>spring-security-advanced-authentication-ui</artifactId>
+				<version>1.0.2</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springdoc</groupId>
+				<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+				<version>2.5.0</version>
+			</dependency>
+
+			<!-- Tests -->
+			<!-- Unit-Tests -->
+			<dependency>
+				<groupId>org.junit</groupId>
+				<artifactId>junit-bom</artifactId>
+				<version>5.10.2</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!-- Test Containers -->
+			<dependency>
+				<groupId>software.xdev</groupId>
+				<artifactId>testcontainers-selenium</artifactId>
+				<version>1.0.1</version>
+			</dependency>
+			<dependency>
+				<groupId>software.xdev</groupId>
+				<artifactId>testcontainers-junit4-mock</artifactId>
+				<version>1.0.1</version>
+			</dependency>
+			<dependency>
+				<groupId>software.xdev</groupId>
+				<artifactId>testcontainers-advanced-imagebuilder</artifactId>
+				<version>1.0.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.testcontainers</groupId>
+				<artifactId>testcontainers-bom</artifactId>
+				<version>1.19.8</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!-- DB -->
+			<dependency>
+				<groupId>org.mariadb.jdbc</groupId>
+				<artifactId>mariadb-java-client</artifactId>
+				<version>3.4.0</version>
+				<!-- https://mariadb.com/kb/en/about-mariadb-connector-j/#size-consideration -->
+				<exclusions>
+					<exclusion>
+						<groupId>com.github.waffle</groupId>
+						<artifactId>waffle-jna</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<!-- Utility for proxies in tests -->
+			<dependency>
+				<groupId>org.javassist</groupId>
+				<artifactId>javassist</artifactId>
+				<version>3.30.2-GA</version>
+			</dependency>
+
+			<!-- Spring Boot -->
+			<!-- This bom provides versions for ~500 dependencies -->
+			<!-- Nearly at the end so that it doesn't accidentally overwrite other versions -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${org.springframework.boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<!-- Unit tests are in nearly all projects -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>3.2.5</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.13.0</version>
+					<configuration>
+						<release>${maven.compiler.release}</release>
+						<compilerArgs>
+							<arg>-proc:none</arg>
+						</compilerArgs>
+					</configuration>
+				</plugin>
+
+				<!-- Required for generating JPA classes -->
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>3.6.0</version>
+				</plugin>
+
+				<!-- Required for generating JPA classes -->
+				<plugin>
+					<groupId>org.bsc.maven</groupId>
+					<artifactId>maven-processor-plugin</artifactId>
+					<version>5.1</version>
+				</plugin>
+
+				<!-- Spring -->
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<version>${org.springframework.boot.version}</version>
+				</plugin>
+
+				<!-- Generate Git commit file -->
+				<plugin>
+					<groupId>io.github.git-commit-id</groupId>
+					<artifactId>git-commit-id-maven-plugin</artifactId>
+					<version>8.0.2</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>checkstyle</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-checkstyle-plugin</artifactId>
+						<version>3.3.1</version>
+						<dependencies>
+							<dependency>
+								<groupId>com.puppycrawl.tools</groupId>
+								<artifactId>checkstyle</artifactId>
+								<version>10.17.0</version>
+							</dependency>
+						</dependencies>
+						<configuration>
+							<configLocation>../.config/checkstyle/checkstyle.xml</configLocation>
+							<includeTestSourceDirectory>true</includeTestSourceDirectory>
+						</configuration>
+						<executions>
+							<execution>
+								<goals>
+									<goal>check</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>

@@ -1,4 +1,38 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "rebaseWhen": "behind-base-branch"
+  "rebaseWhen": "behind-base-branch",
+  "packageRules": [
+    {
+      "description": "Ignore project internal dependencies",
+      "packagePattern": "^software.xdev.tci.demo",
+      "datasources": [
+        "maven"
+      ],
+      "enabled": false
+    },
+    {
+      "description": "Ignore dependencies for JDK8",
+      "packagePattern": "^org.bsc.maven:maven-processor-plugin",
+      "datasources": [
+        "maven"
+      ],
+      "allowedVersions": "!/jdk8$/"
+    },
+    {
+      "description": "Java LTS 21",
+      "packagePattern": "^eclipse-temurin",
+      "datasources": [
+        "docker"
+      ],
+      "allowedVersions": "/^21\\-alpine$/"
+    },
+    {
+      "description": "MariaDB 11 has no LTS and is experimental",
+      "packagePattern": "^mariadb",
+      "datasources": [
+        "docker"
+      ],
+      "allowedVersions": "<11"
+    }
+  ]
 }

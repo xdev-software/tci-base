@@ -151,6 +151,7 @@ public class DBTCI extends TCI<DBContainer>
 		}
 	}
 	
+	@SuppressWarnings("java:S6437") // This is a test calm down
 	public MariaDbDataSource createDataSource()
 	{
 		final MariaDbDataSource dataSource = new MariaDbDataSource();

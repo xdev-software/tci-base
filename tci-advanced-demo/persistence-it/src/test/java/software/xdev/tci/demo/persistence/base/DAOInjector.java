@@ -74,6 +74,7 @@ public class DAOInjector
 			});
 	}
 	
+	@SuppressWarnings("PMD.PreserveStackTrace")
 	private Object createProxiedDAO(final Class<?> fieldType, final EntityManager em, final Object original)
 	{
 		// java.lang.reflect.Proxy only proxies interfaces and doesn't work here!
@@ -124,6 +125,7 @@ public class DAOInjector
 		}
 	}
 	
+	@SuppressWarnings("PMD.PreserveStackTrace")
 	private Object createDAO(final Class<?> fieldType, final EntityManager em)
 	{
 		try

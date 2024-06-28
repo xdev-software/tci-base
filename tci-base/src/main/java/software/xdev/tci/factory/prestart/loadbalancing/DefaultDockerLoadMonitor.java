@@ -104,7 +104,7 @@ public class DefaultDockerLoadMonitor implements AutoCloseable, LoadMonitor
 				.map(parts -> {
 					final String startCPU = "cpu=\"";
 					final String cpu = parts[0].substring(parts[0].indexOf(startCPU) + startCPU.length());
-					final int cpuIndex = Integer.parseInt(cpu.substring(0, cpu.indexOf("\"")));
+					final int cpuIndex = Integer.parseInt(cpu.substring(0, cpu.indexOf('\"')));
 					final double idleSec = Double.parseDouble(parts[1]);
 					
 					return Map.entry(cpuIndex, idleSec);

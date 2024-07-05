@@ -48,7 +48,8 @@ import com.github.dockerjava.api.command.CreateNetworkCmd;
  *     <ul>
  *         <li>Allows creation of the network in the background</li>
  *         <li>Doesn't create the network inside {@link NetworkImpl#getId()}</li>
- *         <li>Doesn't check for duplicate network names when using a random {@link UUID} as name (see below)</li>
+ *         <li>Doesn't check for duplicate network names when using a random {@link UUID} as name (see
+ *         {@link #checkDuplicate below})</li>
  *         <li>Tries to delete the network when it's closed</li>
  *     </ul>
  * </p>
@@ -65,11 +66,12 @@ public class LazyNetwork implements Network
 	protected String driver;
 	protected Set<Consumer<CreateNetworkCmd>> createNetworkCmdModifiers = new HashSet<>();
 	/**
-	 * Behavior if <code>null</code>:
+	 * Behavior if <code>null</code>:<br/>
 	 * <code>false</code> when no name is specified (random UUID), otherwise <code>true</code> because
 	 * <ul>
-	 *     <li>When using a random UUIDv4 as name the chances of collision are extremely small (1 : 2.17 x 10^18)<br/>
-	 *     <a href="https://en.wikipedia.org/wiki/Universally_unique_identifier#Collisions">Wikipedia</a>
+	 *     <li>When using a random UUIDv4 as name the chances of collision are extremely small (
+	 *     <a href="https://en.wikipedia.org/wiki/Universally_unique_identifier#Collisions">1 : 2.17 x 10^18</a>
+	 *     - you're 155 billion times more likely to win the lottery)
 	 *     </li>
 	 *     <li>According to the <a href="https://docs.docker.com/engine/api/v1.24/#create-a-network">Docker docs</a>
 	 *     this is "best effort" and not guaranteed to catch all name collisions.

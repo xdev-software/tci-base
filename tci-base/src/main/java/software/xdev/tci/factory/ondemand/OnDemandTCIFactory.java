@@ -35,7 +35,8 @@ import software.xdev.tci.factory.BaseTCIFactory;
  * Creates new infrastructure on demand and allows customizing the container.
  * </p>
  * <p>
- * It's recommended to use this for certain infrastructure that is only required for a few tests.
+ * It's recommended to use this for certain infrastructure that is only required for a few tests
+ * and that uses stateful container starts.
  * </p>
  */
 public class OnDemandTCIFactory<C extends GenericContainer<C>, I extends TCI<C>>

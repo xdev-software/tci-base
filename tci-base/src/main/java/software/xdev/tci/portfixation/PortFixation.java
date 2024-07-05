@@ -39,7 +39,7 @@ public final class PortFixation
 	{
 	}
 	
-	private static TriConsumer<GenericContainer<?>, Integer, Integer> addFixedExposedPortFunc;
+	static TriConsumer<GenericContainer<?>, Integer, Integer> addFixedExposedPortFunc;
 	
 	public static void makeExposedPortsFix(final GenericContainer<?> container)
 	{

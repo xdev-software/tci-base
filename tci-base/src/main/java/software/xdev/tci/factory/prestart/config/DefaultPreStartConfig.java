@@ -26,7 +26,7 @@ import java.util.function.IntSupplier;
  * Properties can be defined in the following way:
  * <pre>
  * -Dinfra-pre-start.keep-ready=2
- * -Dcoordinator.idle-cpu-percent=50
+ * -Dinfra-pre-start.coordinator.idle-cpu-percent=50
  * </pre>
  * </p>
  */

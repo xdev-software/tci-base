@@ -67,7 +67,7 @@ public class LazyNetwork implements Network
 	protected Set<Consumer<CreateNetworkCmd>> createNetworkCmdModifiers = new HashSet<>();
 	/**
 	 * Behavior if <code>null</code>:<br/>
-	 * <code>false</code> when no name is specified (random UUID), otherwise <code>true</code> because
+	 * <code>true</code> when a {@link #name} was specified, otherwise <code>false</code> because
 	 * <ul>
 	 *     <li>When using a random UUIDv4 as name the chances of collision are extremely small (
 	 *     <a href="https://en.wikipedia.org/wiki/Universally_unique_identifier#Collisions">1 : 2.17 x 10^18</a>

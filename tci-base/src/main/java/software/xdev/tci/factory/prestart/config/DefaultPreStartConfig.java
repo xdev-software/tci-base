@@ -21,7 +21,14 @@ import java.util.function.IntSupplier;
 
 
 /**
- * Default implementation of {@link PreStartConfig} using system properties.
+ * Default implementation of {@link PreStartConfig} using {@link System#getProperties() System Properties}.
+ * <p>
+ * Properties can be defined in the following way:
+ * <pre>
+ * -Dinfra-pre-start.keep-ready=2
+ * -Dcoordinator.idle-cpu-percent=50
+ * </pre>
+ * </p>
  */
 public class DefaultPreStartConfig implements PreStartConfig
 {

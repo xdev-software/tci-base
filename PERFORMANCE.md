@@ -32,3 +32,10 @@ _As of: 2024-05-03_
 ## Live 
 
 A live comparison using [GitHub actions is also available](https://github.com/xdev-software/tci-base/actions/workflows/run-integration-tests.yml).
+
+> [!NOTE]
+> Format explanation of ``run-integration-tests (21, webapp-it, 2, true)``
+> * ``21`` → Java version
+> * ``webapp-it`` → Tested module
+> * ``2`` → parallelization (0 mean no parallelization)
+> * ``true`` → determines if PreStarting is enabled or not (``true`` = enabled) 

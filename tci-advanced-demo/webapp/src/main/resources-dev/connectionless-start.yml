@@ -9,8 +9,8 @@ spring:
       database-platform: software.xdev.tci.demo.persistence.config.dialect.DefaultDialect
       properties:
         hibernate:
-          temp:
-            use_jdbc_metadata_defaults: false
+          boot:
+            allow_jdbc_metadata_access: false
   security:
     oauth2:
       client:

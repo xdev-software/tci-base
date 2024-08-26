@@ -116,7 +116,7 @@
 			<groupId>org.junit.platform</groupId>
 			<artifactId>junit-platform-launcher</artifactId>
 			<scope>compile</scope>
-			<version>1.10.3</version>
+			<version>1.11.0</version>
 		</dependency>
 
 		<!-- Tests -->

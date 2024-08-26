@@ -17,7 +17,6 @@ package software.xdev.tci.factory.registry;
 
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -47,10 +46,12 @@ public class DefaultTCIFactoryRegistry implements TCIFactoryRegistry
 	@Override
 	public void warmUp()
 	{
-		final List<CompletableFuture<Void>> cfs = this.factories.stream()
+		// Defensive copy to prevent unlikely modification error "Accept exceeded fixed size of ..."
+		new HashSet<>(this.factories)
+			.stream()
 			.map(f -> CompletableFuture.runAsync(f::warmUp))
-			.toList();
-		cfs.forEach(CompletableFuture::join);
+			.toList()
+			.forEach(CompletableFuture::join);
 	}
 	
 	@Override

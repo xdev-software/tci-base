@@ -30,7 +30,7 @@ public class AuthUserService extends OidcUserService
 	}
 	
 	@Override
-	public OidcUser loadUser(final OidcUserRequest req) throws OAuth2AuthenticationException
+	public OidcUser loadUser(final OidcUserRequest req)
 	{
 		final OidcUser oidcUser = super.loadUser(req);
 		

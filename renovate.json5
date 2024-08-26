@@ -4,6 +4,24 @@
   "packageRules": [
     {
       "description": "Ignore project internal dependencies",
+      "packagePattern": "^software.xdev:tci-base",
+      "datasources": [
+        "maven"
+      ],
+      "enabled": false
+    },
+    {
+      "description": "Group net.sourceforge.pmd",
+      "matchPackagePatterns": [
+        "^net.sourceforge.pmd"
+      ],
+      "datasources": [
+        "maven"
+      ],
+      "groupName": "net.sourceforge.pmd"
+    },
+    {
+      "description": "Ignore project internal demo",
       "packagePattern": "^software.xdev.tci.demo",
       "datasources": [
         "maven"
@@ -27,12 +45,14 @@
       "allowedVersions": "/^21\\-alpine$/"
     },
     {
-      "description": "MariaDB 11 has no LTS and is experimental",
-      "packagePattern": "^mariadb",
-      "datasources": [
-        "docker"
+      "description": "Group org.testcontainers",
+      "matchPackagePatterns": [
+        "^org.testcontainers"
       ],
-      "allowedVersions": "<11"
+      "datasources": [
+        "maven"
+      ],
+      "groupName": "org.testcontainers"
     }
   ]
 }

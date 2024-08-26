@@ -94,7 +94,7 @@ public class DefaultDockerLoadMonitor implements AutoCloseable, LoadMonitor
 			
 			final long scrapeTime = System.currentTimeMillis();
 			
-			// Metrics lock like this:
+			// Metrics look like this:
 			// node_cpu_seconds_total{cpu="10",mode="idle"} 2012.73
 			final Map<Integer, Double> cpuIdleSec = Stream.of(response.body().split("\n"))
 				.filter(s -> s.startsWith("node_cpu_seconds_total"))
@@ -104,7 +104,7 @@ public class DefaultDockerLoadMonitor implements AutoCloseable, LoadMonitor
 				.map(parts -> {
 					final String startCPU = "cpu=\"";
 					final String cpu = parts[0].substring(parts[0].indexOf(startCPU) + startCPU.length());
-					final int cpuIndex = Integer.parseInt(cpu.substring(0, cpu.indexOf("\"")));
+					final int cpuIndex = Integer.parseInt(cpu.substring(0, cpu.indexOf('\"')));
 					final double idleSec = Double.parseDouble(parts[1]);
 					
 					return Map.entry(cpuIndex, idleSec);

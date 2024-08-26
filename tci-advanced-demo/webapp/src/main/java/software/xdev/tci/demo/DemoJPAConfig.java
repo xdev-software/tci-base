@@ -22,7 +22,7 @@ public class DemoJPAConfig extends DefaultJPAConfig implements HibernateProperti
 {
 	protected Set<String> propertiesToPatch()
 	{
-		return Set.of("hibernate.temp.use_jdbc_metadata_defaults");
+		return Set.of("hibernate.boot.allow_jdbc_metadata_access");
 	}
 	
 	// See also: https://stackoverflow.com/a/66220157

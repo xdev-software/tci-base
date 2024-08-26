@@ -7,6 +7,8 @@ import jakarta.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Product.class)
 public abstract class Product_ extends software.xdev.tci.demo.entities.IdentifiableEntity_ {
 
+	public static final String NAME = "name";
+
 	
 	/**
 	 * @see software.xdev.tci.demo.entities.Product#name
@@ -17,8 +19,6 @@ public abstract class Product_ extends software.xdev.tci.demo.entities.Identifia
 	 * @see software.xdev.tci.demo.entities.Product
 	 **/
 	public static volatile EntityType<Product> class_;
-
-	public static final String NAME = "name";
 
 }
 

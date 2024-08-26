@@ -7,6 +7,8 @@ import jakarta.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(IdentifiableEntity.class)
 public abstract class IdentifiableEntity_ {
 
+	public static final String ID = "id";
+
 	
 	/**
 	 * @see software.xdev.tci.demo.entities.IdentifiableEntity#id
@@ -17,8 +19,6 @@ public abstract class IdentifiableEntity_ {
 	 * @see software.xdev.tci.demo.entities.IdentifiableEntity
 	 **/
 	public static volatile MappedSuperclassType<IdentifiableEntity> class_;
-
-	public static final String ID = "id";
 
 }
 

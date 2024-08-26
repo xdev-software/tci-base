@@ -87,7 +87,7 @@ public class WebAppContainer extends GenericContainer<WebAppContainer>
 			.withEnv(
 				springJpa + "DATABASE-PLATFORM",
 				"software.xdev.tci.demo.persistence.config.dialect.DefaultDialect")
-			.withEnv(springJpa + "PROPERTIES_HIBERNATE_TEMP_USE_JDBC_METADATA_DEFAULTS", false);
+			.withEnv(springJpa + "PROPERTIES_HIBERNATE_BOOT_ALLOW_JDBC_METADATA_ACCESS", false);
 	}
 	
 	public WebAppContainer withDisableFlyway()

@@ -6,7 +6,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -21,6 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.Network;
 
+import software.xdev.tci.TCI;
 import software.xdev.tci.demo.tci.db.DBTCI;
 import software.xdev.tci.demo.tci.db.factory.DBTCIFactory;
 import software.xdev.tci.demo.tci.oidc.OIDCTCI;
@@ -103,15 +106,17 @@ abstract class BaseTest implements IntegrationTestDefaults<BaseTest>
 	{
 		final long start = System.currentTimeMillis();
 		
+		CompletableFuture<OIDCTCI> cfOIDC = null;
+		CompletableFuture<WebAppTCI> cfApp = null;
 		try
 		{
 			this.network = LAZY_NETWORK_POOL.getNew();
 			
-			final CompletableFuture<OIDCTCI> cfOIDC =
-				CompletableFuture.supplyAsync(() -> OIDC_INFRA_FACTORY.getNew(this.network, DNS_NAME_OIDC));
+			cfOIDC = CompletableFuture.supplyAsync(
+				() -> OIDC_INFRA_FACTORY.getNew(this.network, DNS_NAME_OIDC));
 			
-			final CompletableFuture<WebAppTCI> cfApp =
-				CompletableFuture.supplyAsync(() -> APP_INFRA_FACTORY.getNew(this.network, DNS_NAME_WEBAPP));
+			cfApp = CompletableFuture.supplyAsync(
+				() -> APP_INFRA_FACTORY.getNew(this.network, DNS_NAME_WEBAPP));
 			
 			this.dbInfra = DB_INFRA_FACTORY.getNew(this.network, DNS_NAME_DB);
 			Optional.ofNullable(onDataBaseMigrated).ifPresent(c -> c.accept(this.dbInfra));
@@ -128,9 +133,39 @@ abstract class BaseTest implements IntegrationTestDefaults<BaseTest>
 		}
 		catch(final Exception ex)
 		{
+			// Ensure that we do not leak when e.g. DB migration fails
+			this.ensureDestroyAsyncStartingInfra(() -> this.oidcInfra, i -> this.oidcInfra = i, cfOIDC);
+			this.ensureDestroyAsyncStartingInfra(() -> this.appInfra, i -> this.appInfra = i, cfApp);
+			
 			throw new RuntimeException("Failed to setup base infrastructure", ex);
 		}
 		TRACE_START_BASE_INFRA.addMs(System.currentTimeMillis() - start);
+	}
+	
+	protected <T extends TCI<?>> void ensureDestroyAsyncStartingInfra(
+		final Supplier<T> getCurrentInfra,
+		final Consumer<T> setCurrentInfra,
+		final CompletableFuture<T> cfStartingInfra)
+	{
+		if(getCurrentInfra.get() != null // Infra was already started and set
+			|| cfStartingInfra == null) // Infra was never started
+		{
+			return;
+		}
+		try
+		{
+			// Try to get starting infra and set it, so it can be properly destroyed
+			setCurrentInfra.accept(cfStartingInfra.get(3, TimeUnit.MINUTES));
+		}
+		catch(final InterruptedException iex)
+		{
+			LOG.warn("Got interrupted", iex);
+			Thread.currentThread().interrupt();
+		}
+		catch(final Exception ex)
+		{
+			LOG.warn("Failed to get starting infra in time", ex);
+		}
 	}
 	
 	public void startWebDriver(final TestBrowser testBrowser)

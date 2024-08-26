@@ -43,6 +43,16 @@
         "docker"
       ],
       "allowedVersions": "/^21\\-alpine$/"
+    },
+    {
+      "description": "Group org.testcontainers",
+      "matchPackagePatterns": [
+        "^org.testcontainers"
+      ],
+      "datasources": [
+        "maven"
+      ],
+      "groupName": "org.testcontainers"
     }
   ]
 }

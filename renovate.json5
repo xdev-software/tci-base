@@ -43,14 +43,6 @@
         "docker"
       ],
       "allowedVersions": "/^21\\-alpine$/"
-    },
-    {
-      "description": "MariaDB 11 has no LTS and is experimental",
-      "packagePattern": "^mariadb",
-      "datasources": [
-        "docker"
-      ],
-      "allowedVersions": "<11"
     }
   ]
 }

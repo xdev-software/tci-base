@@ -8,12 +8,9 @@ public class DBContainer extends MariaDBContainer<DBContainer>
 {
 	public static final int PORT = 3306;
 	
-	public static final int MAJOR_VERSION = 10;
-	public static final int MINOR_VERSION = 11;
-	
 	public DBContainer()
 	{
-		super(DockerImageName.parse("mariadb:" + MAJOR_VERSION + "." + MINOR_VERSION));
+		super(DockerImageName.parse("mariadb:11"));
 		
 		// (31.03.2022 AB)NOTE: https://github.com/testcontainers/testcontainers-java/issues/914
 		// Do not mount the volume!

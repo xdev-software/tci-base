@@ -95,7 +95,7 @@
 			<groupId>org.testcontainers</groupId>
 			<artifactId>testcontainers</artifactId>
 			<scope>compile</scope>
-			<version>1.20.0</version>
+			<version>1.20.1</version>
 			<exclusions>
 				<!-- The few classes that testcontainers needs have been extracted -->
 				<exclusion>

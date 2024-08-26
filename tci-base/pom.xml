@@ -139,7 +139,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-project-info-reports-plugin</artifactId>
-					<version>3.6.2</version>
+					<version>3.7.0</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -262,7 +262,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
-						<version>3.2.4</version>
+						<version>3.2.5</version>
 						<executions>
 							<execution>
 								<id>sign-artifacts</id>
@@ -305,12 +305,12 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-checkstyle-plugin</artifactId>
-						<version>3.4.0</version>
+						<version>3.5.0</version>
 						<dependencies>
 							<dependency>
 								<groupId>com.puppycrawl.tools</groupId>
 								<artifactId>checkstyle</artifactId>
-								<version>10.17.0</version>
+								<version>10.18.0</version>
 							</dependency>
 						</dependencies>
 						<configuration>
@@ -364,7 +364,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-jxr-plugin</artifactId>
-						<version>3.4.0</version>
+						<version>3.5.0</version>
 					</plugin>
 				</plugins>
 			</reporting>

@@ -5,7 +5,7 @@ The infrastructure contains the following:
 * [MariaDB container](https://hub.docker.com/_/mariadb) that automatically gets the last test-system database dump from Jenkins
   * Exposed port: 3306
   * Driver for JDBC can be found at https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client
-* [Open ID Connect Mock Server](https://github.com/Soluto/oidc-server-mock) - for login in
+* [Open ID Connect Mock Server](https://github.com/xdev-software/oidc-server-mock) - for login in
   * Available at http://localhost:4011
 
 ### Setup

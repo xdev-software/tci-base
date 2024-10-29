@@ -33,8 +33,6 @@ public final class WebAppContainerBuilder
 		
 		final AdvancedImageFromDockerFile builder =
 			new AdvancedImageFromDockerFile("webapp-it-local", false)
-				// Use Class Data Sharing to boot app a bit faster (however requires a bit more time during build)
-				.withBuildArg("ENABLE_CDS", "1")
 				.withLoggerForBuild(LOG_CONTAINER_BUILD)
 				.withAdditionalIgnoreLines(
 					// Ignore git-folder, as it will be provided in the Dockerfile

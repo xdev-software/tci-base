@@ -1,14 +1,27 @@
 # Note: This Dockerfile is used by the selenium tests for compiling the WebApp when there was no Image supplied
-# See also https://docs.spring.io/spring-boot/reference/packaging/container-images/dockerfiles.html for further information
 
-FROM maven:3-eclipse-temurin-21-alpine AS builder
+FROM maven:3-eclipse-temurin-21-alpine AS build-env
 
 RUN apk add --no-cache git
 
-WORKDIR /builder
+# Create non root user
+ARG userName=limitedbuild
+ARG groupName=limitedbuild
+ARG userId=1000
 
-# Copying is prepared by ITC
-COPY . ./
+RUN addgroup --system ${groupName} \
+	&& adduser --uid ${userId} --system --disabled-password --shell /bin/bash ${userName} \
+	&& adduser ${userName} ${groupName}
+
+# Create build dir
+RUN mkdir /build \
+    && chown ${userName}:${groupName} /build
+WORKDIR /build
+
+USER ${userName}
+
+# Copying is prepared by TCI
+COPY --chown=${userName}:${groupName} . ./
 
 # A valid Git repo is required for the build
 RUN git config --global user.email "dynamic@build.local" \
@@ -21,13 +34,8 @@ ARG mavenbuildcmd='mvn -B clean package -pl "webapp" -am -Pprod,dev-log -T2C -Dm
 
 RUN echo "Executing '$mavenbuildcmd'"
 RUN ${mavenbuildcmd}
-RUN mv webapp/target/webapp.jar app.jar \
-  && java -Djarmode=tools -jar app.jar extract --layers --destination extracted
-
 
 FROM eclipse-temurin:21-jre-alpine
-
-ARG ENABLE_CDS=
 
 ARG user=app
 ARG group=app
@@ -39,54 +47,17 @@ ARG APP_DIR=/opt/app
 RUN mkdir -p ${APP_DIR} \
   && chown ${uid}:${gid} ${APP_DIR} \
   && addgroup -g ${gid} ${group} \
-  && adduser -h "$APP_DIR" -u ${uid} -G ${group} -s /bin/bash -D ${user}
+  && adduser -h "$APP_DIR" -u ${uid} -G ${group} -s /bin/sh -D ${user}
 
-WORKDIR ${APP_DIR}
-
-USER ${user}
-
-COPY --from=builder --chown=${user}:${group} /builder/extracted/dependencies/ ./
-COPY --from=builder --chown=${user}:${group} /builder/extracted/spring-boot-loader/ ./
-COPY --from=builder --chown=${user}:${group} /builder/extracted/snapshot-dependencies/ ./
-COPY --from=builder --chown=${user}:${group} /builder/extracted/application/ ./
-
-# RUN CDS and boot with dummy configuration
-RUN if [[ ! -z "$ENABLE_CDS" ]]; then \
-  java -XX:ArchiveClassesAtExit=app.jsa \
-  -Dspring.context.exit=onRefresh \
-  # Disable Flyway
-  -Dspring.flyway.enabled=false \
-  # Disabled DB actuator endpoint
-  -Dmanagement.health.db.enabled=false \
-  # Disbale DB instant connection
-  -Dspring.jpa.database-platform=software.xdev.tci.demo.persistence.config.dialect.DefaultDialect \
-  -Dspring.jpa.properties.hibernate.boot.allow.jdbc.metadata.access=false \
-  # Fake DB
-  -Dspring.datasource.url=jdbc:mariadb://localhost:3306/dummy \
-  -Dspring.datasource.username=dummy \
-  -Dspring.datasource.password=dummy \
-  # Fake Auth
-  -Dspring.security.oauth2.client.registration.local.authorization-grant-type=authorization_code \
-  -Dspring.security.oauth2.client.registration.local.redirect-uri="{baseUrl}/{action}/oauth2/code/{registrationId}" \
-  -Dspring.security.oauth2.client.provider.local.authorization-uri=http://localhost/connect/authorize \
-  -Dspring.security.oauth2.client.provider.local.token-uri=http://localhost/connect/token \
-  -Dspring.security.oauth2.client.provider.local.jwk-set-uri=http://localhost/.well-known/openid-configuration/jwks \
-  -Dspring.security.oauth2.client.provider.local.user-info-uri=http://localhost/connect/userinfo \
-  -Dspring.security.oauth2.client.provider.local.user-info-authentication-method=header \
-  -Dspring.security.oauth2.client.provider.local.user-name-attribute=sub \
-  -Dspring.security.oauth2.client.registration.local.client-name=Local \
-  -Dspring.security.oauth2.client.registration.local.client-id=dummy \
-  -Dspring.security.oauth2.client.registration.local.client-secret=dummy \
-  -Dspring.security.oauth2.client.registration.local.scope="openid,profile,email,offline_access" \
-  # Actuator
-  -Ddemo.actuator.username=dummy \
-  -Ddemo.actuator.password-hash=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918 \
-  -jar app.jar; \
-  fi
-
-ENV JAVA_OPTS="-XX:MaxRAMPercentage=75 -XX:MinHeapFreeRatio=20 -XX:MaxHeapFreeRatio=30 -Djava.awt.headless=true"
-ENV JAVA_CDS_OPTS=${ENABLE_CDS:+"-XX:SharedArchiveFile=app.jsa"}
+# MaxRAMPercentage: Default value is 25% -> we want to use available memory optimal -> increased, but enough is left for other RAM usages like e.g. Metaspace
+# Min/MaxHeapFreeRatio: Default values cause container reserved memory not to shrink properly/waste memory -> decreased
+# https://stackoverflow.com/questions/16058250/what-is-the-purpose-of-xxminheapfreeratio-and-xxmaxheapfreeratio
+ENV JAVA_OPTS "-XX:MaxRAMPercentage=75 -XX:MinHeapFreeRatio=20 -XX:MaxHeapFreeRatio=30 -Djava.awt.headless=true"
 
 EXPOSE 8080
 
-CMD [ "/bin/sh", "-c", "java $JAVA_OPTS $JAVA_CDS_OPTS -jar /opt/app/app.jar" ]
+USER ${user}
+
+COPY --from=build-env --chown=${user}:${group} build/webapp/target/webapp.jar ${APP_DIR}/webapp.jar
+
+CMD java ${JAVA_OPTS} -jar /opt/app/webapp.jar

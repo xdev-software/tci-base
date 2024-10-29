@@ -63,6 +63,7 @@ public class DefaultGlobalPreStartCoordinator implements GlobalPreStartCoordinat
 		LOG.info("Started");
 	}
 	
+	@SuppressWarnings("PMD.AvoidSynchronizedStatement") // Required by synchronizedList
 	private void schedulePreStart()
 	{
 		try

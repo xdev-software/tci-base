@@ -46,6 +46,7 @@ public class DefaultTCIFactoryRegistry implements TCIFactoryRegistry
 		this.factories.remove(tciFactory);
 	}
 	
+	@SuppressWarnings("PMD.AvoidSynchronizedStatement") // Required by synchronizedList
 	@Override
 	public void warmUp()
 	{

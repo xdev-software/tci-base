@@ -45,7 +45,6 @@ jobs:
 
     - name: Test
       run: |
-        export DOCKER_BUILDKIT=1 # See https://github.com/moby/moby/issues/37965
         ./mvnw -B test \
         -pl "tci-advanced-demo/${{ matrix.project }}" -am \
         -P run-it \

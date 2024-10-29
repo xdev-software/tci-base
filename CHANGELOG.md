@@ -4,7 +4,6 @@
 * Correctly register factories to ``GlobalPreStartCoordinator``
 * Document ``warmUp``
 * Updated dependencies
-* Optimized Dockerfiles in demo according to [Spring Boot recommendations](https://docs.spring.io/spring-boot/reference/packaging/container-images/dockerfiles.html)
 
 # 1.0.2
 * Fix unlikely modification error "Accept exceeded fixed size of ..." during warm-up

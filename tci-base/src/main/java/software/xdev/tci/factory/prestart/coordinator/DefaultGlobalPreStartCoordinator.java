@@ -70,8 +70,11 @@ public class DefaultGlobalPreStartCoordinator implements GlobalPreStartCoordinat
 			if(LoadMonitor.instance().getCurrentIdlePercent().orElse(100)
 				> PreStartConfig.instance().coordinatorIdleCPUPercent())
 			{
-				final PreStartableTCIFactory<?, ?> factory =
-					this.factories.get(this.counter.getAndIncrement() % this.factories.size());
+				final PreStartableTCIFactory<?, ?> factory;
+				synchronized(this.factories)
+				{
+					factory = this.factories.get(this.counter.getAndIncrement() % this.factories.size());
+				}
 				LOG.debug("Scheduling pre-starts for {}", factory.getFactoryName());
 				factory.schedulePreStart();
 			}

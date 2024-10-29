@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -30,6 +31,8 @@ import software.xdev.tci.factory.TCIFactory;
 public class DefaultTCIFactoryRegistry implements TCIFactoryRegistry
 {
 	protected final Set<TCIFactory<?, ?>> factories = Collections.synchronizedSet(new HashSet<>());
+	protected final Set<TCIFactory<?, ?>> warmedUpFactories =
+		Collections.synchronizedSet(Collections.newSetFromMap(new WeakHashMap<>()));
 	
 	@Override
 	public void register(final TCIFactory<?, ?> tciFactory)
@@ -46,12 +49,21 @@ public class DefaultTCIFactoryRegistry implements TCIFactoryRegistry
 	@Override
 	public void warmUp()
 	{
-		// Defensive copy to prevent unlikely modification error "Accept exceeded fixed size of ..."
-		new HashSet<>(this.factories)
-			.stream()
-			.map(f -> CompletableFuture.runAsync(f::warmUp))
-			.toList()
-			.forEach(CompletableFuture::join);
+		synchronized(this.factories)
+		{
+			this.factories.stream()
+				// Check if the factory was already warmed up
+				.filter(f -> !this.warmedUpFactories.contains(f))
+				.map(this::warmUpFactory)
+				.toList()
+				.forEach(CompletableFuture::join);
+		}
+	}
+	
+	protected CompletableFuture<Void> warmUpFactory(final TCIFactory<?, ?> factory)
+	{
+		this.warmedUpFactories.add(factory);
+		return CompletableFuture.runAsync(factory::warmUp);
 	}
 	
 	@Override

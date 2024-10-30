@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<licensePluginReport goal="FORMAT" timestamp="1724680028199">
-    <module artifactId="tci-base" groupId="software.xdev" version="1.0.2"/>
+<licensePluginReport goal="FORMAT" timestamp="1730284351595">
+    <module artifactId="tci-base" groupId="software.xdev" version="1.0.3"/>
     <files>
         <file path="src/main/java/software/xdev/tci/TCI.java" result="NOOP"/>
         <file path="src/main/java/software/xdev/tci/factory/BaseTCIFactory.java" result="NOOP"/>

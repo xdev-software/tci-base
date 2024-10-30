@@ -18,6 +18,8 @@ package software.xdev.tci.factory.prestart.coordinator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -41,9 +43,13 @@ public class DefaultGlobalPreStartCoordinator implements GlobalPreStartCoordinat
 {
 	private static final Logger LOG = LoggerFactory.getLogger(DefaultGlobalPreStartCoordinator.class);
 	
-	private final ScheduledExecutorService preStartScheduler;
-	private final List<PreStartableTCIFactory<?, ?>> factories = Collections.synchronizedList(new ArrayList<>());
-	private final AtomicInteger counter = new AtomicInteger(0);
+	protected final ScheduledExecutorService preStartScheduler;
+	protected final List<PreStartableTCIFactory<?, ?>> factories = Collections.synchronizedList(new ArrayList<>());
+	// Sadly there is no Java Set with an index or a unique list
+	// So we have to keep the factories in order inside a List and ensure the uniqueness with a Set
+	protected final Set<PreStartableTCIFactory<?, ?>> factoriesWeakSet =
+		Collections.synchronizedSet(Collections.newSetFromMap(new WeakHashMap<>()));
+	protected final AtomicInteger counter = new AtomicInteger(0);
 	
 	public DefaultGlobalPreStartCoordinator()
 	{
@@ -63,6 +69,7 @@ public class DefaultGlobalPreStartCoordinator implements GlobalPreStartCoordinat
 		LOG.info("Started");
 	}
 	
+	@SuppressWarnings("PMD.AvoidSynchronizedStatement") // Required by synchronizedList
 	private void schedulePreStart()
 	{
 		try
@@ -70,8 +77,11 @@ public class DefaultGlobalPreStartCoordinator implements GlobalPreStartCoordinat
 			if(LoadMonitor.instance().getCurrentIdlePercent().orElse(100)
 				> PreStartConfig.instance().coordinatorIdleCPUPercent())
 			{
-				final PreStartableTCIFactory<?, ?> factory =
-					this.factories.get(this.counter.getAndIncrement() % this.factories.size());
+				final PreStartableTCIFactory<?, ?> factory;
+				synchronized(this.factories)
+				{
+					factory = this.factories.get(this.counter.getAndIncrement() % this.factories.size());
+				}
 				LOG.debug("Scheduling pre-starts for {}", factory.getFactoryName());
 				factory.schedulePreStart();
 			}
@@ -85,13 +95,17 @@ public class DefaultGlobalPreStartCoordinator implements GlobalPreStartCoordinat
 	@Override
 	public void register(final PreStartableTCIFactory<?, ?> factory)
 	{
-		this.factories.add(factory);
+		if(this.factoriesWeakSet.add(factory)) // Only add when not already present
+		{
+			this.factories.add(factory);
+		}
 	}
 	
 	@Override
 	public void unregister(final PreStartableTCIFactory<?, ?> factory)
 	{
 		this.factories.remove(factory);
+		this.factoriesWeakSet.remove(factory);
 	}
 	
 	@Override

@@ -39,6 +39,14 @@ public interface TCIFactory<C extends GenericContainer<C>, I extends TCI<C>> ext
 		TCIFactoryRegistry.instance().unRegister(this);
 	}
 	
+	/**
+	 * Does some warm up work, e.g. building images so that they don't have to be pulled later.
+	 *
+	 * @apiNote There is no guarantee that this method will be called (or how often).
+	 * <p>
+	 * It's e.g. possible that this method will not be called if a factory was created after the initial warm up phase.
+	 * </p>
+	 */
 	void warmUp();
 	
 	@Override

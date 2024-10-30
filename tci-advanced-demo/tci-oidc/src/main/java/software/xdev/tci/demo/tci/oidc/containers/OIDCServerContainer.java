@@ -13,7 +13,7 @@ public class OIDCServerContainer extends GenericContainer<OIDCServerContainer>
 	
 	public OIDCServerContainer()
 	{
-		super(DockerImageName.parse("ghcr.io/soluto/oidc-server-mock:9.0.1"));
+		super(DockerImageName.parse("xdevsoftware/oidc-server-mock:1"));
 		this.addExposedPort(PORT);
 	}
 	

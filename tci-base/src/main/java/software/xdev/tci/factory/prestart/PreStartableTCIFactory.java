@@ -199,18 +199,17 @@ public class PreStartableTCIFactory<C extends GenericContainer<C>, I extends TCI
 			: (ThreadPoolExecutor)Executors.newFixedThreadPool(maxAmountStartingSimultaneously, threadFactory);
 		
 		this.timeouts = Objects.requireNonNull(timeouts);
+		
+		this.registerToPreStartCoordinator();
 	}
 	
 	@SuppressWarnings("resource")
-	@Override
-	protected void warmUpInternal()
+	protected void registerToPreStartCoordinator()
 	{
-		if(this.isPreStartingDisabled())
+		if(!this.isPreStartingDisabled())
 		{
-			return;
+			GlobalPreStartCoordinator.instance().register(this);
 		}
-		
-		GlobalPreStartCoordinator.instance().register(this);
 	}
 	
 	public void schedulePreStart()

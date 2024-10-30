@@ -67,12 +67,17 @@
 						<configuration>
 							<sourceDirectory>${metamodel.sourceDir}</sourceDirectory>
 							<outputDirectory>${project.generated.sources}</outputDirectory>
+							<!-- Fix javac implicit warning by setting default value -->
+							<!-- https://docs.oracle.com/javase/8/docs/technotes/tools/windows/javac.html#BHCJJJAJ -->
 							<!-- Disable @Generated otherwise it tries to use javax because some plugins contain javax.annotation.Generated -->
 							<!-- https://hibernate.atlassian.net/browse/HHH-15877 -->
-							<compilerArguments>-AfullyAnnotationConfigured=true -AaddGeneratedAnnotation=false
+							<!-- @formatter:off DO NOT INTRODUCE LINE BREAK -->
+							<compilerArguments>
+								-implicit:class -AfullyAnnotationConfigured=true -AaddGeneratedAnnotation=false
 							</compilerArguments>
+							<!-- @formatter:on -->
 							<processors>
-								<processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
+								<processor>org.hibernate.processor.HibernateProcessor</processor>
 							</processors>
 						</configuration>
 					</execution>

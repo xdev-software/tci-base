@@ -1,6 +1,8 @@
 package software.xdev.tci.demo;
 
-import java.util.Optional;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,12 +16,15 @@ public class Application
 	{
 		System.setProperty(
 			"spring.config.additional-location",
-			"optional:"
-				+ "classpath:/application-add.yml,"
-				+ "classpath:/application-add-log.yml"
-				+ Optional.ofNullable(System.getProperty("spring.config.additional-location"))
-				.map(s -> "," + s)
-				.orElse(""));
+			Stream.of(
+					"optional:classpath:/application-add.yml",
+					"classpath:/application-add-log.yml",
+					System.getProperty("spring.config.additional-location"),
+					// [Deployment] Also consider ENV variable since it has a lower priority and is otherwise ignored
+					// See https://docs.spring.io/spring-boot/reference/features/external-config.html
+					System.getenv("SPRING_CONFIG_ADDITIONAL-LOCATION"))
+				.filter(Objects::nonNull)
+				.collect(Collectors.joining(",")));
 		SpringApplication.run(Application.class, args);
 	}
 }

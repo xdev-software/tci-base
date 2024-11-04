@@ -7,7 +7,6 @@ import java.security.NoSuchAlgorithmException;
 
 public final class SHA256Hashing
 {
-	
 	private static final String SHA_256 = "SHA-256";
 	
 	private static final char[] HEX_DIGITS = "0123456789abcdef".toCharArray();
@@ -16,6 +15,9 @@ public final class SHA256Hashing
 	{
 	}
 	
+	/**
+	 * @apiNote Note that SHA256 gets slower the longer the input is. Ensure that the input length is limited.
+	 */
 	@SuppressWarnings("checkstyle:MagicNumber")
 	public static String hash(final String input)
 	{

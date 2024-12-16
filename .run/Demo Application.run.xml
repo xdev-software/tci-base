@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Demo Application" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="software.xdev.tci.demo.Application" />
+    <module name="webapp" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

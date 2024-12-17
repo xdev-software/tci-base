@@ -99,13 +99,13 @@ public class OtherWebSecurity
 			@Override
 			public boolean matches(final CharSequence rawPassword, final String encodedPassword)
 			{
-				if(rawPassword == null || rawPassword.isEmpty() || !pwHash.equals(encodedPassword))
+				if(rawPassword == null || rawPassword.isEmpty() || rawPassword.length() > 1000)
 				{
 					OtherWebSecurity.this.actuatorLoginFailed.increment();
 					return false;
 				}
 				
-				final boolean success = SHA256Hashing.hash(rawPassword.toString()).equals(encodedPassword);
+				final boolean success = SHA256Hashing.hash(rawPassword.toString()).equals(pwHash);
 				if(success)
 				{
 					OtherWebSecurity.this.actuatorLoginSuccess.increment();

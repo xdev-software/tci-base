@@ -73,8 +73,8 @@
 
 		<!-- Database Migration -->
 		<dependency>
-			<groupId>org.flywaydb</groupId>
-			<artifactId>flyway-core</artifactId>
+			<groupId>software.xdev</groupId>
+			<artifactId>flyway-core-slim</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.flywaydb</groupId>

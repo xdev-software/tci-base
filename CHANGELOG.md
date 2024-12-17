@@ -1,3 +1,6 @@
+# 1.0.4
+* Updated dependencies
+
 # 1.0.3
 * Fix ``ConcurrentModificationException`` due to missing synchronized blocks
 * Don't warmUp already warmed up factories again on coordinator level

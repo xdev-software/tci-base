@@ -21,7 +21,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<org.springframework.boot.version>3.3.5</org.springframework.boot.version>
+		<org.springframework.boot.version>3.4.0</org.springframework.boot.version>
 	</properties>
 
 	<modules>

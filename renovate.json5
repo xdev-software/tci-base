@@ -53,6 +53,17 @@
         "maven"
       ],
       "groupName": "org.testcontainers"
+    },
+    {
+      "description": "Group org.junit",
+      "matchPackagePatterns": [
+        "^org.junit:junit-bom",
+        "^org.junit.jupiter"
+      ],
+      "datasources": [
+        "maven"
+      ],
+      "groupName": "org.junit"
     }
   ]
 }

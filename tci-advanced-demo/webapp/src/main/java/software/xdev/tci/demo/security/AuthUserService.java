@@ -9,7 +9,7 @@ import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Component;
 
-import software.xdev.tci.demo.security.support.OidcUserService;
+import software.xdev.sse.oauth2.userinfo.OidcUserService;
 
 
 @Component

@@ -66,6 +66,20 @@
 			<artifactId>spring-security-advanced-authentication-ui</artifactId>
 		</dependency>
 
+		<!-- SSE -->
+		<dependency>
+			<groupId>software.xdev.sse</groupId>
+			<artifactId>csp</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>software.xdev.sse</groupId>
+			<artifactId>oauth2-oidc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>software.xdev.sse</groupId>
+			<artifactId>web-sidecar-actuator</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>

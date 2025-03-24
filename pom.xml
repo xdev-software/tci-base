@@ -27,7 +27,7 @@
 
 	<licenses>
 		<license>
-			<name>Apache License, Version 2.0</name>
+			<name>Apache-2.0</name>
 			<url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
 			<distribution>repo</distribution>
 		</license>
@@ -46,7 +46,7 @@
 							<dependency>
 								<groupId>com.puppycrawl.tools</groupId>
 								<artifactId>checkstyle</artifactId>
-								<version>10.21.3</version>
+								<version>10.21.4</version>
 							</dependency>
 						</dependencies>
 						<configuration>

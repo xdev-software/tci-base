@@ -186,6 +186,15 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+
+			<!-- SSE -->
+			<dependency>
+				<groupId>software.xdev.sse</groupId>
+				<artifactId>bom</artifactId>
+				<version>0.0.7</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 

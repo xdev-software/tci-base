@@ -79,8 +79,14 @@ WORKDIR ${APP_DIR}
 USER ${user}
 
 COPY --from=builder --chown=${user}:${group} /builder/extracted/dependencies/ ./
+# https://github.com/moby/moby/issues/37965
+RUN true
 COPY --from=builder --chown=${user}:${group} /builder/extracted/spring-boot-loader/ ./
+# https://github.com/moby/moby/issues/37965
+RUN true
 COPY --from=builder --chown=${user}:${group} /builder/extracted/snapshot-dependencies/ ./
+# https://github.com/moby/moby/issues/37965
+RUN true
 COPY --from=builder --chown=${user}:${group} /builder/extracted/application/ ./
 
 ENV JAVA_OPTS="-XX:MaxRAMPercentage=75 -XX:MinHeapFreeRatio=20 -XX:MaxHeapFreeRatio=30 -Djava.awt.headless=true"

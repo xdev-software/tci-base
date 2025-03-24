@@ -66,8 +66,8 @@ public class WebAppContainer extends GenericContainer<WebAppContainer>
 	
 	public WebAppContainer withActuator(final String username, final String hash)
 	{
-		return this.withEnv("DEMO_ACTUATOR_USERNAME", username)
-			.withEnv("DEMO_ACTUATOR_PASSWORD-HASH", hash);
+		return this.withEnv("SSE_ACTUATOR_USERS_0_USERNAME", username)
+			.withEnv("SSE_ACTUATOR_USERS_0_PASSWORD-SHA-256", hash);
 	}
 	
 	public WebAppContainer withDisableHTTPS()

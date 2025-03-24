@@ -1,11 +1,6 @@
 package software.xdev.tci.demo.security;
 
-import static java.util.Map.entry;
-import static software.xdev.tci.demo.security.CSP.POLICY_NONE;
-import static software.xdev.tci.demo.security.CSP.POLICY_SELF;
-
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +14,7 @@ import org.springframework.security.web.savedrequest.NullRequestCache;
 
 import software.xdev.spring.security.web.authentication.ui.advanced.AdvancedLoginPageAdapter;
 import software.xdev.spring.security.web.authentication.ui.advanced.config.AdditionalOAuth2ClientProperties;
+import software.xdev.sse.csp.CSPGenerator;
 
 
 @EnableWebSecurity
@@ -30,6 +26,7 @@ public class MainWebSecurity
 	@Bean(name = "mainSecurityFilterChainBean")
 	public SecurityFilterChain configure(
 		final HttpSecurity http,
+		final CSPGenerator cspGenerator,
 		final AdditionalOAuth2ClientProperties additionalOAuth2ClientProperties) throws Exception
 	{
 		http.with(
@@ -53,7 +50,7 @@ public class MainWebSecurity
 				.referrerPolicy(r -> r.policy(ReferrerPolicyHeaderWriter.ReferrerPolicy.SAME_ORIGIN))
 				// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
 				.contentTypeOptions(Customizer.withDefaults())
-				.contentSecurityPolicy(csp -> csp.policyDirectives(this.getCSP())))
+				.contentSecurityPolicy(csp -> csp.policyDirectives(cspGenerator.buildCSP())))
 			.sessionManagement(c ->
 				// Limit maximum session per user
 				c.sessionConcurrency(sc -> sc.maximumSessions(5)))
@@ -68,47 +65,4 @@ public class MainWebSecurity
 		return http.build();
 	}
 	
-	protected String getCSP()
-	{
-		return CSP.build(Map.ofEntries(
-			entry(
-				"default-src",
-				POLICY_SELF
-					+ (this.isDevMode()
-					// Allow ws://locahost:* in Demo mode for SpringbootDevTools
-					? " ws://localhost:*"
-					: "")),
-			entry("script-src", POLICY_SELF + " 'unsafe-inline'"),
-			entry("style-src", POLICY_SELF + " 'unsafe-inline'"),
-			entry("font-src", POLICY_SELF),
-			entry("img-src", POLICY_SELF + " data:"),
-			// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/object-src
-			// https://csp.withgoogle.com/docs/strict-csp.html
-			entry("object-src", POLICY_NONE),
-			// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/base-uri
-			entry("base-uri", POLICY_SELF),
-			// https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/form-action
-			// When using 'self':
-			// * Webkit based Browsers have problems here: https://github.com/w3c/webappsec-csp/issues/8
-			// * Firefox is
-			// As of 2024-03 CSP3 added 'unsafe-allow-redirects' however it's not implemented by any browser yet
-			// Fallback for now '*'
-			entry("form-action", "*"),
-			// Replaces X-Frame-Options
-			entry("frame-src", POLICY_SELF),
-			entry("frame-ancestors", POLICY_SELF)));
-	}
-	
-	protected boolean isDevMode()
-	{
-		try
-		{
-			Class.forName("org.springframework.boot.devtools.settings.DevToolsSettings");
-			return true;
-		}
-		catch(final ClassNotFoundException nf)
-		{
-			return false;
-		}
-	}
 }

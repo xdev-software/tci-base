@@ -1,27 +1,48 @@
-# Note: This Dockerfile is used by the selenium tests for compiling the WebApp when there was no Image supplied
+# Note: This Dockerfile is used by the selenium tests for compiling Timeline when there was no Image supplied
+ARG JAVA_VERSION=21
+FROM eclipse-temurin:${JAVA_VERSION}-jre-alpine AS jre-base
 
-FROM maven:3-eclipse-temurin-21-alpine AS build-env
+
+# Build the JRE ourself and exclude stuff from Eclipse-Temurin that we don't need
+#
+# Derived from https://github.com/adoptium/containers/blob/91ea190c462741d2c64ed2f8f0a0efdb3e77c49d/21/jre/alpine/3.21/Dockerfile
+FROM alpine:3 AS jre-minimized
+
+ENV JAVA_HOME=/opt/java/openjdk
+ENV PATH=$JAVA_HOME/bin:$PATH
+
+ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
+
+RUN set -eux; \
+    # DO NOT INSTALL:
+    # gnupg - only required to verify download of jre from eclipse-temurin
+    # fontconfig ttf-dejavu - No fonts are needed (we also don't use AWT)
+    # everything that works with certificates (ca-certificates p11-kit-trust coreutils openssl) - as we don't do stuff with certificates
+    # tzdata - We are using UTC (and everyone should do that)
+    apk add --no-cache \
+        musl-locales musl-locales-lang
+
+COPY --from=jre-base /opt/java/openjdk /opt/java/openjdk
+
+RUN set -eux; \
+    echo "Verifying install ..."; \
+    echo "java --version"; java --version; \
+    echo "Complete."
+
+# Renamed as cacerts functionality is disabled
+COPY --from=jre-base /__cacert_entrypoint.sh /entrypoint.sh
+RUN chmod 775 /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+
+
+FROM eclipse-temurin:${JAVA_VERSION}-jdk-alpine AS builder
 
 RUN apk add --no-cache git
 
-# Create non root user
-ARG userName=limitedbuild
-ARG groupName=limitedbuild
-ARG userId=1000
+WORKDIR /builder
 
-RUN addgroup --system ${groupName} \
-	&& adduser --uid ${userId} --system --disabled-password --shell /bin/bash ${userName} \
-	&& adduser ${userName} ${groupName}
-
-# Create build dir
-RUN mkdir /build \
-    && chown ${userName}:${groupName} /build
-WORKDIR /build
-
-USER ${userName}
-
-# Copying is prepared by TCI
-COPY --chown=${userName}:${groupName} . ./
+# Copying is prepared by ITC
+COPY . ./
 
 # A valid Git repo is required for the build
 RUN git config --global user.email "dynamic@build.local" \
@@ -30,12 +51,16 @@ RUN git config --global user.email "dynamic@build.local" \
   && git add . \
   && git commit -m "Init commit"
 
-ARG mavenbuildcmd='mvn -B clean package -pl "webapp" -am -Pprod,dev-log -T2C -Dmaven.test.skip'
+ARG mavenbuildcmd='./mvnw -B clean package -pl "webapp" -am -Pprod,dev-log -T2C -Dmaven.test.skip'
 
 RUN echo "Executing '$mavenbuildcmd'"
 RUN ${mavenbuildcmd}
+# See also https://docs.spring.io/spring-boot/reference/packaging/container-images/dockerfiles.html for further information
+RUN mv webapp/target/webapp.jar app.jar \
+  && java -Djarmode=tools -jar app.jar extract --layers --destination extracted
 
-FROM eclipse-temurin:21-jre-alpine
+
+FROM jre-minimized
 
 ARG user=app
 ARG group=app
@@ -47,17 +72,19 @@ ARG APP_DIR=/opt/app
 RUN mkdir -p ${APP_DIR} \
   && chown ${uid}:${gid} ${APP_DIR} \
   && addgroup -g ${gid} ${group} \
-  && adduser -h "$APP_DIR" -u ${uid} -G ${group} -s /bin/sh -D ${user}
+  && adduser -h "$APP_DIR" -u ${uid} -G ${group} -s /bin/bash -D ${user}
 
-# MaxRAMPercentage: Default value is 25% -> we want to use available memory optimal -> increased, but enough is left for other RAM usages like e.g. Metaspace
-# Min/MaxHeapFreeRatio: Default values cause container reserved memory not to shrink properly/waste memory -> decreased
-# https://stackoverflow.com/questions/16058250/what-is-the-purpose-of-xxminheapfreeratio-and-xxmaxheapfreeratio
-ENV JAVA_OPTS "-XX:MaxRAMPercentage=75 -XX:MinHeapFreeRatio=20 -XX:MaxHeapFreeRatio=30 -Djava.awt.headless=true"
-
-EXPOSE 8080
+WORKDIR ${APP_DIR}
 
 USER ${user}
 
-COPY --from=build-env --chown=${user}:${group} build/webapp/target/webapp.jar ${APP_DIR}/webapp.jar
+COPY --from=builder --chown=${user}:${group} /builder/extracted/dependencies/ ./
+COPY --from=builder --chown=${user}:${group} /builder/extracted/spring-boot-loader/ ./
+COPY --from=builder --chown=${user}:${group} /builder/extracted/snapshot-dependencies/ ./
+COPY --from=builder --chown=${user}:${group} /builder/extracted/application/ ./
 
-CMD java ${JAVA_OPTS} -jar /opt/app/webapp.jar
+ENV JAVA_OPTS="-XX:MaxRAMPercentage=75 -XX:MinHeapFreeRatio=20 -XX:MaxHeapFreeRatio=30 -Djava.awt.headless=true"
+
+EXPOSE 8080
+
+CMD [ "/bin/sh", "-c", "java $JAVA_OPTS -jar /opt/app/app.jar" ]

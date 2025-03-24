@@ -8,6 +8,18 @@ spring:
         hbm2ddl:
           auto: none
 
+sse:
+  sidecar:
+    black-holing:
+      enabled: false
+  oauth2:
+    auth-checker:
+      enabled: false
+    refresh-filter:
+      enabled: false
+    remember-login-provider-redirect:
+      enabled: false
+
 management:
   endpoints:
     web:

@@ -1,3 +1,7 @@
+# 1.0.5
+* Updated dependencies
+* [Demo] Use [SSE](https://github.com/xdev-software/spring-security-extras) to minimize code
+
 # 1.0.4
 * Updated dependencies
 

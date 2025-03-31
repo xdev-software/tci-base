@@ -63,16 +63,6 @@
       "groupName": "org.testcontainers"
     },
     {
-      "description": "Group com.vaadin",
-      "matchPackagePatterns": [
-        "^com.vaadin"
-      ],
-      "datasources": [
-        "maven"
-      ],
-      "groupName": "com.vaadin"
-    },
-    {
       "description": "Group org.junit",
       "matchPackagePatterns": [
         "^org.junit:junit-bom",

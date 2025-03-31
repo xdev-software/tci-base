@@ -146,7 +146,7 @@ public class DefaultDockerLoadMonitor implements AutoCloseable, LoadMonitor
 			final double newCoreSec = newScrapeData.coreIdleSec().get(cpuIndex);
 			final double oldCoreSec = oldScrapeData.coreIdleSec().getOrDefault(cpuIndex, newCoreSec);
 			
-			totalCoreIdleSec += (newCoreSec - oldCoreSec);
+			totalCoreIdleSec += newCoreSec - oldCoreSec;
 		}
 		
 		final double avgCoreIdleMs = totalCoreIdleSec / newScrapeData.coreIdleSec().size() * 1000;

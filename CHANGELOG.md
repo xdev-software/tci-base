@@ -1,6 +1,9 @@
 # 1.1.0
-* Make it possible to disable port fixation
-* [Demo] Explicit dialect is no longer required for connection-less start
+* Port fixation 
+    * can now be disabled
+    * now also respects non-TCP ports (e.g. UDP)
+    * acquires free ports in batches (previously each port was acquired individually)
+* [Demo] Explicit database dialect is no longer required for connection-less start
 
 # 1.0.5
 * Updated dependencies

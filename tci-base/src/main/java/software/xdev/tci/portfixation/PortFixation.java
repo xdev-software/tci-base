@@ -15,17 +15,29 @@
  */
 package software.xdev.tci.portfixation;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.utility.DockerImageName;
 import org.testcontainers.utility.DockerLoggerFactory;
+
+import com.github.dockerjava.api.model.ExposedPort;
+import com.github.dockerjava.api.model.InternetProtocol;
+import com.github.dockerjava.api.model.PortBinding;
+import com.github.dockerjava.api.model.Ports;
 
 
 /**
@@ -39,18 +51,20 @@ public final class PortFixation
 	{
 	}
 	
-	static TriConsumer<GenericContainer<?>, Integer, Integer> addFixedExposedPortFunc;
+	static boolean initializedReflectFuncs;
+	static Function<GenericContainer<?>, Set<ExposedPort>> exposedPortAccess;
+	static TriConsumer<GenericContainer<?>, Integer, ExposedPort> addFixedExposedPortFunc;
 	
 	public static void makeExposedPortsFix(final GenericContainer<?> container)
 	{
 		// Cache
-		if(addFixedExposedPortFunc == null)
+		if(!initializedReflectFuncs)
 		{
-			initAddFixedExposedPortFunc();
+			initReflectFuncs();
 		}
 		
-		Stream.concat(
-				container.getExposedPorts().stream(),
+		final List<ExposedPort> requiredPorts = Stream.concat(
+				exposedPortAccess.apply(container).stream(),
 				Optional.of(container)
 					.filter(AdditionalPortsForFixedExposingContainer.class::isInstance)
 					.map(AdditionalPortsForFixedExposingContainer.class::cast)
@@ -58,73 +72,153 @@ public final class PortFixation
 					.stream()
 					.flatMap(Collection::stream))
 			.distinct()
-			.map(cPort ->
-				CompletableFuture.runAsync(() ->
-					addFixedExposedPortFunc.accept(container, PortFixation.getRandomFreePort(), cPort)))
-			.toList()
-			.forEach(CompletableFuture::join);
-	}
-	
-	@SuppressWarnings("java:S3011")
-	static synchronized void initAddFixedExposedPortFunc()
-	{
-		if(addFixedExposedPortFunc != null)
+			.toList();
+		
+		if(requiredPorts.isEmpty())
 		{
 			return;
 		}
+		
+		final Map<InternetProtocol, List<ExposedPort>> protocolPorts =
+			requiredPorts.stream().collect(Collectors.groupingBy(ExposedPort::getProtocol));
+		
+		final Map<InternetProtocol, List<Integer>> randomHostFreePorts =
+			PortFixation.getRandomFreePorts(protocolPorts.entrySet()
+				.stream()
+				.collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().size())));
+		
+		protocolPorts.forEach((proto, containerPorts) -> {
+			final List<Integer> protoRandomHostFreePort = randomHostFreePorts.get(proto);
+			IntStream.range(0, containerPorts.size())
+				.forEach(i -> addFixedExposedPortFunc.accept(
+					container,
+					protoRandomHostFreePort.get(i),
+					containerPorts.get(i)));
+		});
+	}
+	
+	@SuppressWarnings({"java:S3011", "unchecked"})
+	static synchronized void initReflectFuncs()
+	{
+		if(initializedReflectFuncs)
+		{
+			return;
+		}
+		
 		try
 		{
-			final Method mAddFixedExposedPort =
-				GenericContainer.class.getDeclaredMethod("addFixedExposedPort", int.class, int.class);
-			mAddFixedExposedPort.setAccessible(true);
-			addFixedExposedPortFunc = (container, hostPort, containerPort) -> {
+			
+			final Method mGetContainerDef = GenericContainer.class.getDeclaredMethod("getContainerDef");
+			mGetContainerDef.setAccessible(true);
+			
+			final Class<?> containerDefClazz = Class.forName("org.testcontainers.containers.ContainerDef");
+			
+			final Field fExposedPorts = containerDefClazz.getDeclaredField("exposedPorts");
+			fExposedPorts.setAccessible(true);
+			
+			exposedPortAccess = c ->
+			{
 				try
 				{
-					mAddFixedExposedPort.invoke(container, hostPort, containerPort);
+					return (Set<ExposedPort>)fExposedPorts.get(mGetContainerDef.invoke(c));
 				}
 				catch(final IllegalAccessException | InvocationTargetException e)
 				{
 					throw new IllegalStateException("Unable to invoke", e);
 				}
 			};
+			
+			// Can't use GenericContainer#addFixedExposedPort because there is another InternetProtocol-class used!
+			final Method mAddPortBinding = containerDefClazz.getDeclaredMethod("addPortBinding", PortBinding.class);
+			mAddPortBinding.setAccessible(true);
+			
+			addFixedExposedPortFunc = (container, hostPort, containerPort) -> {
+				final PortBinding portBinding = new PortBinding(Ports.Binding.bindPort(hostPort), containerPort);
+				try
+				{
+					mAddPortBinding.invoke(mGetContainerDef.invoke(container), portBinding);
+				}
+				catch(final IllegalAccessException | InvocationTargetException e)
+				{
+					throw new IllegalStateException("Unable to invoke", e);
+				}
+			};
+			
+			initializedReflectFuncs = true;
 		}
-		catch(final NoSuchMethodException e)
+		catch(final Exception e)
 		{
-			throw new IllegalStateException("Unable to find underlying method", e);
+			throw new IllegalStateException("Unable to init reflective functions", e);
 		}
 	}
 	
-	private static int getRandomFreePort()
+	private static Map<InternetProtocol, List<Integer>> getRandomFreePorts(
+		final Map<InternetProtocol, Integer> protocolAmounts)
 	{
-		try(final GetPortContainer container = new GetPortContainer())
+		if(protocolAmounts.isEmpty())
+		{
+			return Map.of();
+		}
+		
+		try(final GetPortContainer container = new GetPortContainer(protocolAmounts))
 		{
 			container.start();
-			return container.getPort();
+			return container.getPorts();
 		}
 	}
 	
+	@SuppressWarnings("java:S2160") // Not needed
 	static class GetPortContainer extends GenericContainer<GetPortContainer>
 	{
+		protected static final Logger LOG = DockerLoggerFactory.getLogger("container.getport");
 		protected static final DockerImageName IMAGE = DockerImageName.parse("alpine:3");
-		protected static final int PORT = 5000;
+		protected static final int BASE_PORT = 2000;
 		
-		public GetPortContainer()
+		protected final Map<InternetProtocol, Set<ExposedPort>> ports;
+		
+		public GetPortContainer(final Map<InternetProtocol, Integer> protocolAmounts)
 		{
 			super(IMAGE);
 			// Create a netcat server listener so that the startup check succeeds
-			this.setCommand("/bin/sh", "-c", "while true; do nc -v -lk -p " + PORT + "; done");
-			this.addExposedPort(PORT);
+			this.setCommand("/bin/sh", "-c", "while true; do nc -v -lk -p " + BASE_PORT + "; done");
+			
+			final AtomicInteger portCounter = new AtomicInteger(BASE_PORT);
+			this.ports = protocolAmounts.entrySet()
+				.stream()
+				.collect(Collectors.toMap(
+					Map.Entry::getKey,
+					e -> IntStream.range(0, e.getValue())
+						.mapToObj(counter -> new ExposedPort(portCounter.incrementAndGet(), e.getKey()))
+						.collect(Collectors.toSet())));
+			
+			this.addExposedPort(BASE_PORT);
+			
+			this.ports.values().forEach(PortFixation.exposedPortAccess.apply(this)::addAll);
 		}
 		
-		public Integer getPort()
+		@Override
+		public List<Integer> getExposedPorts()
 		{
-			return this.getMappedPort(PORT);
+			return List.of(BASE_PORT); // Report only the base port as only this port listens
+		}
+		
+		public Map<InternetProtocol, List<Integer>> getPorts()
+		{
+			return this.ports.entrySet().stream()
+				.collect(Collectors.toMap(
+					Map.Entry::getKey, e -> e.getValue()
+						.stream()
+						.map(ExposedPort::getPort)
+						.map(this::getMappedPort)
+						.distinct()
+						.toList()
+				));
 		}
 		
 		@Override
 		protected Logger logger()
 		{
-			return DockerLoggerFactory.getLogger("container.getport");
+			return LOG;
 		}
 	}
 	
@@ -132,6 +226,6 @@ public final class PortFixation
 	@FunctionalInterface
 	interface TriConsumer<T, U, V>
 	{
-		void accept(T k, U v, V s);
+		void accept(T t, U u, V v);
 	}
 }

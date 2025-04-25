@@ -24,6 +24,6 @@ class PortFixationTest
 	@Test
 	void checkInitWorks()
 	{
-		Assertions.assertDoesNotThrow(PortFixation::initAddFixedExposedPortFunc);
+		Assertions.assertDoesNotThrow(PortFixation::initReflectFuncs);
 	}
 }

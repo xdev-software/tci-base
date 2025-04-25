@@ -16,6 +16,9 @@
 package software.xdev.tci.portfixation;
 
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import com.github.dockerjava.api.model.ExposedPort;
 
 
 /**
@@ -24,5 +27,15 @@ import java.util.Set;
  */
 public interface AdditionalPortsForFixedExposingContainer
 {
-	Set<Integer> getAdditionalPortsForFixedExposing();
+	default Set<ExposedPort> getAdditionalPortsForFixedExposing()
+	{
+		return this.getAdditionalTCPPortsForFixedExposing().stream()
+			.map(ExposedPort::tcp)
+			.collect(Collectors.toSet());
+	}
+	
+	default Set<Integer> getAdditionalTCPPortsForFixedExposing()
+	{
+		return Set.of();
+	}
 }

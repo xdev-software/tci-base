@@ -22,6 +22,7 @@ public interface PreStartConfig
 {
 	boolean DEFAULT_ENABLED = false;
 	boolean DEFAULT_DIRECT_NETWORK_ATTACH_IF_POSSIBLE = true;
+	boolean DEFAULT_FIXATE_EXPOSED_PORTS_IF_REQUIRED = true;
 	int DEFAULT_COORDINATOR_IDLE_CPU_PERCENT = 40;
 	int DEFAULT_COORDINATOR_SCHEDULE_PERIOD_MS = 1_000;
 	boolean DEFAULT_DETECT_ENDING_TESTS = true;
@@ -51,6 +52,14 @@ public interface PreStartConfig
 	default boolean directNetworkAttachIfPossible(final String preStartName)
 	{
 		return DEFAULT_DIRECT_NETWORK_ATTACH_IF_POSSIBLE;
+	}
+	
+	/**
+	 * Should exposed ports be fixated if required?
+	 */
+	default boolean fixateExposedPortsIfRequired(final String preStartName)
+	{
+		return DEFAULT_FIXATE_EXPOSED_PORTS_IF_REQUIRED;
 	}
 	
 	/**

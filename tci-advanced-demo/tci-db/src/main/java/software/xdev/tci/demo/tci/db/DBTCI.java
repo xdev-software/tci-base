@@ -182,6 +182,7 @@ public class DBTCI extends TCI<DBContainer>
 		});
 	}
 	
+	@SuppressWarnings("PMD.InvalidLogMessageFormat") // % is not used for formatting
 	public void logDataBaseInfo()
 	{
 		if(Optional.ofNullable(this.getContainer()).map(GenericContainer::getContainerId).isPresent())

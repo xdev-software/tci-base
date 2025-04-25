@@ -62,7 +62,7 @@ public class TCILeakAgent implements TestExecutionListener
 		LOG.debug("Registered");
 	}
 	
-	@SuppressWarnings({"java:S2629", "java:S106"})
+	@SuppressWarnings({"java:S2629", "java:S106", "PMD.SystemPrintln"})
 	@Override
 	public void testPlanExecutionFinished(final TestPlan testPlan)
 	{

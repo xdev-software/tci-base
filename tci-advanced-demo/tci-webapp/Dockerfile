@@ -1,4 +1,4 @@
-# Note: This Dockerfile is used by the selenium tests for compiling Timeline when there was no Image supplied
+# Note: This Dockerfile is used by the integration tests for compiling the app when there was no Image was supplied
 ARG JAVA_VERSION=21
 FROM eclipse-temurin:${JAVA_VERSION}-jre-alpine AS jre-base
 
@@ -79,8 +79,14 @@ WORKDIR ${APP_DIR}
 USER ${user}
 
 COPY --from=builder --chown=${user}:${group} /builder/extracted/dependencies/ ./
+# https://github.com/moby/moby/issues/37965
+RUN true
 COPY --from=builder --chown=${user}:${group} /builder/extracted/spring-boot-loader/ ./
+# https://github.com/moby/moby/issues/37965
+RUN true
 COPY --from=builder --chown=${user}:${group} /builder/extracted/snapshot-dependencies/ ./
+# https://github.com/moby/moby/issues/37965
+RUN true
 COPY --from=builder --chown=${user}:${group} /builder/extracted/application/ ./
 
 ENV JAVA_OPTS="-XX:MaxRAMPercentage=75 -XX:MinHeapFreeRatio=20 -XX:MaxHeapFreeRatio=30 -Djava.awt.headless=true"

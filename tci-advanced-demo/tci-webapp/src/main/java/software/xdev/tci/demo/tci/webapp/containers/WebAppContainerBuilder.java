@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import software.xdev.testcontainers.imagebuilder.AdvancedImageFromDockerFile;
 
 
+@SuppressWarnings("PMD.MoreThanOneLogger")
 public final class WebAppContainerBuilder
 {
 	private static final Logger LOG = LoggerFactory.getLogger(WebAppContainerBuilder.class);
@@ -48,8 +49,7 @@ public final class WebAppContainerBuilder
 					// Ignore not required test-modules that may have changed
 					// sources only - otherwise the parent pom doesn't find the resources
 					"tci-*/src/**",
-					"persistence-it/src/**",
-					"webapp-it/src/**",
+					"*-it/src/**",
 					// Ignore resources that are just used for development
 					"webapp/src/main/resources-dev/**")
 				.withDockerFilePath(Paths.get("../tci-webapp/Dockerfile"))

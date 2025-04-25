@@ -137,6 +137,7 @@ public class PreStartableTCIFactory<C extends GenericContainer<C>, I extends TCI
 	 * </ul>
 	 */
 	protected final boolean useDirectNetworkAttachIfPossible;
+	protected final boolean fixateExposedPortsIfRequired;
 	
 	// endregion
 	protected final LinkedBlockingQueue<StartingInfra<I>> preStartQueue;
@@ -184,6 +185,7 @@ public class PreStartableTCIFactory<C extends GenericContainer<C>, I extends TCI
 		this.preStartQueue = amountToKeepReady > 0 ? new LinkedBlockingQueue<>(amountToKeepReady) : null;
 		
 		this.useDirectNetworkAttachIfPossible = config.directNetworkAttachIfPossible(name);
+		this.fixateExposedPortsIfRequired = config.fixateExposedPortsIfRequired(name);
 		
 		final int maxAmountStartingSimultaneously = config.maxStartSimultan(name);
 		
@@ -257,7 +259,7 @@ public class PreStartableTCIFactory<C extends GenericContainer<C>, I extends TCI
 					try
 					{
 						// Fix ports for network attach later
-						if(directAttachNetwork == null)
+						if(directAttachNetwork == null && this.fixateExposedPortsIfRequired)
 						{
 							PortFixation.makeExposedPortsFix(container);
 						}

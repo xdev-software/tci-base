@@ -6,8 +6,12 @@ spring:
     enabled: false
   datasource:
     jpa:
-      database-platform: software.xdev.tci.demo.persistence.config.dialect.DefaultDialect
       properties:
+        jakarta:
+          persistence:
+            database-product-name: MariaDB
+            database-major-version: 11
+            database-minor-version: 4
         hibernate:
           boot:
             allow_jdbc_metadata_access: false

@@ -84,9 +84,9 @@ public class WebAppContainer extends GenericContainer<WebAppContainer>
 		return this.withDisableFlyway()
 			// Disable DB for actuator endpoint or complete endpoint will fail otherwise
 			.withEnv("MANAGEMENT_HEALTH_DB_ENABLED", false)
-			.withEnv(
-				springJpa + "DATABASE-PLATFORM",
-				"software.xdev.tci.demo.persistence.config.dialect.DefaultDialect")
+			.withEnv(springJpa + "PROPERTIES_JAKARTA_PERSISTENCE_DATABASE-PRODUCT-NAME", "MariaDB")
+			.withEnv(springJpa + "PROPERTIES_JAKARTA_PERSISTENCE_DATABASE-MAJOR-VERSION", "11")
+			.withEnv(springJpa + "PROPERTIES_JAKARTA_PERSISTENCE_DATABASE-MINOR-VERSION", "4")
 			.withEnv(springJpa + "PROPERTIES_HIBERNATE_BOOT_ALLOW_JDBC_METADATA_ACCESS", false);
 	}
 	

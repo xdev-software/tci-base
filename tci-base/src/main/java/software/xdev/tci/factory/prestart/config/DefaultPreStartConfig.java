@@ -37,6 +37,7 @@ public class DefaultPreStartConfig implements PreStartConfig
 	protected static final String KEEP_READY = "keep-ready";
 	protected static final String MAX_START_SIMULTAN = "max-start-simultan";
 	protected static final String DIRECT_NETWORK_ATTACH_IF_POSSIBLE = "direct-network-attach-if-possible";
+	protected static final String FIXATE_EXPOSED_PORTS_IF_REQUIRED = "fixate-exposed-ports-if-required";
 	protected static final String JUNIT_JUPITER_EXECUTION_PARALLEL_CONFIG_FIXED_MAX_POOL_SIZE =
 		"junit.jupiter.execution.parallel.config.fixed.max-pool-size";
 	
@@ -50,6 +51,7 @@ public class DefaultPreStartConfig implements PreStartConfig
 	protected final int keepReady;
 	protected final int maxStartSimultan;
 	protected final boolean directNetworkAttachIfPossible;
+	protected final boolean fixateExposedPortsIfRequired;
 	
 	protected final int coordinatorIdleCPUPercent;
 	protected final int coordinatorSchedulePeriodMs;
@@ -75,6 +77,10 @@ public class DefaultPreStartConfig implements PreStartConfig
 			this.getBool(
 				PROPERTY_PREFIX + DIRECT_NETWORK_ATTACH_IF_POSSIBLE,
 				DEFAULT_DIRECT_NETWORK_ATTACH_IF_POSSIBLE);
+		this.fixateExposedPortsIfRequired =
+			this.getBool(
+				PROPERTY_PREFIX + FIXATE_EXPOSED_PORTS_IF_REQUIRED,
+				DEFAULT_FIXATE_EXPOSED_PORTS_IF_REQUIRED);
 		
 		this.coordinatorIdleCPUPercent = this.enabled
 			? this.getInt(PROPERTY_PREFIX + COORDINATOR_IDLE_CPU_PERCENT, DEFAULT_COORDINATOR_IDLE_CPU_PERCENT)
@@ -113,11 +119,20 @@ public class DefaultPreStartConfig implements PreStartConfig
 	public boolean directNetworkAttachIfPossible(final String preStartName)
 	{
 		return this.enabled()
-			?
-			this.getBool(
-				PROPERTY_PREFIX + preStartName + "." + DIRECT_NETWORK_ATTACH_IF_POSSIBLE,
-				this.directNetworkAttachIfPossible)
+			? this.getBool(
+			PROPERTY_PREFIX + preStartName + "." + DIRECT_NETWORK_ATTACH_IF_POSSIBLE,
+			this.directNetworkAttachIfPossible)
 			: this.directNetworkAttachIfPossible;
+	}
+	
+	@Override
+	public boolean fixateExposedPortsIfRequired(final String preStartName)
+	{
+		return this.enabled()
+			? this.getBool(
+			PROPERTY_PREFIX + preStartName + "." + FIXATE_EXPOSED_PORTS_IF_REQUIRED,
+			this.fixateExposedPortsIfRequired)
+			: this.fixateExposedPortsIfRequired;
 	}
 	
 	@Override

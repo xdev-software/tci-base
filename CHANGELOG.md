@@ -1,3 +1,7 @@
+# 1.1.0
+* Make it possible to disable port fixation
+* [Demo] Explicit dialect is no longer required for connection-less start
+
 # 1.0.5
 * Updated dependencies
 * [Demo] Use [SSE](https://github.com/xdev-software/spring-security-extras) to minimize code

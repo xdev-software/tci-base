@@ -4,17 +4,16 @@
 spring:
   flyway:
     enabled: false
-  datasource:
-    jpa:
-      properties:
-        jakarta:
-          persistence:
-            database-product-name: MariaDB
-            database-major-version: 11
-            database-minor-version: 4
-        hibernate:
-          boot:
-            allow_jdbc_metadata_access: false
+  jpa:
+    properties:
+      jakarta:
+        persistence:
+          database-product-name: MariaDB
+          database-major-version: 11
+          database-minor-version: 4
+      hibernate:
+        boot:
+          allow_jdbc_metadata_access: false
   security:
     oauth2:
       client:
@@ -24,9 +23,11 @@ spring:
             redirect-uri: '{baseUrl}/{action}/oauth2/code/{registrationId}'
         provider:
           local:
+            # NOTE: When you launch with this config, make sure that issuer-uri is commented out in application-add.yml
             authorization-uri: http://localhost:4011/connect/authorize
             token-uri: http://localhost:4011/connect/token
             jwk-set-uri: http://localhost:4011/.well-known/openid-configuration/jwks
             user-info-uri: http://localhost:4011/connect/userinfo
             user-info-authentication-method: header
             userNameAttribute: sub
+

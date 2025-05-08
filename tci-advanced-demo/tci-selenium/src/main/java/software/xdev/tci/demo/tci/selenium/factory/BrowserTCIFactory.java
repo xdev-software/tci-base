@@ -18,8 +18,8 @@ import org.testcontainers.containers.wait.strategy.WaitAllStrategy;
 
 import software.xdev.tci.demo.tci.selenium.BrowserTCI;
 import software.xdev.tci.demo.tci.selenium.containers.SeleniumBrowserWebDriverContainer;
-import software.xdev.tci.demo.tci.util.ContainerMemory;
 import software.xdev.tci.factory.prestart.PreStartableTCIFactory;
+import software.xdev.tci.misc.ContainerMemory;
 import software.xdev.testcontainers.selenium.containers.browser.BrowserWebDriverContainer;
 import software.xdev.testcontainers.selenium.containers.recorder.SeleniumRecordingContainer;
 

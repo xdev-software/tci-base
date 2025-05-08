@@ -1,3 +1,6 @@
+# 1.1.1
+* Added ``ContainerMemory`` utility class as it's needed in most projects
+
 # 1.1.0
 * Port fixation 
     * can now be disabled

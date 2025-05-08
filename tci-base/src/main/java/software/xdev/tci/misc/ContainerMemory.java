@@ -29,7 +29,7 @@ public final class ContainerMemory
 	public static final long M1G = M512M * 2;
 	public static final long M2G = M1G * 2;
 	public static final long M4G = M2G * 2;
-	public static final long M8G = M2G * 2;
+	public static final long M8G = M4G * 2;
 	
 	private ContainerMemory()
 	{

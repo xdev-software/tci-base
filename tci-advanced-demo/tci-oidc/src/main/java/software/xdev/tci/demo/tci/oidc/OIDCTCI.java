@@ -85,20 +85,21 @@ public class OIDCTCI extends TCI<OIDCServerContainer>
 	
 	public void warmUpWellKnownJWKsEndpoint()
 	{
-		final HttpClient httpClient = HttpClient.newBuilder()
+		try(final HttpClient httpClient = HttpClient.newBuilder()
 			.connectTimeout(Duration.ofSeconds(2L))
-			.build();
-		
-		Unreliables.retryUntilSuccess(
-			5,
-			() ->
-				httpClient.send(
-					HttpRequest.newBuilder(URI.create(
-							this.getExternalHttpBaseEndPoint() + "/.well-known/openid-configuration/jwks"))
-						.timeout(Duration.ofSeconds(10L))
-						.GET()
-						.build(),
-					HttpResponse.BodyHandlers.discarding()));
+			.build())
+		{
+			Unreliables.retryUntilSuccess(
+				5,
+				() ->
+					httpClient.send(
+						HttpRequest.newBuilder(URI.create(
+								this.getExternalHttpBaseEndPoint() + "/.well-known/openid-configuration/jwks"))
+							.timeout(Duration.ofSeconds(10L))
+							.GET()
+							.build(),
+						HttpResponse.BodyHandlers.discarding()));
+		}
 	}
 	
 	public void addUser(

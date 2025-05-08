@@ -15,6 +15,9 @@
  */
 package software.xdev.tci.misc;
 
+/**
+ * Contains constants for common memory representations to limit container memory usage.
+ */
 public final class ContainerMemory
 {
 	// NOTE: Variablenames can't start with numbers -> Prefixed with M

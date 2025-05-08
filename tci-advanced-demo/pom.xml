@@ -6,7 +6,7 @@
 
 	<groupId>software.xdev.tci.demo</groupId>
 	<artifactId>tci-advanced-demo</artifactId>
-	<version>1.1.1-SNAPSHOT</version>
+	<version>1.1.1</version>
 	<packaging>pom</packaging>
 
 	<organization>
@@ -44,49 +44,49 @@
 			<dependency>
 				<groupId>software.xdev.tci.demo</groupId>
 				<artifactId>entities</artifactId>
-				<version>1.1.1-SNAPSHOT</version>
+				<version>1.1.1</version>
 			</dependency>
 
 			<dependency>
 				<groupId>software.xdev.tci.demo</groupId>
 				<artifactId>entities-metamodel</artifactId>
-				<version>1.1.1-SNAPSHOT</version>
+				<version>1.1.1</version>
 			</dependency>
 
 			<dependency>
 				<groupId>software.xdev.tci.demo</groupId>
 				<artifactId>persistence</artifactId>
-				<version>1.1.1-SNAPSHOT</version>
+				<version>1.1.1</version>
 			</dependency>
 
 			<dependency>
 				<groupId>software.xdev.tci.demo</groupId>
 				<artifactId>tci-db</artifactId>
-				<version>1.1.1-SNAPSHOT</version>
+				<version>1.1.1</version>
 			</dependency>
 
 			<dependency>
 				<groupId>software.xdev.tci.demo</groupId>
 				<artifactId>tci-oidc</artifactId>
-				<version>1.1.1-SNAPSHOT</version>
+				<version>1.1.1</version>
 			</dependency>
 
 			<dependency>
 				<groupId>software.xdev.tci.demo</groupId>
 				<artifactId>tci-selenium</artifactId>
-				<version>1.1.1-SNAPSHOT</version>
+				<version>1.1.1</version>
 			</dependency>
 
 			<dependency>
 				<groupId>software.xdev.tci.demo</groupId>
 				<artifactId>tci-webapp</artifactId>
-				<version>1.1.1-SNAPSHOT</version>
+				<version>1.1.1</version>
 			</dependency>
 
 			<dependency>
 				<groupId>software.xdev.tci.demo</groupId>
 				<artifactId>tci-testcontainers</artifactId>
-				<version>1.1.1-SNAPSHOT</version>
+				<version>1.1.1</version>
 			</dependency>
 
 			<dependency>

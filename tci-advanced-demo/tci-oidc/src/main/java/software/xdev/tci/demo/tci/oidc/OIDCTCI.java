@@ -85,6 +85,7 @@ public class OIDCTCI extends TCI<OIDCServerContainer>
 	
 	public void warmUpWellKnownJWKsEndpoint()
 	{
+		// NOTE: ON JDK 21+ you should close this!
 		final HttpClient httpClient = HttpClient.newBuilder()
 			.connectTimeout(Duration.ofSeconds(2L))
 			.build();

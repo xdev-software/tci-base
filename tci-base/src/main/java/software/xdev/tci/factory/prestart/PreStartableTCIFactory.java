@@ -49,20 +49,37 @@ import software.xdev.tci.portfixation.PortFixation;
  * A PreStarting-able implementation of {@link software.xdev.tci.factory.TCIFactory}.
  * <h3>What is PreStarting?</h3>
  * <p>
- * When running tests usually there are certain times when the available resources are barely utilized:
+ * When running tests usually there are certain times when the available resources are barely utilized:<br/>
  * <img src="https://raw.githubusercontent.com/xdev-software/tci-base/develop/assets/PreStartingCauseIdea.png"/>
  * </p>
  * <p>
- * PreStarting uses a "cached" pool of infrastructure and tries to utilizes these idle times to fill/replenish this
- * pool.<br/> So that when new infrastructure is requested there is no need to wait for the creation of it and use the
- * already started infrastructure from this pool - if it's available.
+ * PreStarting uses a "cached" pool of infrastructure and tries to utilize these idle times to fill/replenish this
+ * pool.<br/> So when new infrastructure is requested there is no need to wait for the creation of it and use the
+ * already started infrastructure from this pool, if it's available.
  * </p>
  * <h3>Requirements</h3>
  * Infrastructure needs to be <u>dependency- and stateless</u>:
- * <p>This means that e.g. a container can be started without relying on another container.<br/> If another
- * infrastructure/container is needed when doing e.g. a certain request during testing it's
- * advised to use DNS names inside the initial configuration.<br/>The infrastructure may also be configured in a way
- * that test specific data can be created before the test e.g. using a client and not during PreStarting.
+ * <p>
+ * This means that e.g. a container can be started without relying on another container.<br/>
+ * If other infrastructure/container is needed when doing e.g. a certain request during testing it's
+ * advised to use DNS names inside the initial configuration.
+ * </p>
+ * <p>
+ * <i>Sidenote:</i> If your app/infrastructure is querying for these DNS names during startup
+ * - and somehow doesn't crash (Example: Quarkus) - than the non-resolvable DNS entries might be cached anyway.<br/>
+ * For example Java caches them for
+ * <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/doc-files/net-properties.html#address-cache-heading">
+ * up to 10s
+ * </a>.
+ * You should fix this by:
+ * <ul>
+ *     <li>Disabling querying for other infrastructure during startup</li>
+ *     <li>Clearing the DNS cache of the affected app once it's fully started</li>
+ * </ul>
+ * </p>
+ * <p>
+ * The infrastructure should also be configured in a way that test specific data can be created ad-hoc during the actual
+ * test and not during the (Pre)start.
  * </p>
  * <p>
  * <b>Important: PreStarting is disabled by default!</b> So when executing test manually, one can solely focus on
@@ -74,9 +91,10 @@ import software.xdev.tci.portfixation.PortFixation;
  * execution?"
  * <ul>
  *     <li>Sometimes parallel test execution is not possible</li>
- *     <li>When starts of containers/infrastructure and/or test execution takes a long time and uses not that many
- *     resources.
- *     <br/>Note however that this is highly situational and depends on used hardware and infrastructure</li>
+ *     <li>When starts of containers/infrastructure and/or test execution take a long time and uses not that many
+ *     resources.<br/>
+ *     Example: A lot of {@link Thread#sleep(long)} calls happen in the started app.
+ *     <br/>Note however that this is highly situational and depends on used hardware and infrastructure.</li>
  *     <li>
  *         The general design principle of <u>dependency- and statelessness</u> allows multiple containers to be
  *         started in parallel during test initialization even WITHOUT enabled PreStarting.<br/>Example:
@@ -113,9 +131,9 @@ import software.xdev.tci.portfixation.PortFixation;
  *         To connect PreStarted containers to a network where they can communicate with each other
  *         <code>docker network connect</code> is used. This command is not quite optimal:
  *         <ul>
- *             <li>Due to a bug the host-ports of the container must be fixated. See {@link PortFixation}</li>
+ *             <li>Due to a bug in Docker the host-ports of the container must be fixated. See {@link PortFixation}</li>
  *             <li>When lots of containers and networks are active the command can get quite slow and may
- *             needs a few seconds to execute</li>
+ *             need a few seconds to execute</li>
  *         </ul>
  *     </li>
  * </ul>

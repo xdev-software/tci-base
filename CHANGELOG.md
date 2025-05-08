@@ -1,3 +1,7 @@
+# 1.1.2
+* Update docs
+* Fix ``ContainerMemory#M8G`` being the same as ``ContainerMemory#M4G``
+
 # 1.1.1
 * Added ``ContainerMemory`` utility class as it's needed in most projects
 * Updated dependencies

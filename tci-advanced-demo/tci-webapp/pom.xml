@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>software.xdev.tci.demo</groupId>
 		<artifactId>tci-advanced-demo</artifactId>
-		<version>1.1.2-SNAPSHOT</version>
+		<version>1.1.2</version>
 	</parent>
 	<artifactId>tci-webapp</artifactId>
 

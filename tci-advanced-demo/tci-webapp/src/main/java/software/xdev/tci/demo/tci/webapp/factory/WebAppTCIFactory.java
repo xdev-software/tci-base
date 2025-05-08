@@ -3,11 +3,11 @@ package software.xdev.tci.demo.tci.webapp.factory;
 import java.time.Duration;
 import java.util.function.Consumer;
 
-import software.xdev.tci.demo.tci.util.ContainerMemory;
 import software.xdev.tci.demo.tci.webapp.WebAppTCI;
 import software.xdev.tci.demo.tci.webapp.containers.WebAppContainer;
 import software.xdev.tci.demo.tci.webapp.containers.WebAppContainerBuilder;
 import software.xdev.tci.factory.prestart.PreStartableTCIFactory;
+import software.xdev.tci.misc.ContainerMemory;
 
 
 public class WebAppTCIFactory extends PreStartableTCIFactory<WebAppContainer, WebAppTCI>

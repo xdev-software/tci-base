@@ -8,8 +8,8 @@ import org.rnorth.ducttape.unreliables.Unreliables;
 
 import software.xdev.tci.demo.tci.db.DBTCI;
 import software.xdev.tci.demo.tci.db.containers.DBContainer;
-import software.xdev.tci.demo.tci.util.ContainerMemory;
 import software.xdev.tci.factory.prestart.PreStartableTCIFactory;
+import software.xdev.tci.misc.ContainerMemory;
 
 
 public class DBTCIFactory extends PreStartableTCIFactory<DBContainer, DBTCI>

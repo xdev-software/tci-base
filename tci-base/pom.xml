@@ -180,7 +180,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>jakarta:
+			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

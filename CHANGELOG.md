@@ -1,3 +1,6 @@
+# 1.1.3
+* Migrated deployment to _Sonatype Maven Central Portal_ [#155](https://github.com/xdev-software/standard-maven-template/issues/155)
+
 # 1.1.2
 * Update docs
 * Fix ``ContainerMemory#M8G`` being the same as ``ContainerMemory#M4G``

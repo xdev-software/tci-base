@@ -88,6 +88,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
+				<version>3.5.0</version>
 				<executions>
 					<!-- Workaround for https://hibernate.atlassian.net/browse/HHH-18873 -->
 					<execution>

@@ -1,4 +1,4 @@
-package software.xdev.tci.demo.persistence.util;
+package software.xdev.tci.demo.tci.db.persistence;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;

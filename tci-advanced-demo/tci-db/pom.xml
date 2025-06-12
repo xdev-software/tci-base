@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>software.xdev.tci.demo</groupId>
 		<artifactId>tci-advanced-demo</artifactId>
-		<version>1.1.4-SNAPSHOT</version>
+		<version>1.2.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>tci-db</artifactId>
 
@@ -34,8 +34,13 @@
 		<!-- TestContainers -->
 		<dependency>
 			<groupId>org.testcontainers</groupId>
-			<artifactId>mariadb</artifactId>
+			<artifactId>jdbc</artifactId>
 			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>software.xdev</groupId>
+			<artifactId>testcontainers-advanced-imagebuilder</artifactId>
 		</dependency>
 	</dependencies>
 </project>

@@ -20,7 +20,7 @@ import javassist.util.proxy.MethodHandler;
 import javassist.util.proxy.ProxyFactory;
 import software.xdev.tci.demo.persistence.jpa.dao.BaseDAO;
 import software.xdev.tci.demo.persistence.jpa.dao.TransactionReflector;
-import software.xdev.tci.demo.persistence.util.TransactionExecutor;
+import software.xdev.tci.demo.tci.db.persistence.TransactionExecutor;
 
 
 /**

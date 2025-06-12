@@ -1,10 +1,12 @@
 package software.xdev.tci.demo.tci.selenium.containers;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
 import org.openqa.selenium.Capabilities;
+import org.testcontainers.utility.DockerImageName;
 
 import software.xdev.tci.portfixation.AdditionalPortsForFixedExposingContainer;
 import software.xdev.tci.safestart.SafeNamedContainerStarter;
@@ -17,7 +19,14 @@ public class SeleniumBrowserWebDriverContainer
 {
 	public SeleniumBrowserWebDriverContainer(final Capabilities capabilities)
 	{
-		super(capabilities);
+		super(
+			capabilities,
+			Map.of(
+				BrowserType.FIREFOX, FIREFOX_IMAGE,
+				// Chrome has no ARM64 image (Why Google?) -> Use chromium instead
+				// https://github.com/SeleniumHQ/docker-selenium/discussions/2379
+				BrowserType.CHROME, DockerImageName.parse("selenium/standalone-chromium"))
+		);
 	}
 	
 	@Override

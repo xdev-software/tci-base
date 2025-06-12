@@ -6,7 +6,7 @@
 
 	<groupId>software.xdev</groupId>
 	<artifactId>tci-base</artifactId>
-	<version>1.1.4-SNAPSHOT</version>
+	<version>1.2.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>tci-base</name>
@@ -54,13 +54,13 @@
 		<dependency>
 			<groupId>software.xdev</groupId>
 			<artifactId>testcontainers-junit4-mock</artifactId>
-			<version>1.0.1</version>
+			<version>1.0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.testcontainers</groupId>
 			<artifactId>testcontainers</artifactId>
 			<scope>compile</scope>
-			<version>1.21.0</version>
+			<version>1.21.1</version>
 			<exclusions>
 				<!-- The few classes that testcontainers needs have been extracted -->
 				<exclusion>
@@ -81,14 +81,20 @@
 			<groupId>org.junit.platform</groupId>
 			<artifactId>junit-platform-launcher</artifactId>
 			<scope>compile</scope>
-			<version>1.12.2</version>
+			<version>1.13.1</version>
 		</dependency>
 
 		<!-- Tests -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
-			<version>5.12.2</version>
+			<version>5.13.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>2.0.17</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -272,7 +278,7 @@
 							<dependency>
 								<groupId>com.puppycrawl.tools</groupId>
 								<artifactId>checkstyle</artifactId>
-								<version>10.23.1</version>
+								<version>10.25.0</version>
 							</dependency>
 						</dependencies>
 						<configuration>
@@ -302,19 +308,19 @@
 							<includeTests>true</includeTests>
 							<printFailingErrors>true</printFailingErrors>
 							<rulesets>
-								<ruleset>../.config/pmd/ruleset.xml</ruleset>
+								<ruleset>../.config/pmd/java/ruleset.xml</ruleset>
 							</rulesets>
 						</configuration>
 						<dependencies>
 							<dependency>
 								<groupId>net.sourceforge.pmd</groupId>
 								<artifactId>pmd-core</artifactId>
-								<version>7.13.0</version>
+								<version>7.14.0</version>
 							</dependency>
 							<dependency>
 								<groupId>net.sourceforge.pmd</groupId>
 								<artifactId>pmd-java</artifactId>
-								<version>7.13.0</version>
+								<version>7.14.0</version>
 							</dependency>
 						</dependencies>
 					</plugin>

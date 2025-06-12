@@ -8,7 +8,9 @@ import org.rnorth.ducttape.unreliables.Unreliables;
 
 import software.xdev.tci.demo.tci.db.DBTCI;
 import software.xdev.tci.demo.tci.db.containers.DBContainer;
+import software.xdev.tci.demo.tci.db.containers.DBContainerBuilder;
 import software.xdev.tci.factory.prestart.PreStartableTCIFactory;
+import software.xdev.tci.factory.prestart.snapshoting.CommitedImageSnapshotManager;
 import software.xdev.tci.misc.ContainerMemory;
 
 
@@ -24,12 +26,13 @@ public class DBTCIFactory extends PreStartableTCIFactory<DBContainer, DBTCI>
 	{
 		super(
 			(c, n) -> new DBTCI(c, n, migrateAndInitializeEMC),
-			() -> new DBContainer()
+			() -> new DBContainer(DBContainerBuilder.getBuiltImageName())
 				.withDatabaseName(DBTCI.DB_DATABASE)
 				.withCreateContainerCmdModifier(cmd -> cmd.getHostConfig().withMemory(ContainerMemory.M512M)),
 			"db-mariadb",
 			"container.db",
 			"DB");
+		this.withSnapshotManager(new CommitedImageSnapshotManager("/var/lib/mysql"));
 	}
 	
 	@Override
@@ -42,16 +45,17 @@ public class DBTCIFactory extends PreStartableTCIFactory<DBContainer, DBTCI>
 			10,
 			TimeUnit.SECONDS,
 			() -> {
+				final String testQuery = infra.getContainer().getTestQueryString();
 				try(final Connection con = infra.createDataSource().getConnection();
 					final Statement statement = con.createStatement())
 				{
-					statement.executeQuery("SELECT 1").getMetaData();
+					statement.executeQuery(testQuery).getMetaData();
 				}
 				
 				if(infra.isMigrateAndInitializeEMC())
 				{
 					// Check EMC if pool connections work
-					infra.useNewEntityManager(em -> em.createNativeQuery("SELECT 1").getResultList());
+					infra.useNewEntityManager(em -> em.createNativeQuery(testQuery).getResultList());
 				}
 				return null;
 			});

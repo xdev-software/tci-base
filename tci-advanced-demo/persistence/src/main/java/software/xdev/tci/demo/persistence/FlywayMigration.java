@@ -48,11 +48,6 @@ public class FlywayMigration
 		final Flyway flyway = flywayConfig.load();
 		LOG.debug("Finished loading of flyway instance");
 		
-		if(flyway.info().current() == null)
-		{
-			LOG.info("Detected fresh database instance!");
-		}
-		
 		LOG.debug("Starting DB-Migration");
 		final long migrateStartTime = System.currentTimeMillis();
 		

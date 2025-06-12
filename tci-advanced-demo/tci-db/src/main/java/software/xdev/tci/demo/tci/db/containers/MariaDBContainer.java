@@ -20,7 +20,7 @@ import org.testcontainers.utility.DockerImageName;
  * </ul>
  * </p>
  */
-@SuppressWarnings({"java:S119", "java:S2160"})
+@SuppressWarnings({"java:S119", "java:S2160", "java:S2068"})
 public class MariaDBContainer<SELF extends MariaDBContainer<SELF>> extends JdbcDatabaseContainer<SELF>
 {
 	protected static final String DEFAULT_USER = "test";

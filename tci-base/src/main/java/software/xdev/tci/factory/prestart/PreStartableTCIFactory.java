@@ -42,6 +42,7 @@ import software.xdev.tci.TCI;
 import software.xdev.tci.factory.BaseTCIFactory;
 import software.xdev.tci.factory.prestart.config.PreStartConfig;
 import software.xdev.tci.factory.prestart.coordinator.GlobalPreStartCoordinator;
+import software.xdev.tci.factory.prestart.snapshoting.SnapshotManager;
 import software.xdev.tci.portfixation.PortFixation;
 
 
@@ -167,6 +168,8 @@ public class PreStartableTCIFactory<C extends GenericContainer<C>, I extends TCI
 	
 	protected final Timeouts timeouts;
 	
+	protected SnapshotManager snapshotManager;
+	
 	public PreStartableTCIFactory(
 		final BiFunction<C, String, I> infraBuilder,
 		final Supplier<C> containerBuilder,
@@ -232,6 +235,15 @@ public class PreStartableTCIFactory<C extends GenericContainer<C>, I extends TCI
 		}
 	}
 	
+	/**
+	 * Should a {@link SnapshotManager} be used?
+	 */
+	public PreStartableTCIFactory<C, I> withSnapshotManager(final SnapshotManager snapshotManager)
+	{
+		this.snapshotManager = snapshotManager;
+		return this;
+	}
+	
 	public void schedulePreStart()
 	{
 		if(this.preStartQueue == null)
@@ -281,10 +293,20 @@ public class PreStartableTCIFactory<C extends GenericContainer<C>, I extends TCI
 						{
 							PortFixation.makeExposedPortsFix(container);
 						}
+						if(this.snapshotManager != null)
+						{
+							this.snapshotManager.tryReuse(container);
+						}
+						
 						infra.start(this.containerBaseName
 							+ "-"
 							+ this.preStartCounter.getAndIncrement()
 							+ (preStarted ? "-PS" : ""));
+						
+						if(this.snapshotManager != null)
+						{
+							this.snapshotManager.snapshot(container);
+						}
 					}
 					finally
 					{

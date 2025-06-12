@@ -12,7 +12,7 @@ import jakarta.persistence.EntityManager;
 
 import software.xdev.tci.demo.entities.IdentifiableEntity;
 import software.xdev.tci.demo.persistence.jpa.dao.BaseEntityDAO;
-import software.xdev.tci.demo.persistence.util.TransactionExecutor;
+import software.xdev.tci.demo.tci.db.persistence.TransactionExecutor;
 
 
 /**

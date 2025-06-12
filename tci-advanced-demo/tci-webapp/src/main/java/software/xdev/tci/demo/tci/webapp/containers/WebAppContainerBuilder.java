@@ -40,16 +40,20 @@ public final class WebAppContainerBuilder
 					".git/**",
 					// Ignore other unused folders and extensions
 					".iml",
+					".cmd",
 					".md",
 					"target/**",
 					".config/**",
 					".idea/**",
 					"_dev_infra/**",
 					"_resource_metrics/**",
+					// Ignore other Dockerfiles (our required file will always be transferred)
+					"Dockerfile",
 					// Ignore not required test-modules that may have changed
 					// sources only - otherwise the parent pom doesn't find the resources
 					"tci-*/src/**",
 					"*-it/src/**",
+					"**/src/test",
 					// Ignore resources that are just used for development
 					"webapp/src/main/resources-dev/**")
 				.withDockerFilePath(Paths.get("../tci-webapp/Dockerfile"))

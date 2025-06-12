@@ -1,4 +1,4 @@
-package software.xdev.tci.demo.persistence.util;
+package software.xdev.tci.demo.tci.db.persistence;
 
 import static java.util.Map.entry;
 
@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
@@ -25,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.orm.jpa.persistenceunit.MutablePersistenceUnitInfo;
 
 import software.xdev.tci.demo.persistence.config.DefaultJPAConfig;
+import software.xdev.tci.demo.persistence.util.DisableHibernateFormatMapper;
 
 
 /**
@@ -36,6 +39,8 @@ import software.xdev.tci.demo.persistence.config.DefaultJPAConfig;
 public class EntityManagerController implements AutoCloseable
 {
 	private static final Logger LOG = LoggerFactory.getLogger(EntityManagerController.class);
+	
+	private static Set<String> cachedEntityClassNames;
 	
 	protected final List<EntityManager> activeEms = Collections.synchronizedList(new ArrayList<>());
 	protected final EntityManagerFactory emf;
@@ -106,7 +111,8 @@ public class EntityManagerController implements AutoCloseable
 		final String connectionProviderClassName,
 		final String jdbcUrl,
 		final String username,
-		final String password
+		final String password,
+		final Map<String, Object> additionalConfig
 	)
 	{
 		return createForStandalone(
@@ -115,7 +121,8 @@ public class EntityManagerController implements AutoCloseable
 			"Test",
 			jdbcUrl,
 			username,
-			password);
+			password,
+			additionalConfig);
 	}
 	
 	public static EntityManagerController createForStandalone(
@@ -124,7 +131,8 @@ public class EntityManagerController implements AutoCloseable
 		final String persistenceUnitName,
 		final String jdbcUrl,
 		final String username,
-		final String password
+		final String password,
+		final Map<String, Object> additionalConfig
 	)
 	{
 		final MutablePersistenceUnitInfo persistenceUnitInfo = new MutablePersistenceUnitInfo()
@@ -144,10 +152,13 @@ public class EntityManagerController implements AutoCloseable
 		persistenceUnitInfo.setTransactionType(PersistenceUnitTransactionType.RESOURCE_LOCAL);
 		persistenceUnitInfo.setPersistenceUnitName(persistenceUnitName);
 		persistenceUnitInfo.setPersistenceProviderClassName(HibernatePersistenceProvider.class.getName());
-		AnnotatedClassFinder.find(DefaultJPAConfig.ENTITY_PACKAGE, Entity.class)
-			.stream()
-			.map(Class::getName)
-			.forEach(persistenceUnitInfo::addManagedClassName);
+		if(cachedEntityClassNames == null)
+		{
+			cachedEntityClassNames = AnnotatedClassFinder.find(DefaultJPAConfig.ENTITY_PACKAGE, Entity.class)
+				.stream()
+				.map(Class::getName)
+				.collect(Collectors.toSet());
+		}
 		try
 		{
 			Collections.list(EntityManagerController.class

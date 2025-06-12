@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -13,6 +14,7 @@ import java.util.stream.IntStream;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 
+import org.hibernate.cfg.PersistenceSettings;
 import org.hibernate.hikaricp.internal.HikariCPConnectionProvider;
 import org.mariadb.jdbc.Driver;
 import org.mariadb.jdbc.MariaDbDataSource;
@@ -23,8 +25,9 @@ import org.testcontainers.containers.GenericContainer;
 import software.xdev.tci.TCI;
 import software.xdev.tci.demo.persistence.FlywayInfo;
 import software.xdev.tci.demo.persistence.FlywayMigration;
-import software.xdev.tci.demo.persistence.util.EntityManagerController;
 import software.xdev.tci.demo.tci.db.containers.DBContainer;
+import software.xdev.tci.demo.tci.db.persistence.EntityManagerController;
+import software.xdev.tci.demo.tci.db.persistence.hibernate.CachingStandardScanner;
 
 
 public class DBTCI extends TCI<DBContainer>
@@ -110,7 +113,11 @@ public class DBTCI extends TCI<DBContainer>
 				HikariCPConnectionProvider.class.getName(),
 				this.getExternalJDBCUrl(),
 				DB_USERNAME,
-				DB_PASSWORD
+				DB_PASSWORD,
+				Map.ofEntries(
+					// Use caching scanner to massively improve performance (this way the scanning only happens once)
+					Map.entry(PersistenceSettings.SCANNER, CachingStandardScanner.instance())
+				)
 			);
 		}
 	}

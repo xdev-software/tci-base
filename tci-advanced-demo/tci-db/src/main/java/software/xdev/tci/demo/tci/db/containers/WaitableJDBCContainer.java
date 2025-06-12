@@ -21,7 +21,9 @@ interface WaitableJDBCContainer extends WaitStrategyTarget
 	default WaitStrategy completeJDBCWaitStrategy()
 	{
 		return new WaitAllStrategy()
+			// First wait for ports to be accessible
 			.withStrategy(Wait.defaultWaitStrategy())
+			// then check if a JDBC connection (requires more resources) is possible
 			.withStrategy(new JDBCWaitStrategy());
 	}
 	

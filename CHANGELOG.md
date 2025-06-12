@@ -3,7 +3,7 @@
     * Recommended for containers that highly depend on storage (e.g. databases)
         * Example: MariaDB startup time with database migration
             * Without snapshot: ~10s
-            * With snapshot: 3-5s (>50% faster)
+            * With snapshot: ~5s (~50% faster)
     * Implementations:
         * [``docker container commit``](https://docs.docker.com/reference/cli/docker/container/commit/)
             * Only snapshots storage - no in-memory data, processes, etc.

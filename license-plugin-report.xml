@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<licensePluginReport goal="FORMAT" timestamp="1749744207041">
+    <module artifactId="tci-base" groupId="software.xdev" version="1.2.0"/>
+    <files>
+        <file path="src/main/java/software/xdev/tci/TCI.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/factory/BaseTCIFactory.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/factory/TCIFactory.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/factory/ondemand/OnDemandTCIFactory.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/factory/prestart/PreStartableTCIFactory.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/factory/prestart/config/DefaultPreStartConfig.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/factory/prestart/config/PreStartConfig.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/factory/prestart/coordinator/DefaultGlobalPreStartCoordinator.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/factory/prestart/coordinator/GlobalPreStartCoordinator.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/factory/prestart/coordinator/endingdetector/PreStartTestEndingDetector.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/factory/prestart/loadbalancing/DefaultDockerLoadMonitor.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/factory/prestart/loadbalancing/LoadMonitor.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/factory/prestart/loadbalancing/NodeExporterContainer.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/factory/prestart/snapshoting/CommitedImageSnapshotManager.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/factory/prestart/snapshoting/SetImageIntoContainer.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/factory/prestart/snapshoting/SnapshotManager.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/factory/registry/DefaultTCIFactoryRegistry.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/factory/registry/TCIFactoryRegistry.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/leakdetection/LeakDetectionAsyncReaper.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/leakdetection/TCILeakAgent.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/leakdetection/config/DefaultLeakDetectionConfig.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/leakdetection/config/LeakDetectionConfig.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/misc/ContainerMemory.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/network/LazyNetwork.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/network/LazyNetworkPool.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/portfixation/AdditionalPortsForFixedExposingContainer.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/portfixation/PortFixation.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/safestart/SafeNamedContainerStarter.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/serviceloading/TCIProviderPriority.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/serviceloading/TCIServiceLoader.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/tracing/TCITracer.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/tracing/TCITracingAgent.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/tracing/config/DefaultTracingConfig.java" result="NOOP"/>
+        <file path="src/main/java/software/xdev/tci/tracing/config/TracingConfig.java" result="NOOP"/>
+        <file path="src/test/java/software/xdev/tci/commitedimage/SetImageIntoContainerTest.java" result="NOOP"/>
+        <file path="src/test/java/software/xdev/tci/portfixation/PortFixationTest.java" result="NOOP"/>
+    </files>
+</licensePluginReport>

@@ -1,0 +1,23 @@
+name: Run Mailpit integration tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ develop ]
+    paths: 
+      - 'mailpit/**'
+  pull_request:
+    branches: [ develop ]
+    paths: 
+      - 'mailpit/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  mailpit:
+    uses: ./.github/workflows/run-module-integration-tests.yml
+    with:
+      module: mailpit
+    secrets: inherit

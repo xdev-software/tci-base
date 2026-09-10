@@ -1,0 +1,47 @@
+name: 'Restore docker image cache'
+description: 'Restore and load docker image cache'
+# Based on https://github.com/actions/cache/blob/v6/restore/action.yml
+inputs:
+  key:
+    description: 'An explicit key for restoring the cache'
+    required: true
+  restore-keys:
+    description: 'An ordered multiline string listing the prefix-matched keys, that are used for restoring stale cache if no cache hit occurred for key. Note `cache-hit` returns false in this case.'
+    required: false
+  save-preinstalled-images:
+    description: 'Should pre-installed images be saved (not recommended)'
+    required: false
+outputs:
+  key:
+    description: 'Identical to the input - can be used to prevent copy pasting'
+    value: ${{ inputs.key }}
+  cache-hit:
+    description: 'A boolean value to indicate an exact match was found for the primary key'
+    value: ${{ steps.restore-docker-image-cache.outputs.cache-hit }}
+runs:
+  using: "composite"
+  steps:
+    # NOTE 2026-07-09 Parallel execution is not yet available for composite actions
+    # https://github.blog/changelog/2026-06-25-actions-steps-can-now-be-run-in-parallel/
+    - name: Restore docker image cache
+      uses: actions/cache/restore@v6
+      id: restore-docker-image-cache
+      with:
+        path: ~/.cache/docker/
+        key: ${{ inputs.key }}
+        restore-keys: ${{ inputs.restore-keys }}
+
+    - name: Load docker image cache
+      shell: bash
+      run: |
+        if [ "${{ inputs.save-preinstalled-images }}" != true ]; then
+          echo "Getting preinstalled images" && docker image ls
+          preinstalled_image_ids=$(docker images -q | sort)
+
+          echo "Storing preinstalled image ids" && echo $preinstalled_image_ids
+          mkdir -p ~/.cache/docker-preinstalled
+          printf "%s\n" "${preinstalled_image_ids[@]}" > ~/.cache/docker-preinstalled/ids-${{ github.run_id }}.txt
+        fi
+
+        echo "Importing cache"
+        docker load -i ~/.cache/docker/images.tar && echo "Restored docker image cache" && docker image ls || true

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<project
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+		xmlns="http://maven.apache.org/POM/4.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>software.xdev.tci.demo.it</groupId>
+		<artifactId>integration-tests</artifactId>
+		<version>4.3.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>tci-webapp</artifactId>
+
+	<dependencies>
+		<dependency>
+			<groupId>software.xdev.tci</groupId>
+			<artifactId>base</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>software.xdev.tci</groupId>
+			<artifactId>image-build</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>software.xdev.tci</groupId>
+			<artifactId>jacoco</artifactId>
+		</dependency>
+	</dependencies>
+</project>

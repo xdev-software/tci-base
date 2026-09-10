@@ -1,0 +1,60 @@
+name: Run Module integration tests
+
+on:
+  workflow_call:
+    inputs:
+      module:
+        required: true
+        type: string
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    if: ${{ !(github.event_name == 'pull_request' && startsWith(github.head_ref, 'renovate/')) }}
+    timeout-minutes: 7
+    permissions:
+      contents: read
+    steps:
+    - uses: actions/checkout@v7
+
+    - parallel:
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 25
+
+      - name: Cache Maven
+        uses: actions/cache@v6
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-mvn-it-build-${{ inputs.module }}-${{ hashFiles('**/pom.xml') }}
+
+      - name: Docker Image Cache Restore
+        id: docker-image-cache-restore
+        uses: ./.github/actions/docker-image-cache/restore
+        with:
+          # This cache could always change however because docker images can be changed remotely if the version is not fixated
+          # As a compromise it utilizes the hash of the pom files because when the dependencies stay the same 
+          # the images should also be roughly the same
+          key: ${{ runner.os }}-it-docker-images-${{ inputs.module }}-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-it-docker-images-${{ inputs.module }}-
+
+    - name: Test
+      run: |
+        ./mvnw -B test \
+        -pl "${{ inputs.module }}" -am \
+        -T2C \
+        -P run-it \
+        -Dchecks.disable=true \
+        -Dlicense.skip
+
+    - name: Show images
+      run: docker image ls
+
+    - name: Docker Image Cache Save
+      uses: ./.github/actions/docker-image-cache/save
+      with:
+        key: ${{ steps.docker-image-cache-restore.outputs.key }}
+        cache-hit: ${{ steps.docker-image-cache-restore.outputs.cache-hit }}

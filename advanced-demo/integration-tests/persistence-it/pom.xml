@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<project
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+		xmlns="http://maven.apache.org/POM/4.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>software.xdev.tci.demo.it</groupId>
+		<artifactId>integration-tests</artifactId>
+		<version>4.3.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>persistence-it</artifactId>
+
+	<dependencies>
+		<dependency>
+			<groupId>software.xdev.tci.demo</groupId>
+			<artifactId>persistence</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>software.xdev.tci.demo.it</groupId>
+			<artifactId>tci-db</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>software.xdev.tci</groupId>
+			<artifactId>spring-dao-support</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j2-impl</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.javassist</groupId>
+			<artifactId>javassist</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<configuration>
+						<!-- Tests are executed by orm variants -->
+						<skipTests>true</skipTests>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<executions>
+						<execution>
+							<goals>
+								<goal>test-jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>

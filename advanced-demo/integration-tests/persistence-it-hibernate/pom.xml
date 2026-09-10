@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<project
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+		xmlns="http://maven.apache.org/POM/4.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>software.xdev.tci.demo.it</groupId>
+		<artifactId>integration-tests</artifactId>
+		<version>4.3.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>persistence-it-hibernate</artifactId>
+
+	<properties>
+		<!-- by default run no tests -->
+		<skipTests>true</skipTests>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>software.xdev.tci.demo.it</groupId>
+			<artifactId>persistence-it</artifactId>
+			<type>test-jar</type>
+			<classifier>tests</classifier>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>run-it</id>
+			<properties>
+				<skipTests>false</skipTests>
+			</properties>
+		</profile>
+	</profiles>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<configuration>
+						<skipTests>${skipTests}</skipTests>
+						<dependenciesToScan>
+							<dependency>software.xdev.tci.demo.it:persistence-it</dependency>
+						</dependenciesToScan>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>

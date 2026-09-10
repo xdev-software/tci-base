@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="All in persistence-it-eclipselink" type="JUnit" factoryName="JUnit">
+    <module name="persistence-it-eclipselink" />
+    <option name="PACKAGE_NAME" value="software.xdev.tci.demo.persistence" />
+    <option name="MAIN_CLASS_NAME" value="" />
+    <option name="METHOD_NAME" value="" />
+    <option name="TEST_OBJECT" value="directory" />
+    <dir value="$PROJECT_DIR$/advanced-demo/integration-tests/persistence-it/src/test/java" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

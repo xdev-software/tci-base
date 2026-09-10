@@ -1,0 +1,49 @@
+name: 'Save docker image cache'
+description: 'Save the docker image cache'
+# Based on https://github.com/actions/cache/blob/v6/restore/action.yml
+inputs:
+  key:
+    description: 'An explicit key for restoring the cache'
+    required: true
+  cache-hit:
+    description: 'A boolean value to indicate an exact match was found for the primary key'
+    required: false
+runs:
+  using: "composite"
+  steps:
+    - name: Create docker image cache
+      # Cache can't be saved when it's already present
+      if: inputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        echo "Images before pruning" && docker image ls
+        docker image prune -f
+        echo "Currently available images" && docker image ls
+
+        has_preinstalled_ids=false
+        if [ -f ~/.cache/docker-preinstalled/ids-${{ github.run_id }}.txt ]; then
+          echo && echo "Will NOT cache pre-installed images" && cat ~/.cache/docker-preinstalled/ids-${{ github.run_id }}.txt
+          has_preinstalled_ids=true
+        fi
+
+        echo && echo "Will NOT cache images" && docker image ls ${CI_CACHE_DOCKER_SAVE_IGNORE_FILTERS:--f="label=org.testcontainers.sessionId"}
+
+        mkdir -p ~/.cache/docker
+        image_ids_to_save=$(comm -23 <(docker images -q | sort) <(docker image ls -q ${CI_CACHE_DOCKER_SAVE_IGNORE_FILTERS:--f="label=org.testcontainers.sessionId"} | sort))
+        if [ "$has_preinstalled_ids" = true ]; then
+          image_ids_to_save=$(comm -23 <(echo "${image_ids_to_save[@]}") <(cat ~/.cache/docker-preinstalled/ids-${{ github.run_id }}.txt || echo ""))
+        fi
+        echo && echo "Saving image ids" && echo $image_ids_to_save
+        docker save $image_ids_to_save -o ~/.cache/docker/images.tar || true
+
+        ls -lha ~/.cache/docker
+        if [ "$has_preinstalled_ids" = true ]; then
+          rm -f ~/.cache/docker-preinstalled/ids-${{ github.run_id }}.txt || true
+        fi
+
+    - name: Save docker image cache
+      if: inputs.cache-hit != 'true'
+      uses: actions/cache/save@v6
+      with:
+        path: ~/.cache/docker/
+        key: ${{ inputs.key }}

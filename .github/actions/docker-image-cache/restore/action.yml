@@ -43,8 +43,12 @@ runs:
           printf "%s\n" "${preinstalled_image_ids[@]}" > ~/.cache/docker-preinstalled/ids-${{ github.run_id }}.txt
         fi
 
-        echo "Importing cache"
-        docker load -i ~/.cache/docker/images.tar && echo "Restored docker image cache" && docker image ls || true
+        if [ -f ~/.cache/docker/images.tar ]; then
+          echo "Importing cache"
+          docker load -i ~/.cache/docker/images.tar && echo "Restored docker image cache" && docker image ls || true
 
-        echo "Deleting cache file to free up disk space"
-        rm -f ~/.cache/docker/images.tar || true
+          echo "Deleting cache file to free up disk space"
+          rm -f ~/.cache/docker/images.tar || true
+        else
+          echo "No file cache file found"
+        fi

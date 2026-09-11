@@ -7,12 +7,12 @@
 	<parent>
 		<groupId>software.xdev.tci.demo</groupId>
 		<artifactId>advanced-demo</artifactId>
-		<version>4.4.1-SNAPSHOT</version>
+		<version>4.4.1</version>
 	</parent>
 
 	<groupId>software.xdev.tci.demo.it</groupId>
 	<artifactId>integration-tests</artifactId>
-	<version>4.4.1-SNAPSHOT</version>
+	<version>4.4.1</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -30,7 +30,7 @@
 			<dependency>
 				<groupId>software.xdev.tci.demo.it</groupId>
 				<artifactId>persistence-it</artifactId>
-				<version>4.4.1-SNAPSHOT</version>
+				<version>4.4.1</version>
 				<type>test-jar</type>
 				<classifier>tests</classifier>
 			</dependency>
@@ -38,13 +38,13 @@
 			<dependency>
 				<groupId>software.xdev.tci.demo.it</groupId>
 				<artifactId>tci-db</artifactId>
-				<version>4.4.1-SNAPSHOT</version>
+				<version>4.4.1</version>
 			</dependency>
 
 			<dependency>
 				<groupId>software.xdev.tci.demo.it</groupId>
 				<artifactId>tci-webapp</artifactId>
-				<version>4.4.1-SNAPSHOT</version>
+				<version>4.4.1</version>
 			</dependency>
 
 			<dependency>

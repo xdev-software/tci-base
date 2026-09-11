@@ -6,7 +6,7 @@
 
 	<groupId>software.xdev.tci</groupId>
 	<artifactId>mailpit</artifactId>
-	<version>4.4.1-SNAPSHOT</version>
+	<version>4.4.1</version>
 	<packaging>jar</packaging>
 
 	<name>mailpit</name>
@@ -58,7 +58,7 @@
 		<dependency>
 			<groupId>software.xdev.tci</groupId>
 			<artifactId>base</artifactId>
-			<version>4.4.1-SNAPSHOT</version>
+			<version>4.4.1</version>
 		</dependency>
 
 		<dependency>

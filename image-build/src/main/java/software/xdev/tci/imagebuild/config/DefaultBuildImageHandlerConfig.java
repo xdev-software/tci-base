@@ -38,6 +38,16 @@ public class DefaultBuildImageHandlerConfig extends AbstractBuildImageHandlerCon
 	}
 	
 	@Override
+	public boolean addImageCacheIgnoreLabel()
+	{
+		if(this.addImageCacheIgnoreLabel == null)
+		{
+			this.addImageCacheIgnoreLabel = this.resolveBool(IMAGE_CACHE_IGNORE, false);
+		}
+		return this.addImageCacheIgnoreLabel;
+	}
+	
+	@Override
 	public String loggerForBuildPrefix()
 	{
 		if(this.loggerForBuildPrefix == null)

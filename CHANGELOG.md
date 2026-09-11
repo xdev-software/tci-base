@@ -1,3 +1,9 @@
+# 4.4.0
+* `image-build`
+  * New option `image-cache-ignore` / docker image label `tci.image-cache.ignore`
+    * If this option/label is set on an image it will not be saved when using the cache save action
+    * Can be used in situations where the built image can't be deleted but it should not be saved in the cache
+
 # 4.3.0
 * `selenium`
   * Selenium 4.47+ is now required

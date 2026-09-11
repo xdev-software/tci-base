@@ -47,6 +47,17 @@ public class OverlayBuildImageHandlerConfig extends DefaultBuildImageHandlerConf
 	}
 	
 	@Override
+	public boolean addImageCacheIgnoreLabel()
+	{
+		if(this.addImageCacheIgnoreLabel == null)
+		{
+			this.addImageCacheIgnoreLabel =
+				this.resolveBool(IMAGE_CACHE_IGNORE, this.parentConfig.addImageCacheIgnoreLabel());
+		}
+		return this.addImageCacheIgnoreLabel;
+	}
+	
+	@Override
 	public String loggerForBuildPrefix()
 	{
 		if(this.loggerForBuildPrefix == null)

@@ -30,6 +30,7 @@ import software.xdev.testcontainers.imagebuilder.AbstractImageFromDockerfile;
 public abstract class AbstractBuildImageHandler<I extends AbstractImageFromDockerfile<I>>
 	implements BuildImageHandler<I>
 {
+	public static final String IMAGE_CACHE_IGNORE_LABEL = "tci.image-cache.ignore";
 	protected static final Pattern DOCKER_IMAGE_SANITIZATION_PATTERN = Pattern.compile("[^A-Za-z0-9-_]");
 	
 	protected Logger logger;
@@ -69,6 +70,11 @@ public abstract class AbstractBuildImageHandler<I extends AbstractImageFromDocke
 	{
 		builder.withLoggerForBuild(
 			LoggerFactory.getLogger(config.loggerForBuildPrefix() + sanitizeDockerImageName));
+		
+		if(config.addImageCacheIgnoreLabel())
+		{
+			builder.addLabel(IMAGE_CACHE_IGNORE_LABEL, "1");
+		}
 	}
 	
 	protected String buildImage(

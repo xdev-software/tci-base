@@ -24,6 +24,8 @@ public interface BuildImageHandlerConfig
 {
 	boolean deleteOnExit();
 	
+	boolean addImageCacheIgnoreLabel();
+	
 	String loggerForBuildPrefix();
 	
 	Optional<String> cacheFrom();

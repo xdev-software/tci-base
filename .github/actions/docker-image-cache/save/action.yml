@@ -26,10 +26,12 @@ runs:
           has_preinstalled_ids=true
         fi
 
-        echo && echo "Will NOT cache images" && docker image ls ${CI_CACHE_DOCKER_SAVE_IGNORE_FILTERS:--f="label=org.testcontainers.sessionId"}
+        echo && echo "Will NOT cache the following images"
+        docker image ls -f="label=org.testcontainers.sessionId"
+        docker image ls -f="label=tci.image-cache.ignore"
 
         mkdir -p ~/.cache/docker
-        image_ids_to_save=$(comm -23 <(docker images -q | sort) <(docker image ls -q ${CI_CACHE_DOCKER_SAVE_IGNORE_FILTERS:--f="label=org.testcontainers.sessionId"} | sort))
+        image_ids_to_save=$(comm -23 <(docker images -q | sort) <((docker image ls -q -f="label=org.testcontainers.sessionId"; docker image ls -q -f="label=tci.image-cache.ignore") | sort | uniq))
         if [ "$has_preinstalled_ids" = true ]; then
           image_ids_to_save=$(comm -23 <(echo "${image_ids_to_save[@]}") <(cat ~/.cache/docker-preinstalled/ids-${{ github.run_id }}.txt || echo ""))
         fi

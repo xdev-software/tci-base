@@ -34,6 +34,8 @@ import org.testcontainers.utility.ResourceReaper;
 import com.github.dockerjava.api.command.InspectContainerResponse;
 import com.github.dockerjava.api.model.Volume;
 
+import software.xdev.tci.pull.policy.NeverPullPolicy;
+
 
 /**
  * Uses
@@ -235,7 +237,7 @@ public class CommitedImageSnapshotManager implements SnapshotManager
 				.exec();
 			LOG.info("Created cached image {}/{} for {}", name, commitedSha, container.getContainerName());
 			this.cachedImage.set(new RemoteDockerImage(DockerImageName.parse(name))
-				.withImagePullPolicy(ignored -> false));
+				.withImagePullPolicy(NeverPullPolicy.INSTANCE));
 			
 			if(afterCommit != null)
 			{

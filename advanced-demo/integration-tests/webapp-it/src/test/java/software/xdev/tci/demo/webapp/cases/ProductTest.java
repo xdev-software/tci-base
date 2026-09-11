@@ -30,11 +30,11 @@ class ProductTest extends InfraPerCaseTest
 		
 		this.loginAndGotoMainSite();
 		
-		this.navigateTo("swagger-ui/index.html#/product-controller/create");
-		
 		final WebElement taInput = Unreliables.retryUntilSuccess(
 			2,
 			() -> {
+				this.navigateTo("swagger-ui/index.html#/product-controller/create");
+				
 				// Sometimes the button is clicked but JS doesn't react (likely because it's not loaded yet)
 				this.waitUntil(d -> d.findElement(By.className("try-out__btn"))).click();
 				return this.waitUntil(d -> d.findElement(By.className("body-param__text")));

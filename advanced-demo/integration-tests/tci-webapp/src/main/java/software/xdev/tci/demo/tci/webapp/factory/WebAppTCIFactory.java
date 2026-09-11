@@ -13,6 +13,7 @@ import software.xdev.tci.demo.tci.webapp.containers.WebAppContainerBuilder;
 import software.xdev.tci.envperf.EnvironmentPerformance;
 import software.xdev.tci.factory.prestart.PreStartableTCIFactory;
 import software.xdev.tci.misc.ContainerMemory;
+import software.xdev.tci.pull.policy.NeverPullPolicy;
 
 
 public class WebAppTCIFactory extends PreStartableTCIFactory<WebAppContainer, WebAppTCI>
@@ -27,6 +28,7 @@ public class WebAppTCIFactory extends PreStartableTCIFactory<WebAppContainer, We
 			WebAppTCI::new,
 			() -> {
 				final WebAppContainer container = new WebAppContainer(IMAGE_NAME_SUPPLIER.get(), true)
+					.withImagePullPolicy(NeverPullPolicy.INSTANCE)
 					.withDefaultWaitStrategy(
 						Duration.ofSeconds(40L + 20L * EnvironmentPerformance.cpuSlownessFactor()),
 						WebAppTCI.ACTUATOR_USERNAME,

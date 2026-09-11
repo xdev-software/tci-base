@@ -168,7 +168,7 @@ public final class PortFixation
 	}
 	
 	@SuppressWarnings("java:S2160") // Not needed
-	protected static class GetPortContainer extends GenericContainer<GetPortContainer>
+	static class GetPortContainer extends GenericContainer<GetPortContainer>
 	{
 		protected static final Logger LOG = DockerLoggerFactory.getLogger("container.getport");
 		protected static final DockerImageName IMAGE = DockerImageName.parse("alpine:3");
@@ -224,7 +224,7 @@ public final class PortFixation
 	
 	
 	@FunctionalInterface
-	protected interface TriConsumer<T, U, V>
+	interface TriConsumer<T, U, V>
 	{
 		void accept(T t, U u, V v);
 	}

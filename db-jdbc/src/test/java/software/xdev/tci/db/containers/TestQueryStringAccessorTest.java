@@ -27,6 +27,8 @@ import org.testcontainers.containers.JdbcDatabaseContainer;
 import org.testcontainers.images.RemoteDockerImage;
 import org.testcontainers.utility.DockerImageName;
 
+import software.xdev.tci.pull.policy.NeverPullPolicy;
+
 
 class TestQueryStringAccessorTest
 {
@@ -36,7 +38,7 @@ class TestQueryStringAccessorTest
 	{
 		final MockJDBCContainer container = new MockJDBCContainer(
 			new RemoteDockerImage(DockerImageName.parse("test" + UUID.randomUUID()))
-				.withImagePullPolicy(ignored -> false), provided);
+				.withImagePullPolicy(NeverPullPolicy.INSTANCE), provided);
 		Assertions.assertEquals(expected, TestQueryStringAccessor.testQueryString(container));
 	}
 	

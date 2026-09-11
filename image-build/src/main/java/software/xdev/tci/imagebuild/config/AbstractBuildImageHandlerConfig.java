@@ -24,6 +24,7 @@ import software.xdev.tci.config.DefaultConfig;
 public abstract class AbstractBuildImageHandlerConfig extends DefaultConfig implements BuildImageHandlerConfig
 {
 	protected static final String DELETE_ON_EXIT = "delete-on-exit";
+	protected static final String IMAGE_CACHE_IGNORE = "image-cache-ignore";
 	protected static final String LOGGER_FOR_BUILD_PREFIX = "logger-for-build-prefix";
 	protected static final String CACHE_FROM = "cache-from";
 	protected static final String CACHE_TO = "cache-to";
@@ -31,6 +32,7 @@ public abstract class AbstractBuildImageHandlerConfig extends DefaultConfig impl
 	protected static final String WAIT_FOR_SAVE_CACHE_IN_BACKGROUND = "wait-for-" + SAVE_CACHE_IN_BACKGROUND;
 	
 	protected Boolean deleteOnExit;
+	protected Boolean addImageCacheIgnoreLabel;
 	protected String loggerForBuildPrefix;
 	protected Optional<String> cacheFrom;
 	protected Optional<String> cacheTo;

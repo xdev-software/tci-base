@@ -93,7 +93,7 @@ import software.xdev.tci.portfixation.PortFixation;
  * execution?"
  * <ul>
  *     <li>Sometimes parallel test execution is not possible</li>
- *     <li>When starts of containers/infrastructure and/or test execution take a long time and uses not that many
+ *     <li>When starts of containers/infrastructure and/or test execution take a long time and use not that many
  *     resources.<br/>
  *     Example: A lot of {@link Thread#sleep(long)} calls happen in the started app.
  *     <br/>Note however that this is highly situational and depends on used hardware and infrastructure.</li>
@@ -111,8 +111,8 @@ import software.xdev.tci.portfixation.PortFixation;
  *
  *
  *  // Szenario 2 (better): Starting infrastructures in parallel
- *  var cfDBInfra = CompletableFuture.supplyAsync(() -> DB_INFRA_FACTORY.getNew(network, DNS_NAME_DB));
- *  var cfAuthInfra = CompletableFuture.supplyAsync(() -> AUTH_INFRA_FACTORY.getNew(network, DNS_NAME_AUTH));
+ *  var cfDBInfra = CompletableFuture.supplyAsync(() -> DB_INFRA_FACTORY.getNew(network, DNS_NAME_DB), ...);
+ *  var cfAuthInfra = CompletableFuture.supplyAsync(() -> AUTH_INFRA_FACTORY.getNew(network, DNS_NAME_AUTH), ...);
  *
  *  appInfra = APP_INFRA_FACTORY.getNew(network, DNS_NAME_APP);
  *

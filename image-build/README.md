@@ -25,6 +25,7 @@ _NOTE: Sanitized image-names only include alphanumeric characters, `_` or `-`. A
 | Property | Type | Default | Notes |
 | --- | --- | --- | --- |
 | `delete-on-exit` | `bool` | `false` | Should the image be deleted on exit? |
+| `image-cache-ignore` | `bool` | `false` | Adds the `tci.image-cache.ignore` label.<br/>This can be used when an image can't be deleted after the build but it should not be [saved in the image cache](../.github/actions/docker-image-cache/save/). |
 | `logger-for-build-prefix` | `string` | `container.build.` | Prefix used for the build logger |
 | `cache-from` | `string` | - | Only applies to BuildKit (native) build.<br/> See [Docker docs](https://docs.docker.com/build/cache/backends/) for details. |
 | `cache-to` | `string` | - | Only applies to BuildKit (native) build.<br/> See [Docker docs](https://docs.docker.com/build/cache/backends/) for details. |

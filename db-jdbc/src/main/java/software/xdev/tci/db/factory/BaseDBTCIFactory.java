@@ -31,7 +31,7 @@ import software.xdev.tci.factory.prestart.PreStartableTCIFactory;
 import software.xdev.tci.factory.prestart.config.PreStartConfig;
 
 
-public abstract class BaseDBTCIFactory<C extends JdbcDatabaseContainer<C>, I extends BaseDBTCI<C>>
+public abstract class BaseDBTCIFactory<C extends JdbcDatabaseContainer<?>, I extends BaseDBTCI<C>>
 	extends PreStartableTCIFactory<C, I>
 {
 	protected BaseDBTCIFactory(

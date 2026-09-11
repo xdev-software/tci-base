@@ -140,7 +140,7 @@ import software.xdev.tci.portfixation.PortFixation;
  *     </li>
  * </ul>
  */
-public class PreStartableTCIFactory<C extends GenericContainer<C>, I extends TCI<C>>
+public class PreStartableTCIFactory<C extends GenericContainer<?>, I extends TCI<C>>
 	extends BaseTCIFactory<C, I>
 {
 	/**

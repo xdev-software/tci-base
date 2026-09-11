@@ -35,7 +35,7 @@ import software.xdev.tci.safestart.SafeNamedContainerStarter;
  * </p>
  */
 @SuppressWarnings("java:S119")
-public class TCI<C extends GenericContainer<C>>
+public class TCI<C extends GenericContainer<?>>
 {
 	private C container;
 	private String networkAlias;

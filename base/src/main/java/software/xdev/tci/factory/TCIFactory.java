@@ -28,7 +28,7 @@ import software.xdev.tci.tracing.TCITracer;
 /**
  * A factory for {@link TCI}
  */
-public interface TCIFactory<C extends GenericContainer<C>, I extends TCI<C>> extends AutoCloseable
+public interface TCIFactory<C extends GenericContainer<?>, I extends TCI<C>> extends AutoCloseable
 {
 	default void register()
 	{

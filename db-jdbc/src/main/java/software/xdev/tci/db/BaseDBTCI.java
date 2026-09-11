@@ -36,7 +36,7 @@ import software.xdev.tci.db.persistence.EntityManagerController;
 import software.xdev.tci.db.persistence.EntityManagerControllerFactory;
 
 
-public abstract class BaseDBTCI<C extends JdbcDatabaseContainer<C>> extends TCI<C>
+public abstract class BaseDBTCI<C extends JdbcDatabaseContainer<?>> extends TCI<C>
 {
 	protected static final Map<Class<?>, Logger> LOGGER_CACHE = new ConcurrentHashMap<>();
 	

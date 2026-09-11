@@ -37,7 +37,7 @@ import software.xdev.tci.tracing.TCITracer;
 
 @SuppressWarnings("java:S119")
 public abstract class BaseTCIFactory<
-	C extends GenericContainer<C>,
+	C extends GenericContainer<?>,
 	I extends TCI<C>>
 	implements TCIFactory<C, I>
 {
@@ -112,8 +112,9 @@ public abstract class BaseTCIFactory<
 	
 	protected C buildContainer()
 	{
-		return this.containerBuilder.get()
-			.withLogConsumer(getLogConsumer(this.containerLoggerName));
+		final C container = this.containerBuilder.get();
+		container.withLogConsumer(getLogConsumer(this.containerLoggerName));
+		return container;
 	}
 	
 	protected void handleInfraStartFail(final I infra)

@@ -1,3 +1,7 @@
+# 4.4.1
+* Fix type problems with Containers that are unable to reference themselves
+  * Example: `DBContainer extends PostgreSQLContainer` instead of `DBContainer extends GenericContainer<DBContainer>`
+
 # 4.4.0
 * `image-build`
   * New option `image-cache-ignore` / docker image label `tci.image-cache.ignore`

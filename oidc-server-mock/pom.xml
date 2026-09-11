@@ -6,7 +6,7 @@
 
 	<groupId>software.xdev.tci</groupId>
 	<artifactId>oidc-server-mock</artifactId>
-	<version>4.4.0</version>
+	<version>4.4.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>oidc-server-mock</name>
@@ -58,7 +58,7 @@
 		<dependency>
 			<groupId>software.xdev.tci</groupId>
 			<artifactId>base</artifactId>
-			<version>4.4.0</version>
+			<version>4.4.1-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>

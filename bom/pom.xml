@@ -6,7 +6,7 @@
 
 	<groupId>software.xdev.tci</groupId>
 	<artifactId>bom</artifactId>
-	<version>4.4.1</version>
+	<version>4.4.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>bom</name>
@@ -51,72 +51,72 @@
 			<dependency>
 				<groupId>software.xdev.tci</groupId>
 				<artifactId>base</artifactId>
-				<version>4.4.1</version>
+				<version>4.4.2-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>software.xdev.tci</groupId>
 				<artifactId>db-jdbc</artifactId>
-				<version>4.4.1</version>
+				<version>4.4.2-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>software.xdev.tci</groupId>
 				<artifactId>db-jdbc-spring-orm</artifactId>
-				<version>4.4.1</version>
+				<version>4.4.2-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>software.xdev.tci</groupId>
 				<artifactId>db-jdbc-spring-orm-eclipselink</artifactId>
-				<version>4.4.1</version>
+				<version>4.4.2-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>software.xdev.tci</groupId>
 				<artifactId>db-jdbc-spring-orm-hibernate</artifactId>
-				<version>4.4.1</version>
+				<version>4.4.2-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>software.xdev.tci</groupId>
 				<artifactId>image-build</artifactId>
-				<version>4.4.1</version>
+				<version>4.4.2-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>software.xdev.tci</groupId>
 				<artifactId>jacoco</artifactId>
-				<version>4.4.1</version>
+				<version>4.4.2-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>software.xdev.tci</groupId>
 				<artifactId>jul-to-slf4j</artifactId>
-				<version>4.4.1</version>
+				<version>4.4.2-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>software.xdev.tci</groupId>
 				<artifactId>junit-jupiter-api-support</artifactId>
-				<version>4.4.1</version>
+				<version>4.4.2-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>software.xdev.tci</groupId>
 				<artifactId>mailpit</artifactId>
-				<version>4.4.1</version>
+				<version>4.4.2-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>software.xdev.tci</groupId>
 				<artifactId>mockserver</artifactId>
-				<version>4.4.1</version>
+				<version>4.4.2-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>software.xdev.tci</groupId>
 				<artifactId>oidc-server-mock</artifactId>
-				<version>4.4.1</version>
+				<version>4.4.2-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>software.xdev.tci</groupId>
 				<artifactId>selenium</artifactId>
-				<version>4.4.1</version>
+				<version>4.4.2-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>software.xdev.tci</groupId>
 				<artifactId>spring-dao-support</artifactId>
-				<version>4.4.1</version>
+				<version>4.4.2-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

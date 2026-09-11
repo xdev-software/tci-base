@@ -45,3 +45,6 @@ runs:
 
         echo "Importing cache"
         docker load -i ~/.cache/docker/images.tar && echo "Restored docker image cache" && docker image ls || true
+
+        echo "Deleting cache file to free up disk space"
+        rm -f ~/.cache/docker/images.tar || true
